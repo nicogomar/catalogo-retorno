@@ -1,0 +1,101 @@
+<header class="main-header">
+  <div class="header-content">
+    <div class="title-container">
+      <h1 class="header-title">Catálogo de Productos</h1>
+      <h2 class="header-subtitle">Don Joaquín</h2>
+    </div>
+    <div class="header-actions">
+      @if (authService.isAuthenticated()) {
+        <div class="auth-links">
+          <a [routerLink]="['/administracion']" class="admin-link">
+            Administración
+          </a>
+          <button (click)="logout()" class="logout-button">
+            Cerrar Sesión
+          </button>
+        </div>
+      } @else {
+        <a [routerLink]="['/login']" class="login-link">Iniciar Sesión</a>
+      }
+      <div class="cart-icon" (click)="toggleCart()">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          height="24"
+          width="24"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+        >
+          <path
+            d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"
+          />
+        </svg>
+        @if (cartService.totalItems() > 0) {
+          <span class="cart-count">{{ cartService.totalItems() }}</span>
+        }
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Router outlet for navigation -->
+<router-outlet></router-outlet>
+
+<!-- Home page catalog display (only shown on root route) -->
+@if (router.url === "/" || router.url === "") {
+  <div class="catalog-container">
+    <app-alert></app-alert>
+
+    <!-- Estado de carga -->
+    @if (isLoading) {
+      <div class="loading-container">
+        <div class="loading-spinner"></div>
+        <p>Cargando productos...</p>
+      </div>
+    }
+
+    <!-- Mensaje de error -->
+    @if (loadError) {
+      <div class="error-container">
+        <p class="error-message">{{ loadError }}</p>
+        <button class="retry-button" (click)="loadProductos()">
+          Reintentar
+        </button>
+      </div>
+    }
+
+    <!-- Cuadrícula de productos -->
+    @if (!isLoading && !loadError) {
+      <div class="products-grid">
+        @if (products.length === 0) {
+          <div class="no-products-message">
+            <p>No hay productos disponibles en este momento.</p>
+          </div>
+        } @else {
+          @for (product of products; track product.id) {
+            <app-card
+              [productImage]="product.image"
+              [productName]="product.name"
+              [productWeight]="product.weight"
+              [productPrice]="product.price"
+              [productId]="product.id"
+              (cardClick)="onProductSelect($event)"
+            >
+            </app-card>
+          }
+        }
+      </div>
+    }
+
+    <!-- Product Description Modal -->
+    @if (selectedProduct) {
+      <app-product-description
+        [product]="selectedProduct"
+        (close)="selectedProduct = null"
+      >
+      </app-product-description>
+    }
+
+    <!-- Cart Component -->
+    <app-cart></app-cart>
+  </div>
+}
