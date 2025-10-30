@@ -154,7 +154,7 @@ import { CartService, CartItem } from "../../services/cart.service";
       .modal-header h2 {
         margin: 0;
         font-size: 18px;
-        color: #2d5a3d;
+        color: #4a1d4a;
       }
 
       .close-button {
@@ -191,7 +191,7 @@ import { CartService, CartItem } from "../../services/cart.service";
 
       .form-control:focus {
         outline: none;
-        border-color: #2d5a3d;
+        border-color: #4a1d4a;
       }
 
       .form-control.invalid {
@@ -211,7 +211,7 @@ import { CartService, CartItem } from "../../services/cart.service";
       .submit-btn {
         width: 100%;
         padding: 12px;
-        background-color: #2d5a3d;
+        background-color: #4a1d4a;
         color: white;
         border: none;
         border-radius: 4px;

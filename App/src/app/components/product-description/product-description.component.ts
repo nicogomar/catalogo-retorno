@@ -231,7 +231,7 @@ interface Product {
       }
 
       .add-to-cart-btn {
-        background-color: #2d5a3d;
+        background-color: #4a1d4a;
         color: white;
         border: none;
         border-radius: 4px;

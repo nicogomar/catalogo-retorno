@@ -28,7 +28,7 @@
   top: 10px;
   width: 24px;
   height: 24px;
-  background: rgba(45, 90, 61, 0.9);
+  background: rgba(74, 29, 74, 0.9);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -67,7 +67,7 @@
 }
 
 .product-footer {
-  background: #2d5a3d;
+  background: #4a1d4a;
   padding: 16px;
   display: flex;
   align-items: flex-start;

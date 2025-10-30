@@ -168,7 +168,7 @@ import { Producto } from "../../services/producto.service";
 
     .modal-header h2 {
       margin: 0;
-      color: #2d5a3d;
+      color: #4a1d4a;
       font-size: 24px;
       font-weight: 600;
     }
@@ -228,8 +228,8 @@ import { Producto } from "../../services/producto.service";
 
     .form-control:focus {
       outline: none;
-      border-color: #2d5a3d;
-      box-shadow: 0 0 0 3px rgba(45, 90, 61, 0.1);
+      border-color: #4a1d4a;
+      box-shadow: 0 0 0 3px rgba(74, 29, 74, 0.1);
     }
 
     textarea.form-control {
@@ -285,7 +285,7 @@ import { Producto } from "../../services/producto.service";
     }
 
     .btn-primary {
-      background-color: #2d5a3d;
+      background-color: #4a1d4a;
       color: white;
     }
 

@@ -33,7 +33,7 @@ import { FormsModule } from "@angular/forms";
       /* Sidebar Styles */
       .sidebar {
         width: 260px;
-        background-color: #2d5a3d;
+        background-color: #4a1d4a;
         color: white;
         display: flex;
         flex-direction: column;
@@ -131,7 +131,7 @@ import { FormsModule } from "@angular/forms";
       }
 
       .content-header h1 {
-        color: #2d5a3d;
+        color: #4a1d4a;
         font-size: 32px;
         margin: 0;
         font-weight: 600;
@@ -162,7 +162,7 @@ import { FormsModule } from "@angular/forms";
       }
 
       .welcome-card h2 {
-        color: #2d5a3d;
+        color: #4a1d4a;
         margin-top: 0;
         margin-bottom: 12px;
       }
@@ -219,7 +219,7 @@ import { FormsModule } from "@angular/forms";
         margin: 0;
         font-size: 28px;
         font-weight: 600;
-        color: #2d5a3d;
+        color: #4a1d4a;
       }
 
       /* Section Actions */
@@ -259,14 +259,14 @@ import { FormsModule } from "@angular/forms";
       }
 
       .btn-filtro.active {
-        background-color: #2d5a3d;
+        background-color: #4a1d4a;
         color: white;
-        border-color: #2d5a3d;
-        box-shadow: 0 2px 6px rgba(45, 90, 61, 0.3);
+        border-color: #4a1d4a;
+        box-shadow: 0 2px 6px rgba(74, 29, 74, 0.3);
       }
 
       .btn-primary {
-        background-color: #2d5a3d;
+        background-color: #4a1d4a;
         color: white;
         border: none;
         padding: 12px 24px;
@@ -296,7 +296,7 @@ import { FormsModule } from "@angular/forms";
 
       .loading-spinner {
         border: 4px solid #f3f3f3;
-        border-top: 4px solid #2d5a3d;
+        border-top: 4px solid #4a1d4a;
         border-radius: 50%;
         width: 50px;
         height: 50px;
@@ -320,7 +320,7 @@ import { FormsModule } from "@angular/forms";
       }
 
       .retry-button {
-        background-color: #2d5a3d;
+        background-color: #4a1d4a;
         color: white;
         border: none;
         padding: 10px 20px;
@@ -388,7 +388,7 @@ import { FormsModule } from "@angular/forms";
 
       .product-title {
         margin: 0 0 12px 0;
-        color: #2d5a3d;
+        color: #4a1d4a;
         font-size: 20px;
         font-weight: 600;
       }
@@ -469,7 +469,7 @@ import { FormsModule } from "@angular/forms";
       }
 
       .data-card h3 {
-        color: #2d5a3d;
+        color: #4a1d4a;
         margin-top: 0;
         margin-bottom: 12px;
         font-size: 22px;
@@ -540,7 +540,7 @@ import { FormsModule } from "@angular/forms";
 
       .modal-header h2 {
         margin: 0;
-        color: #2d5a3d;
+        color: #4a1d4a;
         font-size: 24px;
         font-weight: 600;
       }
@@ -670,7 +670,7 @@ import { FormsModule } from "@angular/forms";
       }
 
       .pedidos-table thead {
-        background-color: #2d5a3d;
+        background-color: #4a1d4a;
         color: white;
       }
 
@@ -693,7 +693,7 @@ import { FormsModule } from "@angular/forms";
 
       .td-id {
         font-weight: 600;
-        color: #2d5a3d;
+        color: #4a1d4a;
       }
 
       .td-fecha {
@@ -723,7 +723,7 @@ import { FormsModule } from "@angular/forms";
 
       .btn-ver-productos {
         padding: 6px 16px;
-        background-color: #2d5a3d;
+        background-color: #4a1d4a;
         color: white;
         border: none;
         border-radius: 6px;
@@ -734,9 +734,9 @@ import { FormsModule } from "@angular/forms";
       }
 
       .btn-ver-productos:hover {
-        background-color: #1f3d29;
+        background-color: #331333;
         transform: translateY(-1px);
-        box-shadow: 0 2px 8px rgba(45, 90, 61, 0.3);
+        box-shadow: 0 2px 8px rgba(74, 29, 74, 0.3);
       }
 
       .btn-ver-productos:active {
@@ -745,7 +745,7 @@ import { FormsModule } from "@angular/forms";
 
       .td-total {
         font-size: 15px;
-        color: #2d5a3d;
+        color: #4a1d4a;
         min-width: 80px;
       }
 
@@ -765,13 +765,13 @@ import { FormsModule } from "@angular/forms";
       }
 
       .estado-select:hover {
-        border-color: #2d5a3d;
+        border-color: #4a1d4a;
       }
 
       .estado-select:focus {
         outline: none;
-        border-color: #2d5a3d;
-        box-shadow: 0 0 0 3px rgba(45, 90, 61, 0.1);
+        border-color: #4a1d4a;
+        box-shadow: 0 0 0 3px rgba(74, 29, 74, 0.1);
       }
 
       .estado-pendiente {
@@ -860,7 +860,7 @@ import { FormsModule } from "@angular/forms";
 
       .producto-modal-item:hover {
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        border-color: #2d5a3d;
+        border-color: #4a1d4a;
       }
 
       .producto-modal-imagen {
@@ -913,7 +913,7 @@ import { FormsModule } from "@angular/forms";
         align-items: center;
         justify-content: center;
         font-size: 18px;
-        color: #2d5a3d;
+        color: #4a1d4a;
         font-weight: 700;
         padding: 0 16px;
       }
@@ -929,7 +929,7 @@ import { FormsModule } from "@angular/forms";
         justify-content: space-between;
         align-items: center;
         padding: 12px 16px;
-        background-color: #2d5a3d;
+        background-color: #4a1d4a;
         color: white;
         border-radius: 8px;
       }

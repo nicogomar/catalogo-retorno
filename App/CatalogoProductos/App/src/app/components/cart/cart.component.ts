@@ -133,7 +133,7 @@ import { PedidoService, NuevoPedido } from "../../services/pedido.service";
       .cart-header h2 {
         margin: 0;
         font-size: 20px;
-        color: #2d5a3d;
+        color: #4a1d4a;
       }
 
       .close-button {
@@ -211,7 +211,7 @@ import { PedidoService, NuevoPedido } from "../../services/pedido.service";
       .item-price {
         margin: 5px 0 0;
         font-weight: 500;
-        color: #2d5a3d;
+        color: #4a1d4a;
       }
 
       .item-quantity {
@@ -285,7 +285,7 @@ import { PedidoService, NuevoPedido } from "../../services/pedido.service";
       .checkout-btn {
         width: 100%;
         padding: 12px;
-        background-color: #2d5a3d;
+        background-color: #4a1d4a;
         color: white;
         border: none;
         border-radius: 4px;
@@ -411,13 +411,13 @@ import { PedidoService, NuevoPedido } from "../../services/pedido.service";
           font-weight: 600;
           min-height: 52px;
           border-radius: 10px;
-          box-shadow: 0 3px 10px rgba(45, 90, 61, 0.4);
+          box-shadow: 0 3px 10px rgba(74, 29, 74, 0.4);
           margin-bottom: 8px;
         }
 
         .checkout-btn:active {
           transform: scale(0.98);
-          box-shadow: 0 1px 4px rgba(45, 90, 61, 0.3);
+          box-shadow: 0 1px 4px rgba(74, 29, 74, 0.3);
         }
       }
     `,

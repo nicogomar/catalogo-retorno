@@ -36,7 +36,7 @@ import { CardComponent } from "../components/card.component";
       }
 
       h2 {
-        color: #2d5a3d;
+        color: #4a1d4a;
         margin-bottom: 20px;
       }
 

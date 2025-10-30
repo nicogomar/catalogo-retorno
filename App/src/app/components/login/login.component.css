@@ -33,7 +33,7 @@
 }
 
 .login-title {
-  color: #2d5a3d;
+  color: #4a1d4a;
   margin: 0;
   font-size: 2rem;
   font-weight: 600;
@@ -91,8 +91,8 @@ input[type="password"] {
 input[type="email"]:focus,
 input[type="password"]:focus {
   outline: none;
-  border-color: #2d5a3d;
-  box-shadow: 0 0 0 2px rgba(45, 90, 61, 0.2);
+  border-color: #4a1d4a;
+  box-shadow: 0 0 0 2px rgba(74, 29, 74, 0.2);
   background-color: white;
 }
 
@@ -135,20 +135,20 @@ input.invalid {
 }
 
 .forgot-password {
-  color: #2d5a3d;
+  color: #4a1d4a;
   text-decoration: none;
   font-weight: 500;
   transition: color 0.3s ease;
 }
 
 .forgot-password:hover {
-  color: #1f3d2a;
+  color: #331333;
   text-decoration: underline;
 }
 
 /* Login Button */
 .login-button {
-  background-color: #2d5a3d;
+  background-color: #4a1d4a;
   color: white;
   border: none;
   border-radius: 8px;
@@ -164,7 +164,7 @@ input.invalid {
 }
 
 .login-button:hover:not(:disabled) {
-  background-color: #1f3d2a;
+  background-color: #331333;
   transform: translateY(-2px);
 }
 
@@ -203,14 +203,14 @@ input.invalid {
 }
 
 .register-link a {
-  color: #2d5a3d;
+  color: #4a1d4a;
   text-decoration: none;
   font-weight: 500;
   transition: color 0.3s ease;
 }
 
 .register-link a:hover {
-  color: #1f3d2a;
+  color: #331333;
   text-decoration: underline;
 }
 
