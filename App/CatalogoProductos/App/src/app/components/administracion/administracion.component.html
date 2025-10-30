@@ -110,62 +110,6 @@
         </button>
       </div>
 
-      <!-- Filtros de Búsqueda para Productos -->
-      @if (!isLoading && !loadError && productos.length > 0) {
-        <div class="filtros-busqueda">
-          <div class="filtro-input-group">
-            <label for="filtroProductoNombre">📦 Nombre:</label>
-            <input
-              type="text"
-              id="filtroProductoNombre"
-              [(ngModel)]="filtroProductoNombre"
-              placeholder="Buscar por nombre..."
-              class="filtro-input"
-            />
-          </div>
-          <div class="filtro-input-group">
-            <label for="filtroProductoPeso">⚖️ Peso:</label>
-            <input
-              type="text"
-              id="filtroProductoPeso"
-              [(ngModel)]="filtroProductoPeso"
-              placeholder="Buscar por peso..."
-              class="filtro-input"
-            />
-          </div>
-          <div class="filtro-input-group">
-            <label for="filtroProductoPrecioMin">💲 Precio Min:</label>
-            <input
-              type="number"
-              id="filtroProductoPrecioMin"
-              [(ngModel)]="filtroProductoPrecioMin"
-              placeholder="Ej: 1000"
-              class="filtro-input"
-              min="0"
-            />
-          </div>
-          <div class="filtro-input-group">
-            <label for="filtroProductoPrecioMax">💲 Precio Max:</label>
-            <input
-              type="number"
-              id="filtroProductoPrecioMax"
-              [(ngModel)]="filtroProductoPrecioMax"
-              placeholder="Ej: 5000"
-              class="filtro-input"
-              min="0"
-            />
-          </div>
-          <div class="filtro-input-group">
-            <button
-              class="btn-limpiar-filtros"
-              (click)="limpiarFiltrosProductos()"
-            >
-              🗑️ Limpiar Filtros
-            </button>
-          </div>
-        </div>
-      }
-
       @if (isLoading) {
         <div class="loading-container">
           <div class="loading-spinner"></div>
@@ -193,7 +137,7 @@
             </div>
           } @else {
             <div class="products-grid">
-              @for (producto of getProductosFiltrados(); track producto.id) {
+              @for (producto of productos; track producto.id) {
                 <div class="product-card-admin">
                   <div class="product-image-section">
                     <img
@@ -301,58 +245,6 @@
           >
             ✔️ Finalizados
           </button>
-        </div>
-
-        <!-- Filtros de Búsqueda -->
-        <div class="filtros-busqueda">
-          <div class="filtro-input-group">
-            <label for="filtroId">🔍 ID Pedido:</label>
-            <input
-              type="text"
-              id="filtroId"
-              [(ngModel)]="filtroPedidoId"
-              placeholder="Buscar por ID..."
-              class="filtro-input"
-            />
-          </div>
-          <div class="filtro-input-group">
-            <label for="filtroComercio">🏪 Comercio:</label>
-            <input
-              type="text"
-              id="filtroComercio"
-              [(ngModel)]="filtroPedidoComercio"
-              placeholder="Buscar por comercio..."
-              class="filtro-input"
-            />
-          </div>
-          <div class="filtro-input-group">
-            <label for="filtroTelefono">📞 Teléfono:</label>
-            <input
-              type="text"
-              id="filtroTelefono"
-              [(ngModel)]="filtroPedidoTelefono"
-              placeholder="Buscar por teléfono..."
-              class="filtro-input"
-            />
-          </div>
-          <div class="filtro-input-group">
-            <label for="filtroFecha">📅 Fecha:</label>
-            <input
-              type="text"
-              id="filtroFecha"
-              [(ngModel)]="filtroPedidoFecha"
-              placeholder="Buscar por fecha..."
-              class="filtro-input"
-            />
-          </div>
-          <div class="filtro-input-group">
-            <button
-              class="btn-limpiar-filtros"
-              (click)="limpiarFiltrosPedidos()"
-            >
-              🗑️ Limpiar Filtros
-            </button>
-          </div>
         </div>
       }
 

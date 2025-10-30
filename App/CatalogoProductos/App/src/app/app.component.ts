@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { Router, RouterOutlet, RouterLink } from "@angular/router";
 import { CommonModule } from "@angular/common";
-import { FormsModule } from "@angular/forms";
 import { CardComponent } from "./components/card.component";
 import { ProductDescriptionComponent } from "./components/product-description/product-description.component";
 import { CartComponent } from "./components/cart/cart.component";
@@ -25,7 +24,6 @@ interface Product {
   standalone: true,
   imports: [
     CommonModule,
-    FormsModule,
     RouterOutlet,
     RouterLink,
     CardComponent,
