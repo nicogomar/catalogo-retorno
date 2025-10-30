@@ -246,6 +246,58 @@
             ✔️ Finalizados
           </button>
         </div>
+
+        <!-- Filtros de Búsqueda -->
+        <div class="filtros-busqueda">
+          <div class="filtro-input-group">
+            <label for="filtroId">🔍 ID Pedido:</label>
+            <input
+              type="text"
+              id="filtroId"
+              [(ngModel)]="filtroPedidoId"
+              placeholder="Buscar por ID..."
+              class="filtro-input"
+            />
+          </div>
+          <div class="filtro-input-group">
+            <label for="filtroComercio">🏪 Comercio:</label>
+            <input
+              type="text"
+              id="filtroComercio"
+              [(ngModel)]="filtroPedidoComercio"
+              placeholder="Buscar por comercio..."
+              class="filtro-input"
+            />
+          </div>
+          <div class="filtro-input-group">
+            <label for="filtroTelefono">📞 Teléfono:</label>
+            <input
+              type="text"
+              id="filtroTelefono"
+              [(ngModel)]="filtroPedidoTelefono"
+              placeholder="Buscar por teléfono..."
+              class="filtro-input"
+            />
+          </div>
+          <div class="filtro-input-group">
+            <label for="filtroFecha">📅 Fecha:</label>
+            <input
+              type="text"
+              id="filtroFecha"
+              [(ngModel)]="filtroPedidoFecha"
+              placeholder="Buscar por fecha..."
+              class="filtro-input"
+            />
+          </div>
+          <div class="filtro-input-group">
+            <button
+              class="btn-limpiar-filtros"
+              (click)="limpiarFiltrosPedidos()"
+            >
+              🗑️ Limpiar Filtros
+            </button>
+          </div>
+        </div>
       }
 
       @if (isPedidosLoading) {

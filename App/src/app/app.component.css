@@ -309,3 +309,128 @@
     font-size: 12px;
   }
 }
+
+/* Filtros de búsqueda para productos */
+.filtros-productos {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 30px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.filtros-titulo {
+  margin: 0 0 20px 0;
+  color: #2d5a3d;
+  font-size: 1.5rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.filtros-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  align-items: end;
+}
+
+.filtro-grupo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.filtro-grupo label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #2d5a3d;
+}
+
+.filtro-input-producto {
+  padding: 10px 12px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  font-family: inherit;
+}
+
+.filtro-input-producto:focus {
+  outline: none;
+  border-color: #2d5a3d;
+  box-shadow: 0 0 0 3px rgba(45, 90, 61, 0.1);
+}
+
+.filtro-input-producto::placeholder {
+  color: #999;
+}
+
+.btn-limpiar-filtros-producto {
+  padding: 10px 16px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  height: fit-content;
+}
+
+.btn-limpiar-filtros-producto:hover {
+  background-color: #c82333;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+}
+
+.btn-limpiar-filtros-producto:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+  .filtros-productos {
+    padding: 15px;
+    margin-bottom: 20px;
+  }
+
+  .filtros-titulo {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+  }
+
+  .filtros-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .filtro-input-producto {
+    font-size: 13px;
+    padding: 8px 10px;
+  }
+
+  .btn-limpiar-filtros-producto {
+    font-size: 13px;
+    padding: 8px 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .filtros-productos {
+    padding: 12px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+  }
+
+  .filtros-titulo {
+    font-size: 1.1rem;
+  }
+
+  .filtro-grupo label {
+    font-size: 13px;
+  }
+
+  .filtro-input-producto {
+    font-size: 12px;
+  }
+}

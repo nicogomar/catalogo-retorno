@@ -649,6 +649,89 @@ import { FormsModule } from "@angular/forms";
         }
       }
 
+      /* Filtros de búsqueda para pedidos */
+      .filtros-busqueda {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+        margin: 20px 0;
+        padding: 20px;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .filtro-input-group {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .filtro-input-group label {
+        font-size: 13px;
+        font-weight: 600;
+        color: #2d5a3d;
+      }
+
+      .filtro-input {
+        padding: 10px 12px;
+        border: 2px solid #e0e0e0;
+        border-radius: 6px;
+        font-size: 14px;
+        transition: all 0.3s ease;
+      }
+
+      .filtro-input:focus {
+        outline: none;
+        border-color: #2d5a3d;
+        box-shadow: 0 0 0 3px rgba(45, 90, 61, 0.1);
+      }
+
+      .filtro-input::placeholder {
+        color: #999;
+      }
+
+      .btn-limpiar-filtros {
+        padding: 10px 16px;
+        background-color: #dc3545;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-top: auto;
+      }
+
+      .btn-limpiar-filtros:hover {
+        background-color: #c82333;
+        transform: translateY(-1px);
+        box-shadow: 0 2px 8px rgba(220, 53, 69, 0.3);
+      }
+
+      .btn-limpiar-filtros:active {
+        transform: translateY(0);
+      }
+
+      @media (max-width: 768px) {
+        .filtros-busqueda {
+          grid-template-columns: 1fr;
+          gap: 12px;
+          padding: 15px;
+        }
+
+        .filtro-input {
+          font-size: 13px;
+          padding: 8px 10px;
+        }
+
+        .btn-limpiar-filtros {
+          font-size: 13px;
+          padding: 8px 12px;
+        }
+      }
+
       /* Pedidos Table Styles */
       .pedidos-table-container {
         background: white;
@@ -1006,6 +1089,12 @@ export class AdministracionComponent implements OnInit {
   showProductosModal: boolean = false;
   selectedPedidoProductos: any[] = [];
 
+  // Filtros de búsqueda para pedidos
+  filtroPedidoId: string = "";
+  filtroPedidoComercio: string = "";
+  filtroPedidoTelefono: string = "";
+  filtroPedidoFecha: string = "";
+
   constructor(
     private productoService: ProductoService,
     private pedidoService: PedidoService,
@@ -1157,17 +1246,61 @@ export class AdministracionComponent implements OnInit {
 
   // Obtener pedidos filtrados
   getPedidosFiltrados(): Pedido[] {
-    if (this.filtroEstadoPedido === "Todos") {
-      return this.pedidos;
+    let pedidosFiltrados = this.pedidos;
+
+    // Filtrar por estado
+    if (this.filtroEstadoPedido !== "Todos") {
+      pedidosFiltrados = pedidosFiltrados.filter(
+        (pedido) => pedido.estado === this.filtroEstadoPedido,
+      );
     }
-    return this.pedidos.filter(
-      (pedido) => pedido.estado === this.filtroEstadoPedido,
-    );
+
+    // Filtrar por ID
+    if (this.filtroPedidoId.trim() !== "") {
+      pedidosFiltrados = pedidosFiltrados.filter((pedido) =>
+        pedido.id?.toString().includes(this.filtroPedidoId.trim()),
+      );
+    }
+
+    // Filtrar por nombre de comercio
+    if (this.filtroPedidoComercio.trim() !== "") {
+      const comercioLower = this.filtroPedidoComercio.trim().toLowerCase();
+      pedidosFiltrados = pedidosFiltrados.filter((pedido) =>
+        pedido.nombre_comercio?.toLowerCase().includes(comercioLower),
+      );
+    }
+
+    // Filtrar por teléfono
+    if (this.filtroPedidoTelefono.trim() !== "") {
+      pedidosFiltrados = pedidosFiltrados.filter((pedido) =>
+        pedido["telefóno"]?.includes(this.filtroPedidoTelefono.trim()),
+      );
+    }
+
+    // Filtrar por fecha
+    if (this.filtroPedidoFecha.trim() !== "") {
+      pedidosFiltrados = pedidosFiltrados.filter((pedido) => {
+        if (!pedido.created_at) return false;
+        const fechaPedido = this.formatDate(pedido.created_at);
+        return fechaPedido.includes(this.filtroPedidoFecha.trim());
+      });
+    }
+
+    return pedidosFiltrados;
   }
 
   // Cambiar filtro de estado
   cambiarFiltroPedido(estado: string): void {
     this.filtroEstadoPedido = estado;
+  }
+
+  // Limpiar todos los filtros de pedidos
+  limpiarFiltrosPedidos(): void {
+    this.filtroPedidoId = "";
+    this.filtroPedidoComercio = "";
+    this.filtroPedidoTelefono = "";
+    this.filtroPedidoFecha = "";
+    this.filtroEstadoPedido = "Todos";
   }
 
   cambiarEstadoPedido(pedido: Pedido, nuevoEstado: EstadoPedido): void {

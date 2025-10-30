@@ -45,6 +45,55 @@
   <div class="catalog-container">
     <app-alert></app-alert>
 
+    <!-- Filtros de Búsqueda -->
+    @if (!isLoading && !loadError && products.length > 0) {
+      <div class="filtros-productos">
+        <h3 class="filtros-titulo">🔍 Buscar Productos</h3>
+        <div class="filtros-grid">
+          <div class="filtro-grupo">
+            <label for="filtroNombre">📦 Nombre del Producto:</label>
+            <input
+              type="text"
+              id="filtroNombre"
+              [(ngModel)]="filtroNombreProducto"
+              placeholder="Buscar por nombre..."
+              class="filtro-input-producto"
+            />
+          </div>
+          <div class="filtro-grupo">
+            <label for="filtroPrecioMin">💲 Precio Mínimo:</label>
+            <input
+              type="number"
+              id="filtroPrecioMin"
+              [(ngModel)]="filtroPrecioMin"
+              placeholder="Ej: 1000"
+              class="filtro-input-producto"
+              min="0"
+            />
+          </div>
+          <div class="filtro-grupo">
+            <label for="filtroPrecioMax">💲 Precio Máximo:</label>
+            <input
+              type="number"
+              id="filtroPrecioMax"
+              [(ngModel)]="filtroPrecioMax"
+              placeholder="Ej: 5000"
+              class="filtro-input-producto"
+              min="0"
+            />
+          </div>
+          <div class="filtro-grupo">
+            <button
+              class="btn-limpiar-filtros-producto"
+              (click)="limpiarFiltrosProductos()"
+            >
+              🗑️ Limpiar
+            </button>
+          </div>
+        </div>
+      </div>
+    }
+
     <!-- Estado de carga -->
     @if (isLoading) {
       <div class="loading-container">
@@ -71,16 +120,25 @@
             <p>No hay productos disponibles en este momento.</p>
           </div>
         } @else {
-          @for (product of products; track product.id) {
-            <app-card
-              [productImage]="product.image"
-              [productName]="product.name"
-              [productWeight]="product.weight"
-              [productPrice]="product.price"
-              [productId]="product.id"
-              (cardClick)="onProductSelect($event)"
-            >
-            </app-card>
+          @if (getProductosFiltrados().length === 0) {
+            <div class="no-products-message">
+              <p>No se encontraron productos con los filtros aplicados.</p>
+              <button class="retry-button" (click)="limpiarFiltrosProductos()">
+                Limpiar Filtros
+              </button>
+            </div>
+          } @else {
+            @for (product of getProductosFiltrados(); track product.id) {
+              <app-card
+                [productImage]="product.image"
+                [productName]="product.name"
+                [productWeight]="product.weight"
+                [productPrice]="product.price"
+                [productId]="product.id"
+                (cardClick)="onProductSelect($event)"
+              >
+              </app-card>
+            }
           }
         }
       </div>

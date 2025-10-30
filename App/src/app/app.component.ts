@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { Router, RouterOutlet, RouterLink } from "@angular/router";
 import { CommonModule } from "@angular/common";
+import { FormsModule } from "@angular/forms";
 import { CardComponent } from "./components/card.component";
 import { ProductDescriptionComponent } from "./components/product-description/product-description.component";
 import { CartComponent } from "./components/cart/cart.component";
@@ -24,6 +25,7 @@ interface Product {
   standalone: true,
   imports: [
     CommonModule,
+    FormsModule,
     RouterOutlet,
     RouterLink,
     CardComponent,
@@ -43,6 +45,11 @@ export class AppComponent implements OnInit {
   loadError: string | null = null;
 
   selectedProduct: Product | null = null;
+
+  // Filtros de búsqueda para productos
+  filtroNombreProducto: string = "";
+  filtroPrecioMin: string = "";
+  filtroPrecioMax: string = "";
 
   constructor(
     public cartService: CartService,
@@ -92,6 +99,59 @@ export class AppComponent implements OnInit {
     console.log("Found product:", product);
     this.selectedProduct = product ?? null;
     console.log("Selected product set to:", this.selectedProduct);
+  }
+
+  // Obtener productos filtrados
+  getProductosFiltrados(): Product[] {
+    let productosFiltrados = this.products;
+
+    // Filtrar por nombre
+    if (this.filtroNombreProducto.trim() !== "") {
+      const nombreLower = this.filtroNombreProducto.trim().toLowerCase();
+      productosFiltrados = productosFiltrados.filter((producto) =>
+        producto.name.toLowerCase().includes(nombreLower),
+      );
+    }
+
+    // Filtrar por precio mínimo
+    if (this.filtroPrecioMin.trim() !== "") {
+      const precioMin = parseFloat(this.filtroPrecioMin);
+      if (!isNaN(precioMin)) {
+        productosFiltrados = productosFiltrados.filter((producto) => {
+          const precio = this.extractPrecioNumerico(producto.price);
+          return precio >= precioMin;
+        });
+      }
+    }
+
+    // Filtrar por precio máximo
+    if (this.filtroPrecioMax.trim() !== "") {
+      const precioMax = parseFloat(this.filtroPrecioMax);
+      if (!isNaN(precioMax)) {
+        productosFiltrados = productosFiltrados.filter((producto) => {
+          const precio = this.extractPrecioNumerico(producto.price);
+          return precio <= precioMax;
+        });
+      }
+    }
+
+    return productosFiltrados;
+  }
+
+  // Extraer precio numérico de la cadena
+  private extractPrecioNumerico(priceString: string): number {
+    const match = priceString.match(/[\d,.]+/);
+    if (match) {
+      return parseFloat(match[0].replace(/\./g, "").replace(",", "."));
+    }
+    return 0;
+  }
+
+  // Limpiar filtros de productos
+  limpiarFiltrosProductos(): void {
+    this.filtroNombreProducto = "";
+    this.filtroPrecioMin = "";
+    this.filtroPrecioMax = "";
   }
 
   toggleCart(): void {
