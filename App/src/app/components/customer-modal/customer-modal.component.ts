@@ -110,6 +110,39 @@ import { CartService, CartItem } from "../../services/cart.service";
               ></textarea>
             </div>
 
+            <div class="form-group">
+              <label>Método de pago:</label>
+              <div class="payment-method-options">
+                <label class="payment-option">
+                  <input
+                    type="radio"
+                    formControlName="paymentMethod"
+                    value="mercadopago"
+                  />
+                  <div class="payment-option-content">
+                    <span class="payment-title">💳 Pago Online (MercadoPago)</span>
+                    <span class="payment-description">Paga ahora con tarjeta de crédito/débito</span>
+                  </div>
+                </label>
+                <label class="payment-option">
+                  <input
+                    type="radio"
+                    formControlName="paymentMethod"
+                    value="contra_entrega"
+                  />
+                  <div class="payment-option-content">
+                    <span class="payment-title">💵 Pago Contra Entrega</span>
+                    <span class="payment-description">Paga en efectivo al recibir tu pedido</span>
+                  </div>
+                </label>
+              </div>
+              <div *ngIf="submitted && f['paymentMethod'].errors" class="error-message">
+                <div *ngIf="f['paymentMethod'].errors['required']">
+                  Debe seleccionar un método de pago
+                </div>
+              </div>
+            </div>
+
             <div class="form-actions">
               <button type="submit" class="submit-btn">Realizar pedido</button>
             </div>
@@ -131,15 +164,21 @@ import { CartService, CartItem } from "../../services/cart.service";
         justify-content: center;
         align-items: center;
         z-index: 1002;
+        padding: 20px;
+        overflow-y: auto;
       }
 
       .modal-container {
         background-color: #fff;
         width: 100%;
         max-width: 500px;
+        max-height: 90vh;
         border-radius: 8px;
         overflow: hidden;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        display: flex;
+        flex-direction: column;
+        margin: auto;
       }
 
       .modal-header {
@@ -167,6 +206,8 @@ import { CartService, CartItem } from "../../services/cart.service";
 
       .modal-content {
         padding: 20px;
+        overflow-y: auto;
+        flex: 1;
       }
 
       .form-group {
@@ -224,9 +265,90 @@ import { CartService, CartItem } from "../../services/cart.service";
         background-color: #234731;
       }
 
+      .payment-method-options {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .payment-option {
+        display: flex;
+        align-items: flex-start;
+        padding: 16px;
+        border: 2px solid #ddd;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .payment-option:hover {
+        border-color: #4a1d4a;
+        background-color: #f8f4ee;
+      }
+
+      .payment-option input[type="radio"] {
+        margin-top: 4px;
+        margin-right: 12px;
+        cursor: pointer;
+      }
+
+      .payment-option input[type="radio"]:checked + .payment-option-content {
+        color: #4a1d4a;
+      }
+
+      .payment-option:has(input[type="radio"]:checked) {
+        border-color: #4a1d4a;
+        background-color: #f8f4ee;
+      }
+
+      .payment-option-content {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        flex: 1;
+      }
+
+      .payment-title {
+        font-weight: 600;
+        font-size: 16px;
+        color: #333;
+      }
+
+      .payment-description {
+        font-size: 14px;
+        color: #666;
+      }
+
       @media (max-width: 600px) {
+        .modal-overlay {
+          padding: 10px;
+          align-items: flex-start;
+        }
+
         .modal-container {
-          width: 90%;
+          width: 100%;
+          max-height: 95vh;
+          margin-top: 10px;
+        }
+
+        .modal-content {
+          padding: 15px;
+        }
+
+        .modal-header h2 {
+          font-size: 16px;
+        }
+
+        .payment-option {
+          padding: 12px;
+        }
+
+        .payment-title {
+          font-size: 14px;
+        }
+
+        .payment-description {
+          font-size: 12px;
         }
       }
     `,
@@ -280,6 +402,7 @@ export class CustomerModalComponent implements OnInit {
       email: ["", [Validators.required, Validators.email]],
       location: ["", [Validators.required]],
       details: [""],
+      paymentMethod: ["mercadopago", [Validators.required]],
     });
   }
 

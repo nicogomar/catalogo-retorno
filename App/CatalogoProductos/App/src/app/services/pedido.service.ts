@@ -8,6 +8,11 @@ import { ApiService } from "./api.service";
 export type EstadoPedido = "Pendiente" | "Aprobado" | "En curso" | "Finalizado";
 
 /**
+ * Tipo que representa el método de pago de un pedido
+ */
+export type MetodoPagoPedido = "mercadopago" | "contra_entrega";
+
+/**
  * Interfaz que representa un item en un pedido
  */
 export interface ItemPedido {
@@ -32,6 +37,7 @@ export interface Pedido {
   productos?: ItemPedido[] | null;
   detalles?: string | null;
   estado?: EstadoPedido | null;
+  metodo_pago?: MetodoPagoPedido | null;
 }
 
 /**
@@ -45,6 +51,7 @@ export interface NuevoPedido {
   productos?: ItemPedido[] | null;
   detalles?: string | null;
   estado?: EstadoPedido | null;
+  metodo_pago?: MetodoPagoPedido | null;
 }
 
 /**

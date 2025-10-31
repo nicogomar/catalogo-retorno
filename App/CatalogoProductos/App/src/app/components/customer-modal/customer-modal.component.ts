@@ -314,8 +314,11 @@ export class CustomerModalComponent implements OnInit {
 
     // Stop if the form is invalid
     if (this.customerForm.invalid) {
+      console.log("Form is invalid:", this.customerForm.errors);
       return;
     }
+
+    console.log("Form is valid! Customer data:", this.customerForm.value);
 
     // Create order object with form data and cart items
     const order = {
@@ -325,11 +328,12 @@ export class CustomerModalComponent implements OnInit {
       date: new Date(),
     };
 
+    console.log("Order object created:", order);
+
     // Emit the order data
     this.orderSubmitted.emit(order);
 
-    // Close modal and clear cart after successful submission
+    // Close modal (cart will be cleared by parent component after processing)
     this.close();
-    this.cartService.clearCart();
   }
 }

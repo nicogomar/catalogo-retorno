@@ -66,6 +66,11 @@ export interface ItemPedido {
 export type EstadoPedido = "Pendiente" | "Aprobado" | "En curso" | "Finalizado";
 
 /**
+ * Método de pago del pedido
+ */
+export type MetodoPagoPedido = "mercadopago" | "contra_entrega";
+
+/**
  * Pedido entity - represents an order in the system
  */
 export interface Pedido {
@@ -78,6 +83,7 @@ export interface Pedido {
   productos?: ItemPedido[] | null;
   detalles?: string | null;
   estado?: EstadoPedido | null;
+  metodo_pago?: MetodoPagoPedido | null;
 }
 
 /**
@@ -91,6 +97,7 @@ export interface NuevoPedido {
   productos: ItemPedido[];
   detalles?: string | null;
   estado?: EstadoPedido | null;
+  metodo_pago?: MetodoPagoPedido | null;
 }
 
 /**
@@ -104,6 +111,7 @@ export interface ActualizarPedido {
   productos?: ItemPedido[] | null;
   detalles?: string | null;
   estado?: EstadoPedido | null;
+  metodo_pago?: MetodoPagoPedido | null;
 }
 
 /**
@@ -251,4 +259,229 @@ declare global {
       user?: Usuario;
     }
   }
+}
+
+/**
+ * MercadoPago Payment Types
+ */
+
+/**
+ * Estado del pago
+ */
+export type EstadoPago =
+  | "pending"
+  | "approved"
+  | "authorized"
+  | "in_process"
+  | "in_mediation"
+  | "rejected"
+  | "cancelled"
+  | "refunded"
+  | "charged_back";
+
+/**
+ * Método de pago
+ */
+export type MetodoPago =
+  | "credit_card"
+  | "debit_card"
+  | "account_money"
+  | "ticket"
+  | "bank_transfer"
+  | "atm"
+  | "prepaid_card";
+
+/**
+ * Item para preference de MercadoPago
+ */
+export interface MercadoPagoItem {
+  id?: string;
+  title: string;
+  description?: string;
+  picture_url?: string;
+  category_id?: string;
+  quantity: number;
+  currency_id?: string;
+  unit_price: number;
+}
+
+/**
+ * Payer (pagador) de MercadoPago
+ */
+export interface MercadoPagoPayer {
+  name?: string;
+  surname?: string;
+  email?: string;
+  phone?: {
+    area_code?: string;
+    number?: string;
+  };
+  identification?: {
+    type?: string;
+    number?: string;
+  };
+  address?: {
+    zip_code?: string;
+    street_name?: string;
+    street_number?: number;
+  };
+}
+
+/**
+ * URLs de retorno
+ */
+export interface MercadoPagoBackUrls {
+  success?: string;
+  failure?: string;
+  pending?: string;
+}
+
+/**
+ * Preference de pago de MercadoPago
+ */
+export interface MercadoPagoPreference {
+  items: MercadoPagoItem[];
+  payer?: MercadoPagoPayer;
+  back_urls?: MercadoPagoBackUrls;
+  auto_return?: "approved" | "all";
+  external_reference?: string;
+  notification_url?: string;
+  statement_descriptor?: string;
+  payment_methods?: {
+    excluded_payment_methods?: Array<{ id: string }>;
+    excluded_payment_types?: Array<{ id: string }>;
+    installments?: number;
+  };
+  expires?: boolean;
+  expiration_date_from?: string;
+  expiration_date_to?: string;
+}
+
+/**
+ * Respuesta de creación de preference
+ */
+export interface MercadoPagoPreferenceResponse {
+  id: string;
+  init_point: string;
+  sandbox_init_point?: string;
+  date_created?: string;
+  items?: MercadoPagoItem[];
+  payer?: MercadoPagoPayer;
+  back_urls?: MercadoPagoBackUrls;
+  auto_return?: string;
+  external_reference?: string;
+}
+
+/**
+ * Webhook notification de MercadoPago
+ */
+export interface MercadoPagoWebhook {
+  action: string;
+  api_version: string;
+  data: {
+    id: string;
+  };
+  date_created: string;
+  id: number;
+  live_mode: boolean;
+  type:
+    | "payment"
+    | "plan"
+    | "subscription"
+    | "invoice"
+    | "point_integration_wh";
+  user_id: string;
+}
+
+/**
+ * Información del pago
+ */
+export interface MercadoPagoPaymentInfo {
+  id: number;
+  date_created: string;
+  date_approved?: string;
+  date_last_updated: string;
+  money_release_date?: string;
+  operation_type: string;
+  issuer_id?: string;
+  payment_method_id: string;
+  payment_type_id: string;
+  status: EstadoPago;
+  status_detail: string;
+  currency_id: string;
+  description?: string;
+  live_mode: boolean;
+  transaction_amount: number;
+  transaction_amount_refunded?: number;
+  coupon_amount?: number;
+  taxes_amount?: number;
+  shipping_amount?: number;
+  installments: number;
+  external_reference?: string;
+  payer?: {
+    id?: string;
+    email?: string;
+    identification?: {
+      type?: string;
+      number?: string;
+    };
+    type?: string;
+  };
+  metadata?: any;
+}
+
+/**
+ * Pago entity - representa un pago en la base de datos
+ */
+export interface Pago {
+  id?: number;
+  created_at?: string;
+  pedido_id?: number | null;
+  mercadopago_payment_id?: string | null;
+  mercadopago_preference_id?: string | null;
+  estado?: EstadoPago | null;
+  metodo_pago?: string | null;
+  monto?: number | null;
+  moneda?: string | null;
+  external_reference?: string | null;
+  fecha_aprobacion?: string | null;
+  detalles?: any | null;
+}
+
+/**
+ * Input para crear un nuevo pago
+ */
+export interface NuevoPago {
+  pedido_id: number;
+  mercadopago_preference_id?: string;
+  external_reference?: string;
+  items: MercadoPagoItem[];
+  payer?: MercadoPagoPayer;
+}
+
+/**
+ * Input para actualizar un pago
+ */
+export interface ActualizarPago {
+  mercadopago_payment_id?: string;
+  estado?: EstadoPago;
+  metodo_pago?: string;
+  monto?: number;
+  moneda?: string;
+  fecha_aprobacion?: string;
+  detalles?: any;
+}
+
+/**
+ * Respuesta de creación de pago
+ */
+export interface CrearPagoResponse {
+  success: boolean;
+  data?: {
+    pago_id: number;
+    preference_id: string;
+    init_point: string;
+    sandbox_init_point?: string;
+  };
+  error?: string;
 }

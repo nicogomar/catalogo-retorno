@@ -6,6 +6,7 @@ import { CustomerModalComponent } from "../customer-modal/customer-modal.compone
 import { AlertService } from "../../services/alert.service";
 import { AlertComponent } from "../alert/alert.component";
 import { PedidoService, NuevoPedido } from "../../services/pedido.service";
+import { PagoService, NuevoPago, PagoItem } from "../../services/pago.service";
 
 @Component({
   selector: "app-cart",
@@ -431,6 +432,7 @@ export class CartComponent {
     public cartService: CartService,
     private alertService: AlertService,
     private pedidoService: PedidoService,
+    private pagoService: PagoService,
   ) {}
 
   open() {
@@ -475,6 +477,9 @@ export class CartComponent {
       img_url: item.image,
     }));
 
+    // Get payment method from order data
+    const paymentMethod = orderData.customer.paymentMethod || "contra_entrega";
+
     // Prepare the order data for the database
     const pedidoData: NuevoPedido = {
       nombre_comercio: orderData.customer.name,
@@ -484,19 +489,101 @@ export class CartComponent {
       productos: productos, // Transformed items stored as JSON
       detalles: orderData.customer.details, // Add the details field
       estado: "Pendiente", // Set default status to Pendiente
+      metodo_pago: paymentMethod, // Add payment method
     };
+
+    // Mostrar mensaje de procesamiento según el método de pago
+    if (paymentMethod === "mercadopago") {
+      this.alertService.showSuccess(
+        "Procesando su pedido y generando link de pago...",
+      );
+    } else {
+      this.alertService.showSuccess("Procesando su pedido...");
+    }
 
     // Save the order to the database
     this.pedidoService.createPedido(pedidoData).subscribe({
       next: (pedido) => {
         console.log("Pedido guardado exitosamente:", pedido);
-        this.alertService.showSuccess(
-          "¡Gracias por su compra! Su pedido ha sido realizado con éxito.",
-        );
-        this.close();
+
+        // If payment method is MercadoPago, create payment preference
+        if (paymentMethod === "mercadopago") {
+          // Transform cart items to MercadoPago format
+          const pagoItems: PagoItem[] = orderData.items.map(
+            (item: CartItem) => ({
+              title: item.name,
+              description: `${item.weight} - ${item.name}`,
+              picture_url: item.image,
+              quantity: item.quantity,
+              unit_price: item.priceNumeric,
+              currency_id: "ARS",
+            }),
+          );
+
+          // Prepare payment data
+          const pagoData: NuevoPago = {
+            pedido_id: pedido.id!,
+            items: pagoItems,
+            payer: {
+              name: orderData.customer.name.split(" ")[0],
+              surname:
+                orderData.customer.name.split(" ").slice(1).join(" ") ||
+                orderData.customer.name,
+              email: orderData.customer.email,
+              phone: {
+                area_code: orderData.customer.phone.substring(0, 3),
+                number: orderData.customer.phone.substring(3),
+              },
+            },
+            external_reference: `PEDIDO-${pedido.id}-${Date.now()}`,
+          };
+
+          // Create payment and redirect
+          this.pagoService.createPago(pagoData).subscribe({
+            next: (pagoResponse) => {
+              console.log("Pago creado exitosamente:", pagoResponse);
+
+              // Clear cart
+              this.cartService.clearCart();
+
+              // Close modals
+              this.closeCustomerModal();
+              this.close();
+
+              // Show success message
+              this.alertService.showSuccess(
+                "¡Pedido creado! Redirigiendo a MercadoPago para completar el pago...",
+              );
+
+              // Redirect to MercadoPago after a short delay
+              setTimeout(() => {
+                this.pagoService.redirectToMercadoPago(pagoResponse.init_point);
+              }, 1500);
+            },
+            error: (error) => {
+              console.error("Error al crear el pago:", error);
+              this.alertService.showError(
+                `Hubo un error al generar el link de pago: ${error.message || "Error desconocido"}. Por favor, inténtelo de nuevo.`,
+              );
+            },
+          });
+        } else {
+          // Payment method is "contra_entrega" - no MercadoPago redirect
+          // Clear cart
+          this.cartService.clearCart();
+
+          // Close modals
+          this.closeCustomerModal();
+          this.close();
+
+          // Show success message
+          this.alertService.showSuccess(
+            "¡Pedido creado exitosamente! Recibirás una confirmación por email. El pago se realizará contra entrega.",
+          );
+        }
       },
       error: (error) => {
-        console.error("Error al guardar el pedido:", error);
+        console.error("Error al procesar el pedido:", error);
         this.alertService.showError(
           `Hubo un error al procesar su pedido: ${error.message || "Error desconocido"}. Por favor, inténtelo de nuevo.`,
         );

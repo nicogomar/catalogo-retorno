@@ -6,11 +6,19 @@ import { CustomerModalComponent } from "../customer-modal/customer-modal.compone
 import { AlertService } from "../../services/alert.service";
 import { AlertComponent } from "../alert/alert.component";
 import { PedidoService, NuevoPedido } from "../../services/pedido.service";
+import { PagoService } from "../../services/pago.service";
+import { PaymentConfirmationModalComponent } from "../payment-confirmation-modal/payment-confirmation-modal.component";
 
 @Component({
   selector: "app-cart",
   standalone: true,
-  imports: [CommonModule, FormsModule, CustomerModalComponent, AlertComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    CustomerModalComponent,
+    AlertComponent,
+    PaymentConfirmationModalComponent,
+  ],
   template: `
     <div class="cart-modal" [class.is-open]="isOpen">
       <div class="cart-container">
@@ -89,6 +97,15 @@ import { PedidoService, NuevoPedido } from "../../services/pedido.service";
               (orderSubmitted)="handleOrderSubmission($event)"
             >
             </app-customer-modal>
+
+            <!-- Payment Confirmation Modal -->
+            <app-payment-confirmation-modal
+              [isOpen]="isPaymentConfirmationModalOpen"
+              (confirm)="proceedToMercadoPago()"
+              (changePaymentMethod)="changeToContraEntrega()"
+              (closeEvent)="closePaymentConfirmationModal()"
+            >
+            </app-payment-confirmation-modal>
           }
         </div>
       </div>
@@ -426,11 +443,17 @@ import { PedidoService, NuevoPedido } from "../../services/pedido.service";
 export class CartComponent {
   isOpen = false;
   isCustomerModalOpen = false;
+  isPaymentConfirmationModalOpen = false;
+
+  // Store payment data temporarily
+  private tempPaymentData: any = null;
+  private tempPedidoData: any = null;
 
   constructor(
     public cartService: CartService,
     private alertService: AlertService,
     private pedidoService: PedidoService,
+    private pagoService: PagoService,
   ) {}
 
   open() {
@@ -465,6 +488,8 @@ export class CartComponent {
   }
 
   handleOrderSubmission(orderData: any) {
+    console.log("Processing order submission:", orderData);
+
     // Transform cart items to match ItemPedido interface
     const productos = orderData.items.map((item: CartItem) => ({
       id: item.id,
@@ -476,6 +501,7 @@ export class CartComponent {
     }));
 
     // Prepare the order data for the database
+    // Note: metodo_pago will be set AFTER user confirms in the modal
     const pedidoData: NuevoPedido = {
       nombre_comercio: orderData.customer.name,
       telefóno: orderData.customer.phone,
@@ -484,16 +510,20 @@ export class CartComponent {
       productos: productos, // Transformed items stored as JSON
       detalles: orderData.customer.details, // Add the details field
       estado: "Pendiente", // Set default status to Pendiente
+      metodo_pago: "contra_entrega", // Default, will be updated based on user choice
     };
 
-    // Save the order to the database
+    // Save the order to the database FIRST, then ask user how they want to pay
     this.pedidoService.createPedido(pedidoData).subscribe({
       next: (pedido) => {
         console.log("Pedido guardado exitosamente:", pedido);
-        this.alertService.showSuccess(
-          "¡Gracias por su compra! Su pedido ha sido realizado con éxito.",
-        );
-        this.close();
+
+        // Store pedido temporarily
+        this.tempPedidoData = pedido;
+
+        // Try to create MercadoPago preference proactively
+        // (in case user chooses to pay online)
+        this.createMercadoPagoPreference(pedido, orderData);
       },
       error: (error) => {
         console.error("Error al guardar el pedido:", error);
@@ -502,6 +532,124 @@ export class CartComponent {
         );
       },
     });
+  }
+
+  createMercadoPagoPreference(pedido: any, orderData: any) {
+    // Transform items to MercadoPago format
+    const items = orderData.items.map((item: CartItem) => ({
+      title: item.name,
+      description: `${item.weight} - ${item.name}`,
+      picture_url: item.image,
+      quantity: item.quantity,
+      currency_id: "ARS",
+      unit_price: item.priceNumeric,
+    }));
+
+    // Prepare payer information
+    const payer = {
+      name: orderData.customer.name.split(" ")[0] || orderData.customer.name,
+      surname: orderData.customer.name.split(" ").slice(1).join(" ") || "",
+      email: orderData.customer.email,
+      phone: {
+        area_code: orderData.customer.phone.substring(0, 3),
+        number: orderData.customer.phone.substring(3),
+      },
+    };
+
+    // Create payment preference
+    const pagoData = {
+      pedido_id: pedido.id,
+      items: items,
+      payer: payer,
+    };
+
+    this.pagoService.createPago(pagoData).subscribe({
+      next: (response: any) => {
+        console.log("Pago creado exitosamente:", response);
+
+        // Store payment data temporarily
+        this.tempPaymentData = response;
+
+        // Close customer modal and show payment confirmation modal
+        this.closeCustomerModal();
+        this.isPaymentConfirmationModalOpen = true;
+      },
+      error: (error: any) => {
+        console.error("Error al crear el pago:", error);
+        this.alertService.showError(
+          `Error al procesar el pago: ${error.message || "Error desconocido"}. Tu pedido fue guardado pero no se pudo iniciar el pago.`,
+        );
+        this.close();
+      },
+    });
+  }
+
+  closePaymentConfirmationModal() {
+    this.isPaymentConfirmationModalOpen = false;
+  }
+
+  proceedToMercadoPago() {
+    // User confirmed - update pedido to mercadopago and redirect
+    if (this.tempPaymentData && this.tempPedidoData) {
+      // Update pedido method to mercadopago
+      this.pedidoService
+        .updatePedido(this.tempPedidoData.id, {
+          metodo_pago: "mercadopago",
+        })
+        .subscribe({
+          next: (updatedPedido) => {
+            console.log("Pedido actualizado a mercadopago:", updatedPedido);
+
+            this.alertService.showSuccess(
+              "Redirigiendo a MercadoPago para completar el pago...",
+            );
+
+            // Clear cart and redirect
+            this.cartService.clearCart();
+
+            if (
+              this.tempPaymentData.data &&
+              this.tempPaymentData.data.init_point
+            ) {
+              window.location.href = this.tempPaymentData.data.init_point;
+            } else if (this.tempPaymentData.init_point) {
+              window.location.href = this.tempPaymentData.init_point;
+            } else {
+              console.error(
+                "No init_point found in response:",
+                this.tempPaymentData,
+              );
+              this.alertService.showError(
+                "Error: No se pudo obtener el link de pago",
+              );
+              this.close();
+            }
+          },
+          error: (error: any) => {
+            console.error("Error al actualizar el pedido:", error);
+            this.alertService.showError(
+              "Error al actualizar el método de pago. Por favor, contacta con soporte.",
+            );
+          },
+        });
+    }
+  }
+
+  changeToContraEntrega() {
+    // User chose contra_entrega - pedido already has this as default, just confirm
+    if (this.tempPedidoData) {
+      console.log(
+        "Usuario eligió contra entrega, pedido ya guardado con ese método",
+      );
+      this.alertService.showSuccess(
+        "¡Gracias por su compra! Su pedido ha sido realizado con éxito. Pagarás al recibir la entrega.",
+      );
+      this.cartService.clearCart();
+      this.close();
+      // Clean up temporary data
+      this.tempPaymentData = null;
+      this.tempPedidoData = null;
+    }
   }
 
   toggle() {
