@@ -31,6 +31,7 @@ const createApp = (): Application => {
           "http://localhost:4200",
           "http://localhost:3000",
           "https://productosdonjoaquin.vercel.app",
+          "https://catalogo-retorno-frontend.vercel.app",
         ];
 
         // Verificar si el dominio está en la lista de permitidos
@@ -42,6 +43,17 @@ const createApp = (): Application => {
         // Permitir automáticamente todos los dominios de Vercel
         if (origin.includes("vercel.app")) {
           console.log(`Origin ${origin} is allowed by CORS (Vercel domain)`);
+          return callback(null, true);
+        }
+
+        // Permitir también dominios con patrones específicos que pueden ser preview deployments
+        if (
+          origin.includes("catalogo-retorno-frontend") ||
+          origin.includes("catalogo-retorno-backend")
+        ) {
+          console.log(
+            `Origin ${origin} is allowed by CORS (catalogo-retorno domain)`,
+          );
           return callback(null, true);
         }
 
