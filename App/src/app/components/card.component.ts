@@ -5,8 +5,8 @@ import { CommonModule } from "@angular/common";
   selector: "app-card",
   standalone: true,
   imports: [CommonModule],
-  templateUrl: "./card.html",
-  styleUrls: ["./Card.css"],
+  templateUrl: "./card.component.html",
+  styleUrls: ["./card.component.css"],
 })
 export class CardComponent {
   @Input() productImage: string = "";
