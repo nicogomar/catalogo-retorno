@@ -1061,6 +1061,39 @@ import { FormsModule } from "@angular/forms";
         }
       }
     `,
+    `
+      .badge-pago,
+      .badge-cobrar {
+        display: inline-block;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 12px;
+        font-weight: bold;
+        text-align: center;
+        color: white;
+        min-width: 70px;
+      }
+      .badge-pago {
+        background-color: #4caf50; /* Verde para pagos realizados */
+      }
+      .badge-cobrar {
+        background-color: #ff9800; /* Naranja para pagos pendientes */
+      }
+      .td-estado-pago {
+        text-align: center;
+        padding: 8px 4px;
+        white-space: nowrap;
+      }
+      .pedidos-table th,
+      .pedidos-table td {
+        padding: 10px 8px;
+        vertical-align: middle;
+      }
+      .pedidos-table th {
+        font-weight: 600;
+        background-color: #f5f5f5;
+      }
+    `,
   ],
 })
 export class AdministracionComponent implements OnInit {
@@ -1431,5 +1464,23 @@ export class AdministracionComponent implements OnInit {
       const quantity = item.quantity || 0;
       return total + precio * quantity;
     }, 0);
+  }
+
+  /**
+   * Determina el estado de pago de un pedido basado en su método de pago
+   * @param pedido El pedido a evaluar
+   * @returns 'PAGO' para pagos con MercadoPago, 'COBRAR' para contra entrega
+   */
+  getEstadoPago(pedido: Pedido): string {
+    return pedido.metodo_pago === "mercadopago" ? "PAGO" : "COBRAR";
+  }
+
+  /**
+   * Determina la clase CSS para el badge del estado de pago
+   * @param pedido El pedido a evaluar
+   * @returns 'badge-pago' o 'badge-cobrar' según el método de pago
+   */
+  getEstadoPagoClass(pedido: Pedido): string {
+    return pedido.metodo_pago === "mercadopago" ? "badge-pago" : "badge-cobrar";
   }
 }

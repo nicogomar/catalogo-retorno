@@ -262,53 +262,7 @@
   }
 }
 
-/* Auth links */
-.auth-links {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-}
-
-.login-link,
-.admin-link {
-  color: white;
-  text-decoration: none;
-  font-size: 14px;
-  padding: 6px 12px;
-  border-radius: 4px;
-  background-color: rgba(255, 255, 255, 0.2);
-  transition: background-color 0.2s;
-}
-
-.login-link:hover,
-.admin-link:hover {
-  background-color: rgba(255, 255, 255, 0.3);
-}
-
-.logout-button {
-  background: none;
-  border: none;
-  color: white;
-  cursor: pointer;
-  font-size: 14px;
-  padding: 6px 12px;
-  border-radius: 4px;
-  background-color: rgba(255, 0, 0, 0.2);
-  transition: background-color 0.2s;
-}
-
-.logout-button:hover {
-  background-color: rgba(255, 0, 0, 0.3);
-}
-
-@media (max-width: 768px) {
-  .login-link,
-  .admin-link,
-  .logout-button {
-    padding: 4px 8px;
-    font-size: 12px;
-  }
-}
+/* Removed auth links styles */
 
 /* Filtros de búsqueda para productos */
 .filtros-productos {

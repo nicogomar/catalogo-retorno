@@ -391,6 +391,7 @@
                     <th>Email</th>
                     <th>Productos</th>
                     <th>Total</th>
+                    <th>Estado Pago</th>
                     <th>Estado</th>
                   </tr>
                 </thead>
@@ -425,6 +426,11 @@
                       </td>
                       <td class="td-total">
                         <strong>${{ calcularTotalPedido(pedido) }}</strong>
+                      </td>
+                      <td class="td-estado-pago">
+                        <span [ngClass]="getEstadoPagoClass(pedido)">
+                          {{ getEstadoPago(pedido) }}
+                        </span>
                       </td>
                       <td class="td-estado">
                         <select

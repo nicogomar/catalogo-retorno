@@ -5,18 +5,6 @@
       <h2 class="header-subtitle">Don Joaquín</h2>
     </div>
     <div class="header-actions">
-      @if (authService.isAuthenticated()) {
-        <div class="auth-links">
-          <a [routerLink]="['/administracion']" class="admin-link">
-            Administración
-          </a>
-          <button (click)="logout()" class="logout-button">
-            Cerrar Sesión
-          </button>
-        </div>
-      } @else {
-        <a [routerLink]="['/login']" class="login-link">Iniciar Sesión</a>
-      }
       <div class="cart-icon" (click)="toggleCart()">
         <svg
           xmlns="http://www.w3.org/2000/svg"
