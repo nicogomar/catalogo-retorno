@@ -33,7 +33,7 @@ import { FormsModule } from "@angular/forms";
       /* Sidebar Styles */
       .sidebar {
         width: 260px;
-        background-color: #4a1d4a;
+        background-color: var(--color-primary);
         color: white;
         display: flex;
         flex-direction: column;
