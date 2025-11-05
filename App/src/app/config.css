@@ -1,0 +1,33 @@
+/**
+ * Variables CSS globales - Configuración de colores y temas
+ * Estos valores pueden ser actualizados dinámicamente desde TypeScript
+ */
+
+:root {
+  /* Colores primarios */
+  --color-primary:#420062;
+  --color-primary-dark: #7C3AED;
+  --color-primary-light: rgba(139, 92, 246, 0.1);
+  --color-primary-light-border: rgba(139, 92, 246, 0.2);
+
+  /* Colores de estado */
+  --color-error: #d32f2f;
+  --color-error-light: #ffebee;
+  --color-success: #25d366;
+  --color-success-dark: #20ba5a;
+
+  /* Colores de fondo */
+  --color-background: #f8edde;
+  --color-background-light: #f8f4ee;
+
+  /* Colores de texto */
+  --color-text-primary: #333;
+  --color-text-secondary: #555;
+  --color-text-light: #999;
+  --color-white: #ffffff;
+
+  /* Otros colores */
+  --color-cart-badge: #e63946;
+  --color-clear-button: #dc3545;
+  --color-clear-button-hover: #c82333;
+}

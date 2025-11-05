@@ -9,6 +9,7 @@ import { CartService } from "./services/cart.service";
 import { AlertComponent } from "./components/alert/alert.component";
 import { ProductoService, Producto } from "./services/producto.service";
 import { AuthService } from "./services/auth.service";
+import { AppConfig, getTitle } from "./config";
 
 interface Product {
   id: number;
@@ -45,6 +46,12 @@ export class AppComponent implements OnInit {
   loadError: string | null = null;
 
   selectedProduct: Product | null = null;
+
+  // Configuración de la aplicación
+  appConfig = AppConfig;
+  appTitle = getTitle('titles.mainTitle');
+  appSubtitle = getTitle('titles.subtitle');
+  appLogoAlt = getTitle('titles.logoAlt');
 
   constructor(
     public cartService: CartService,
