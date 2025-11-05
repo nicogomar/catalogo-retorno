@@ -48,7 +48,7 @@ h2 {
 
 h3 {
   font-size: 1.5rem;
-  color: #4a1d4a;
+  color: #ff8c00;
 }
 
 p {
@@ -57,7 +57,7 @@ p {
 
 /* Header Styles */
 .main-header {
-  background-color: #4a1d4a;
+  background-color: #ff8c00;
   color: white;
   padding: 1.5rem 0;
   text-align: center;

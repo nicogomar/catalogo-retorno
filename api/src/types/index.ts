@@ -63,7 +63,7 @@ export interface ItemPedido {
 /**
  * Estado del pedido
  */
-export type EstadoPedido = "Pendiente" | "Aprobado" | "En curso" | "Finalizado";
+export type EstadoPedido = "COBRAR" | "PAGO" | "En curso" | "Finalizado";
 
 /**
  * Método de pago del pedido

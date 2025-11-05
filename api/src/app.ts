@@ -5,6 +5,7 @@ import morgan from "morgan";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import routes from "./routes";
+import emailService from "./services/email.service";
 // Load environment variables
 dotenv.config();
 
@@ -145,6 +146,17 @@ const createApp = (): Application => {
           : "Internal server error",
       ...(process.env.NODE_ENV === "development" && { stack: err.stack }),
     });
+  });
+
+  // Initialize email service
+  emailService.verifyConnection().then((isConnected) => {
+    if (isConnected) {
+      console.log("Email service initialized successfully");
+    } else {
+      console.warn(
+        "Email service could not be initialized, notifications will not be sent",
+      );
+    }
   });
 
   return app;

@@ -1,0 +1,9 @@
+<svg width="240" height="240" viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg">
+  <rect width="240" height="240" fill="#FF8200"/>
+  <circle cx="120" cy="120" r="70" fill="white"/>
+  <path d="M120 60 Q 170 80 170 130 Q 170 180 120 180 Q 70 180 70 130 Q 70 80 120 60" fill="#FF8200"/>
+  <path d="M120 140 Q 130 140 130 125 L 130 95 Q 130 85 120 85 Q 110 85 110 95 L 110 125 Q 110 140 120 140" fill="white"/>
+  <path d="M95 100 C 85 105 85 115 95 120 L 120 130 L 145 120 C 155 115 155 105 145 100 L 120 95 L 95 100" fill="white"/>
+  <text x="55" y="40" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="white">JUGOS NATURALES</text>
+  <text x="75" y="210" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="white">URUGUAY</text>
+</svg>

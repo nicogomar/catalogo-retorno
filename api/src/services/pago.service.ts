@@ -330,9 +330,9 @@ class PagoService {
       if (paymentInfo.status === "approved" && pago.pedido_id) {
         try {
           await pedidoService.updatePedido(pago.pedido_id, {
-            estado: "Aprobado",
+            estado: "PAGO",
           });
-          console.log(`Pedido ${pago.pedido_id} status updated to Aprobado`);
+          console.log(`Pedido ${pago.pedido_id} status updated to PAGO`);
         } catch (error) {
           console.error("Error updating pedido status:", error);
         }

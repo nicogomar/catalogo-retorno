@@ -1,10 +1,12 @@
 import { Request, Response } from "express";
 import pedidoService from "../services/pedido.service";
+import emailService from "../services/email.service";
 import {
   NuevoPedido,
   ActualizarPedido,
   PedidoFilters,
   EstadoPedido,
+  Pedido,
 } from "../types";
 
 /**
@@ -153,6 +155,33 @@ export class PedidoController {
 
       const newPedido = await pedidoService.createPedido(pedidoData);
 
+      // Send email notification
+      try {
+        // Get admin recipients from environment variables or use a default
+        const adminEmails = process.env.ADMIN_EMAIL_RECIPIENTS
+          ? process.env.ADMIN_EMAIL_RECIPIENTS.split(",")
+          : ["admin@jugosuy.com"];
+
+        await emailService.sendNewOrderNotification(
+          newPedido as Pedido,
+          adminEmails,
+        );
+
+        // If customer provided an email, also send them a confirmation
+        if (newPedido.email) {
+          if (newPedido.email && typeof newPedido.email === "string") {
+            await emailService.sendOrderStatusNotification(
+              newPedido as Pedido,
+              "Nuevo",
+              newPedido.email,
+            );
+          }
+        }
+      } catch (emailError) {
+        console.error("Error sending order notification email:", emailError);
+        // Continue with the response even if email fails
+      }
+
       res.status(201).json({
         success: true,
         data: newPedido,
@@ -236,8 +265,8 @@ export class PedidoController {
       }
 
       const validEstados: EstadoPedido[] = [
-        "Pendiente",
-        "Aprobado",
+        "COBRAR",
+        "PAGO",
         "En curso",
         "Finalizado",
       ];
@@ -249,6 +278,17 @@ export class PedidoController {
         return;
       }
 
+      // Get the current pedido to save the previous status
+      const currentPedido = await pedidoService.getPedidoById(id);
+      if (!currentPedido) {
+        res.status(404).json({
+          success: false,
+          error: "Pedido not found",
+        });
+        return;
+      }
+
+      const previousStatus = currentPedido.estado || "Desconocido";
       const updatedPedido = await pedidoService.updatePedido(id, { estado });
 
       if (!updatedPedido) {
@@ -257,6 +297,20 @@ export class PedidoController {
           error: "Pedido not found",
         });
         return;
+      }
+
+      // Send email notification about status change if customer has email
+      if (updatedPedido.email && typeof updatedPedido.email === "string") {
+        try {
+          await emailService.sendOrderStatusNotification(
+            updatedPedido,
+            previousStatus,
+            updatedPedido.email,
+          );
+        } catch (emailError) {
+          console.error("Error sending status update email:", emailError);
+          // Continue with the response even if email fails
+        }
       }
 
       res.json({

@@ -10,6 +10,7 @@ Backend API for Catalogo KDN - Built with Node.js, Express, TypeScript, and Supa
 - [Getting Started](#getting-started)
 - [Environment Variables](#environment-variables)
 - [API Endpoints](#api-endpoints)
+- [Email Notifications](#email-notifications)
 - [Development](#development)
 - [Production Build](#production-build)
 
@@ -24,6 +25,7 @@ Backend API for Catalogo KDN - Built with Node.js, Express, TypeScript, and Supa
 - **Error Handling** - Centralized error handling middleware
 - **Pagination** - Built-in pagination support for large datasets
 - **Filtering** - Advanced filtering and search capabilities
+- **Email Notifications** - Gmail-based email service for order notifications
 
 ## 🛠 Tech Stack
 
@@ -33,6 +35,7 @@ Backend API for Catalogo KDN - Built with Node.js, Express, TypeScript, and Supa
 - **Database**: Supabase (PostgreSQL)
 - **Security**: Helmet, CORS
 - **Logging**: Morgan
+- **Email**: Nodemailer with Gmail
 - **Development**: tsx (TypeScript execution)
 
 ## 📁 Project Structure
@@ -51,7 +54,8 @@ api/
 │   │   └── pedido.routes.ts
 │   ├── services/         # Business logic
 │   │   ├── producto.service.ts
-│   │   └── pedido.service.ts
+│   │   ├── pedido.service.ts
+│   │   └── email.service.ts
 │   ├── types/            # TypeScript type definitions
 │   │   └── index.ts
 │   ├── app.ts            # Express app configuration
@@ -97,6 +101,9 @@ api/
    PORT=3000
    NODE_ENV=development
    ALLOWED_ORIGINS=http://localhost:4200,http://localhost:3000
+   EMAIL_USER=your_gmail@gmail.com
+   EMAIL_PASSWORD=your_app_password
+   ADMIN_EMAIL_RECIPIENTS=admin1@example.com,admin2@example.com
    ```
 
 4. **Start the development server**:
@@ -118,6 +125,9 @@ Create a `.env` file in the root of the `api` directory with the following varia
 | `PORT` | Server port (default: 3000) | No |
 | `NODE_ENV` | Environment (development/production) | No |
 | `ALLOWED_ORIGINS` | Comma-separated list of allowed CORS origins | No |
+| `EMAIL_USER` | Gmail address for sending notifications | Yes (for email) |
+| `EMAIL_PASSWORD` | Gmail app password (not regular password) | Yes (for email) |
+| `ADMIN_EMAIL_RECIPIENTS` | Comma-separated list of admin email recipients | No |
 
 ## 📡 API Endpoints
 
@@ -224,6 +234,48 @@ Response:
   "message": "Pedido created successfully"
 }
 ```
+
+## 📧 Email Notifications
+
+The API includes an email notification system that sends emails when orders are created or updated. This feature uses Nodemailer with Gmail SMTP.
+
+### Configuration
+
+1. **Set up Gmail App Password**:
+   - Enable 2-Step Verification in your Google account
+   - Go to Security → App passwords
+   - Select "Mail" and your device
+   - Copy the generated password
+
+2. **Configure Environment Variables**:
+   ```env
+   EMAIL_USER=your_gmail@gmail.com
+   EMAIL_PASSWORD=your_app_password
+   ADMIN_EMAIL_RECIPIENTS=admin1@example.com,admin2@example.com
+   ```
+
+### Email Features
+
+- **New Order Notification**: Sends an email to admins when a new order is created
+- **Order Status Updates**: Sends an email to customers when their order status changes
+- **Robust Error Handling**: Gracefully handles email sending failures without disrupting the API
+
+### Testing Email Configuration
+
+Use the provided test script to verify your email configuration:
+
+```bash
+node test-email.js [recipient-email]
+```
+
+If no recipient is provided, it will send a test email to the `EMAIL_USER` address.
+
+### Implementation Details
+
+- The email service is implemented in `src/services/email.service.ts`
+- Integration points are in `src/controllers/pedido.controller.ts`
+- Email templates are embedded in the service but can be customized
+- Additional documentation is available in `EMAIL_NOTIFICATION_README.md`
 
 ## 💻 Development
 

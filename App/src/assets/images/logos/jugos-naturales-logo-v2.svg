@@ -1,0 +1,23 @@
+<svg width="180" height="180" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background orange square -->
+  <rect width="180" height="180" fill="#FF8C00"/>
+
+  <!-- White circle - outer shape -->
+  <circle cx="90" cy="90" r="50" fill="white"/>
+
+  <!-- Stylized fruit/juice image in the center -->
+  <circle cx="90" cy="90" r="30" fill="#FF8C00"/>
+  <path d="M90 50 Q 120 70 120 90 Q 120 110 90 130 Q 60 110 60 90 Q 60 70 90 50" fill="#FF8C00"/>
+
+  <!-- Stylized drop/glass shape -->
+  <path d="M75 80 Q 75 105 90 115 Q 105 105 105 80 L 100 75 L 80 75 Z" fill="white"/>
+
+  <!-- Text JUGOS NATURALES curved on top -->
+  <path d="M 30,35 A 60,60 0 0,1 150,35" fill="none" stroke="white" stroke-width="0"/>
+  <text>
+    <textPath href="#curve" startOffset="50%" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-weight="bold" font-size="12">JUGOS NATURALES</textPath>
+  </text>
+
+  <!-- Text URUGUAY at the bottom -->
+  <text x="90" y="160" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-weight="bold" font-size="14">URUGUAY</text>
+</svg>
