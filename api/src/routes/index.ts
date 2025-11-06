@@ -5,6 +5,7 @@ import usuarioRoutes from "./usuario.routes";
 import authRoutes from "./auth.routes";
 import storageRoutes from "./storage.routes";
 import pagoRoutes from "./pago.routes";
+import mensajeRoutes from "./mensaje.routes";
 const router = Router();
 
 /**
@@ -35,6 +36,7 @@ router.get("/", (_req, res) => {
       auth: "/api/auth",
       storage: "/api/storage",
       pagos: "/api/pagos",
+      mensajes: "/api/mensajes",
       health: "/api/health",
     },
   });
@@ -47,4 +49,5 @@ router.use("/usuarios", usuarioRoutes);
 router.use("/auth", authRoutes);
 router.use("/storage", storageRoutes);
 router.use("/pagos", pagoRoutes);
+router.use("/mensajes", mensajeRoutes);
 export default router;

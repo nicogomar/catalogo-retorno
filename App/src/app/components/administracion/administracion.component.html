@@ -79,21 +79,21 @@
           <div class="stat-icon">💬</div>
           <div class="stat-info">
             <h3>Mensajes</h3>
-            <p class="stat-number">--</p>
+            <p class="stat-number">{{ getMensajesCount() }}</p>
           </div>
         </div>
         <div class="stat-card">
           <div class="stat-icon">🛒</div>
           <div class="stat-info">
-            <h3>Pedidos</h3>
-            <p class="stat-number">--</p>
+            <h3>Pedidos Pendientes</h3>
+            <p class="stat-number">{{ getPedidosPendientesCount() }}</p>
           </div>
         </div>
         <div class="stat-card">
           <div class="stat-icon">🖼️</div>
           <div class="stat-info">
             <h3>Imágenes</h3>
-            <p class="stat-number">--</p>
+            <p class="stat-number">{{ getImagenesCount() }}</p>
           </div>
         </div>
       </div>
@@ -242,14 +242,8 @@
     </div>
 
     <!-- Mensajes Section -->
-    <div class="content-body" *ngIf="currentSection === 'mensajes'">
-      <div class="data-card">
-        <h3>Mensajes Recibidos</h3>
-        <p>Visualiza y gestiona los mensajes de tus clientes.</p>
-        <div class="placeholder-content">
-          <p>Funcionalidad de mensajes próximamente...</p>
-        </div>
-      </div>
+    <div class="content-body" *ngIf="currentSection === 'mensajes'" style="padding: 0; height: calc(100vh - 150px);">
+      <app-mensajes-panel></app-mensajes-panel>
     </div>
 
     <!-- Pedidos Section -->

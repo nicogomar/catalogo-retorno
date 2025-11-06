@@ -7,8 +7,10 @@ import {
   Pedido,
   EstadoPedido,
 } from "../../services/pedido.service";
+import { StorageService } from "../../services/storage.service";
 import { ProductModalComponent } from "../product-modal/product-modal.component";
 import { ImageGalleryComponent } from "../image-gallery/image-gallery.component";
+import { MensajesPanelComponent } from "../mensajes-panel/mensajes-panel.component";
 import { FormsModule } from "@angular/forms";
 
 @Component({
@@ -19,6 +21,7 @@ import { FormsModule } from "@angular/forms";
     RouterModule,
     ProductModalComponent,
     ImageGalleryComponent,
+    MensajesPanelComponent,
     FormsModule,
   ],
   templateUrl: "./administracion.component.html",
@@ -1134,13 +1137,19 @@ export class AdministracionComponent implements OnInit {
   filtroProductoPrecioMin: string = "";
   filtroProductoPrecioMax: string = "";
 
+  // Estadísticas de imágenes
+  imagenesCount: number = 0;
+
   constructor(
     private productoService: ProductoService,
     private pedidoService: PedidoService,
+    private storageService: StorageService,
   ) {}
 
   ngOnInit(): void {
     this.loadProductos();
+    this.loadPedidos();
+    this.loadImagenesCount();
   }
 
   changeSection(section: string): void {
@@ -1482,5 +1491,43 @@ export class AdministracionComponent implements OnInit {
    */
   getEstadoPagoClass(pedido: Pedido): string {
     return pedido.metodo_pago === "mercadopago" ? "badge-pago" : "badge-cobrar";
+  }
+
+  /**
+   * Carga la cantidad de imágenes del bucket
+   */
+  loadImagenesCount(): void {
+    this.storageService.listImages().subscribe({
+      next: (response) => {
+        if (response.success) {
+          this.imagenesCount = response.count;
+        }
+      },
+      error: (error) => {
+        console.error("Error al cargar cantidad de imágenes:", error);
+        this.imagenesCount = 0;
+      },
+    });
+  }
+
+  /**
+   * Obtiene la cantidad de pedidos con estado "Pendiente"
+   */
+  getPedidosPendientesCount(): number {
+    return this.pedidos.filter((pedido) => pedido.estado === "Pendiente").length;
+  }
+
+  /**
+   * Obtiene la cantidad de mensajes (actualmente 0, no implementado)
+   */
+  getMensajesCount(): number {
+    return 0;
+  }
+
+  /**
+   * Obtiene la cantidad de imágenes del bucket
+   */
+  getImagenesCount(): number {
+    return this.imagenesCount;
   }
 }

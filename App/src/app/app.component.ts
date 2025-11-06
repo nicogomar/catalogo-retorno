@@ -9,6 +9,7 @@ import { CartService } from "./services/cart.service";
 import { AlertComponent } from "./components/alert/alert.component";
 import { ProductoService, Producto } from "./services/producto.service";
 import { AuthService } from "./services/auth.service";
+import { WhatsappFloatComponent } from "./components/whatsapp-float/whatsapp-float.component";
 import { AppConfig, getTitle } from "./config";
 
 interface Product {
@@ -33,6 +34,7 @@ interface Product {
     ProductDescriptionComponent,
     CartComponent,
     AlertComponent,
+    WhatsappFloatComponent,
   ],
   templateUrl: "./app.component.html",
   styleUrl: "./app.component.css",

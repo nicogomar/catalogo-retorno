@@ -1,0 +1,104 @@
+<div class="mensajes-container">
+  <!-- Sidebar de Chats -->
+  <aside class="chats-sidebar">
+    <div class="chats-header">
+      <h3>💬 Chats</h3>
+    </div>
+
+    @if (isLoadingChats) {
+      <div class="loading-container">
+        <div class="loading-spinner"></div>
+        <span>Cargando chats...</span>
+      </div>
+    } @else if (chatsError) {
+      <div class="empty-chats">
+        <p>{{ chatsError }}</p>
+        <button class="btn-send" (click)="loadChats()" style="margin-top: 10px;">
+          Reintentar
+        </button>
+      </div>
+    } @else if (chats.length === 0) {
+      <div class="empty-chats">
+        <p>No hay chats disponibles</p>
+      </div>
+    } @else {
+      <ul class="chats-list">
+        @for (chat of chats; track chat.telefono) {
+          <li
+            class="chat-item"
+            [class.active]="selectedChat?.telefono === chat.telefono"
+            (click)="selectChat(chat)"
+          >
+            <div class="chat-telefono">📱 {{ chat.telefono }}</div>
+            <div class="chat-preview">{{ chat.lastMessage }}</div>
+            <div class="chat-time">{{ formatTime(chat.lastMessageTime) }}</div>
+          </li>
+        }
+      </ul>
+    }
+  </aside>
+
+  <!-- Panel de Chat -->
+  <main class="chat-panel">
+    @if (!selectedChat) {
+      <div class="empty-chat">
+        <p>Selecciona un chat para comenzar</p>
+      </div>
+    } @else {
+      <!-- Header del Chat -->
+      <div class="chat-header">
+        <h2>{{ selectedChat.telefono }}</h2>
+      </div>
+
+      <!-- Mensajes -->
+      @if (isLoadingMensajes) {
+        <div class="loading-container">
+          <div class="loading-spinner"></div>
+          <span>Cargando mensajes...</span>
+        </div>
+      } @else if (mensajesError) {
+        <div class="empty-chat">
+          <p>{{ mensajesError }}</p>
+        </div>
+      } @else if (mensajes.length === 0) {
+        <div class="empty-chat">
+          <p>No hay mensajes en este chat</p>
+        </div>
+      } @else {
+        <div class="chat-messages">
+          @for (mensaje of mensajes; track mensaje.id) {
+            <div class="message" [class.admin]="mensaje.es_admin" [class.cliente]="!mensaje.es_admin">
+              <div>
+                <div class="message-bubble">
+                  {{ mensaje.mensaje }}
+                </div>
+                <div class="message-time">
+                  {{ formatTime(mensaje.created_at) }}
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      }
+
+      <!-- Input de Mensaje -->
+      <div class="chat-input-area">
+        <textarea
+          class="message-input"
+          [(ngModel)]="nuevoMensaje"
+          placeholder="Escribe tu mensaje..."
+          (keypress)="onKeyPress($event)"
+          [disabled]="isSending"
+          rows="1"
+        ></textarea>
+        <button
+          class="btn-send"
+          (click)="enviarMensaje()"
+          [disabled]="!nuevoMensaje.trim() || isSending"
+        >
+          {{ isSending ? '⏳' : '📤' }} Enviar
+        </button>
+      </div>
+    }
+  </main>
+</div>
