@@ -6,6 +6,21 @@
   width: 100%;
   margin: 0;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+  min-height: 120px;
+  display: flex;
+  align-items: center;
+}
+
+.header-background-icon {
+  position: relative;
+  width: 350px;
+  height: 100px;
+  object-fit: contain;
+  opacity: 0.9;
+  z-index: 1;
+  margin-left: 20px;
 }
 
 .header-content {
@@ -14,9 +29,17 @@
   justify-content: space-between;
   align-items: center;
   max-width: 1200px;
+  width: 100%;
   margin: 0 auto;
   padding: 0 20px;
   position: relative;
+  z-index: 2;
+}
+
+.title-container {
+  text-align: center;
+  flex: 1;
+  margin: 0 20px;
 }
 
 .header-actions {
@@ -26,9 +49,7 @@
 }
 
 .logo-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: none;
 }
 
 /* Estilo para el logo */
@@ -201,15 +222,25 @@
 @media (max-width: 768px) {
   .header-content {
     flex-direction: column;
+    z-index: 2;
+    padding: 0 20px 0 220px;
   }
 
-  .header-logo {
-    width: 50px;
-    height: 50px;
-    margin-bottom: 10px;
-    margin-right: 0;
-    border-radius: 8px;
-    object-fit: cover;
+  .logo-container {
+    display: none;
+  }
+
+  .header-background-icon {
+    width: 200px;
+    height: 80px;
+    left: 15px;
+  }
+
+  .title-container {
+    text-align: center;
+    flex: 1;
+    margin-right: auto;
+    margin-left: auto;
   }
 
   .header-actions {
@@ -244,14 +275,24 @@
 @media (max-width: 480px) {
   .main-header {
     padding: 15px 0;
+    min-height: 100px;
   }
 
-  .header-logo {
-    width: 40px;
-    height: 40px;
-    border-radius: 6px;
-    margin-right: 0;
-    object-fit: cover;
+  .header-background-icon {
+    width: 160px;
+    height: 70px;
+    left: 10px;
+  }
+
+  .header-content {
+    padding: 0 20px 0 180px;
+  }
+
+  .title-container {
+    text-align: center;
+    flex: 1;
+    margin-right: auto;
+    margin-left: auto;
   }
 
   .header-title {
