@@ -13,6 +13,7 @@ export interface Producto {
   precio?: number | null;
   img_url?: string | null;
   descripcion?: string | null;
+  categoria?: string | null;
 }
 
 /**
@@ -22,6 +23,7 @@ export interface ProductoFilters {
   nombre?: string;
   precioMin?: number;
   precioMax?: number;
+  categoria?: string;
   orderBy?: string;
   orderDirection?: "asc" | "desc";
   page?: number;
@@ -129,5 +131,13 @@ export class ProductoService {
     return this.apiService.get<Producto[]>(
       `${this.endpoint}/order-by-precio/${direction}`,
     );
+  }
+
+  /**
+   * Obtiene productos ordenados por categoría y luego por nombre
+   * @returns Observable con los productos ordenados por categoría y nombre
+   */
+  getProductosOrderedByCategoriaAndNombre(): Observable<Producto[]> {
+    return this.apiService.get<Producto[]>(`${this.endpoint}/ordered-by-categoria-nombre`);
   }
 }

@@ -28,6 +28,13 @@ router.get('/latest/:limit?', (req, res) => productoController.getLatest(req, re
 router.get('/order-by-precio/:direction', (req, res) => productoController.getOrderByPrecio(req, res));
 
 /**
+ * @route   GET /api/productos/ordered-by-categoria-nombre
+ * @desc    Get productos ordered by categoria and then by nombre
+ * @access  Public
+ */
+router.get('/ordered-by-categoria-nombre', (req, res) => productoController.getOrderedByCategoriaAndNombre(req, res));
+
+/**
  * @route   GET /api/productos/search/:nombre
  * @desc    Search productos by name
  * @param   nombre - Search term

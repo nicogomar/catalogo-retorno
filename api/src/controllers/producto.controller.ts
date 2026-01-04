@@ -297,6 +297,27 @@ export class ProductoController {
       });
     }
   }
+
+  /**
+   * GET /api/productos/ordered-by-categoria-nombre
+   * Get productos ordered by categoria and then by nombre
+   */
+  async getOrderedByCategoriaAndNombre(req: Request, res: Response): Promise<void> {
+    try {
+      const productos = await productoService.getProductosOrderedByCategoriaAndNombre();
+
+      res.json({
+        success: true,
+        data: productos
+      });
+    } catch (error: any) {
+      console.error('Error in getOrderedByCategoriaAndNombre:', error);
+      res.status(500).json({
+        success: false,
+        error: error.message || 'Error fetching productos ordered by categoria and nombre'
+      });
+    }
+  }
 }
 
 export default new ProductoController();

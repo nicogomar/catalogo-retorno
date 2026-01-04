@@ -1,43 +1,31 @@
 import { supabase, supabaseAdmin } from '../config/database';
 import {
-  Producto,
-  NuevoProducto,
-  ActualizarProducto,
-  ProductoFilters,
+  Categoria,
+  NuevaCategoria,
+  ActualizarCategoria,
+  CategoriaFilters,
   PaginationParams
 } from '../types';
 
 /**
- * Service for handling Producto database operations
+ * Service for handling Categoria database operations
  */
-export class ProductoService {
-  private readonly TABLE_NAME = 'producto';
+export class CategoriaService {
+  private readonly TABLE_NAME = 'categoria';
 
   /**
-   * Get all productos with optional filters and pagination
+   * Get all categorias with optional filters and pagination
    */
-  async getProductos(
-    filters?: ProductoFilters,
+  async getCategorias(
+    filters?: CategoriaFilters,
     pagination?: PaginationParams
-  ): Promise<Producto[]> {
+  ): Promise<Categoria[]> {
     try {
       let query = supabase.from(this.TABLE_NAME).select('*');
 
       // Apply filters
       if (filters?.nombre) {
         query = query.ilike('nombre', `%${filters.nombre}%`);
-      }
-
-      if (filters?.categoria) {
-        query = query.eq('categoria', filters.categoria);
-      }
-
-      if (filters?.precioMin !== undefined) {
-        query = query.gte('precio', filters.precioMin);
-      }
-
-      if (filters?.precioMax !== undefined) {
-        query = query.lte('precio', filters.precioMax);
       }
 
       // Apply ordering
@@ -58,17 +46,17 @@ export class ProductoService {
         throw error;
       }
 
-      return data as Producto[];
+      return data as Categoria[];
     } catch (error) {
-      console.error('Error getting productos:', error);
+      console.error('Error getting categorias:', error);
       throw error;
     }
   }
 
   /**
-   * Get a single producto by ID
+   * Get a single categoria by ID
    */
-  async getProductoById(id: number): Promise<Producto | null> {
+  async getCategoriaById(id: number): Promise<Categoria | null> {
     try {
       const { data, error } = await supabase
         .from(this.TABLE_NAME)
@@ -83,22 +71,22 @@ export class ProductoService {
         throw error;
       }
 
-      return data as Producto;
+      return data as Categoria;
     } catch (error) {
-      console.error(`Error getting producto with id ${id}:`, error);
+      console.error(`Error getting categoria with id ${id}:`, error);
       throw error;
     }
   }
 
   /**
-   * Create a new producto
+   * Create a new categoria
    */
-  async createProducto(producto: NuevoProducto): Promise<Producto> {
+  async createCategoria(categoria: NuevaCategoria): Promise<Categoria> {
     try {
       // Try with regular client first
       const { data, error } = await supabase
         .from(this.TABLE_NAME)
-        .insert(producto)
+        .insert(categoria)
         .select()
         .single();
 
@@ -107,7 +95,7 @@ export class ProductoService {
         // If regular client fails, try with admin client
         const adminResult = await supabaseAdmin
           .from(this.TABLE_NAME)
-          .insert(producto)
+          .insert(categoria)
           .select()
           .single();
 
@@ -115,27 +103,27 @@ export class ProductoService {
           throw adminResult.error;
         }
 
-        return adminResult.data as Producto;
+        return adminResult.data as Categoria;
       }
 
-      return data as Producto;
+      return data as Categoria;
     } catch (error) {
-      console.error('Error creating producto:', error);
+      console.error('Error creating categoria:', error);
       throw error;
     }
   }
 
   /**
-   * Update an existing producto
+   * Update an existing categoria
    */
-  async updateProducto(
+  async updateCategoria(
     id: number,
-    producto: ActualizarProducto
-  ): Promise<Producto | null> {
+    categoria: ActualizarCategoria
+  ): Promise<Categoria | null> {
     try {
       const { data, error } = await supabase
         .from(this.TABLE_NAME)
-        .update(producto)
+        .update(categoria)
         .eq('id', id)
         .select()
         .single();
@@ -147,17 +135,17 @@ export class ProductoService {
         throw error;
       }
 
-      return data as Producto;
+      return data as Categoria;
     } catch (error) {
-      console.error(`Error updating producto with id ${id}:`, error);
+      console.error(`Error updating categoria with id ${id}:`, error);
       throw error;
     }
   }
 
   /**
-   * Delete a producto
+   * Delete a categoria
    */
-  async deleteProducto(id: number): Promise<boolean> {
+  async deleteCategoria(id: number): Promise<boolean> {
     try {
       const { error } = await supabase
         .from(this.TABLE_NAME)
@@ -170,15 +158,15 @@ export class ProductoService {
 
       return true;
     } catch (error) {
-      console.error(`Error deleting producto with id ${id}:`, error);
+      console.error(`Error deleting categoria with id ${id}:`, error);
       throw error;
     }
   }
 
   /**
-   * Search productos by name
+   * Search categorias by name
    */
-  async searchByNombre(nombre: string): Promise<Producto[]> {
+  async searchByNombre(nombre: string): Promise<Categoria[]> {
     try {
       const { data, error } = await supabase
         .from(this.TABLE_NAME)
@@ -190,38 +178,38 @@ export class ProductoService {
         throw error;
       }
 
-      return data as Producto[];
+      return data as Categoria[];
     } catch (error) {
-      console.error('Error searching productos by nombre:', error);
+      console.error('Error searching categorias by nombre:', error);
       throw error;
     }
   }
 
   /**
-   * Get productos ordered by price
+   * Get categorias ordered by name
    */
-  async getProductosOrderByPrecio(ascending: boolean = true): Promise<Producto[]> {
+  async getCategoriasOrderByNombre(ascending: boolean = true): Promise<Categoria[]> {
     try {
       const { data, error } = await supabase
         .from(this.TABLE_NAME)
         .select('*')
-        .order('precio', { ascending });
+        .order('nombre', { ascending });
 
       if (error) {
         throw error;
       }
 
-      return data as Producto[];
+      return data as Categoria[];
     } catch (error) {
-      console.error('Error getting productos ordered by precio:', error);
+      console.error('Error getting categorias ordered by nombre:', error);
       throw error;
     }
   }
 
   /**
-   * Get latest productos
+   * Get latest categorias
    */
-  async getLatestProductos(limit: number = 10): Promise<Producto[]> {
+  async getLatestCategorias(limit: number = 10): Promise<Categoria[]> {
     try {
       const { data, error } = await supabase
         .from(this.TABLE_NAME)
@@ -233,33 +221,25 @@ export class ProductoService {
         throw error;
       }
 
-      return data as Producto[];
+      return data as Categoria[];
     } catch (error) {
-      console.error('Error getting latest productos:', error);
+      console.error('Error getting latest categorias:', error);
       throw error;
     }
   }
 
   /**
-   * Get total count of productos
+   * Get total count of categorias
    */
-  async getProductosCount(filters?: ProductoFilters): Promise<number> {
+  async getCategoriasCount(filters?: CategoriaFilters): Promise<number> {
     try {
       let query = supabase
         .from(this.TABLE_NAME)
         .select('*', { count: 'exact', head: true });
 
-      // Apply same filters as getProductos
+      // Apply same filters as getCategorias
       if (filters?.nombre) {
         query = query.ilike('nombre', `%${filters.nombre}%`);
-      }
-
-      if (filters?.precioMin !== undefined) {
-        query = query.gte('precio', filters.precioMin);
-      }
-
-      if (filters?.precioMax !== undefined) {
-        query = query.lte('precio', filters.precioMax);
       }
 
       const { count, error } = await query;
@@ -270,32 +250,10 @@ export class ProductoService {
 
       return count || 0;
     } catch (error) {
-      console.error('Error getting productos count:', error);
-      throw error;
-    }
-  }
-
-  /**
-   * Get productos ordered by categoria and then by nombre
-   */
-  async getProductosOrderedByCategoriaAndNombre(): Promise<Producto[]> {
-    try {
-      const { data, error } = await supabase
-        .from(this.TABLE_NAME)
-        .select('*')
-        .order('categoria', { ascending: true, nullsFirst: true })
-        .order('nombre', { ascending: true });
-
-      if (error) {
-        throw error;
-      }
-
-      return data as Producto[];
-    } catch (error) {
-      console.error('Error getting productos ordered by categoria and nombre:', error);
+      console.error('Error getting categorias count:', error);
       throw error;
     }
   }
 }
 
-export default new ProductoService();
+export default new CategoriaService();

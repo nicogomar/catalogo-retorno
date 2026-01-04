@@ -24,6 +24,7 @@ export interface Producto {
   precio?: number | null;
   img_url?: string | null;
   descripcion?: string | null;
+  categoria?: string | null;
 }
 
 /**
@@ -35,6 +36,7 @@ export interface NuevoProducto {
   precio: number;
   img_url?: string | null;
   descripcion?: string | null;
+  categoria?: string | null;
 }
 
 /**
@@ -46,6 +48,7 @@ export interface ActualizarProducto {
   precio?: number | null;
   img_url?: string | null;
   descripcion?: string | null;
+  categoria?: string | null;
 }
 
 /**
@@ -159,7 +162,8 @@ export interface ProductoFilters {
   nombre?: string;
   precioMin?: number;
   precioMax?: number;
-  orderBy?: "nombre" | "precio" | "created_at";
+  categoria?: string;
+  orderBy?: "nombre" | "precio" | "created_at" | "categoria";
   orderDirection?: "asc" | "desc";
 }
 
@@ -484,4 +488,36 @@ export interface CrearPagoResponse {
     sandbox_init_point?: string;
   };
   error?: string;
+}
+
+/**
+ * Categoria entity - represents a category in the system
+ */
+export interface Categoria {
+  id?: number;
+  created_at?: string;
+  nombre?: string | null;
+}
+
+/**
+ * Input type for creating a new Categoria
+ */
+export interface NuevaCategoria {
+  nombre: string;
+}
+
+/**
+ * Input type for updating a Categoria
+ */
+export interface ActualizarCategoria {
+  nombre?: string | null;
+}
+
+/**
+ * Query filters for Categorias
+ */
+export interface CategoriaFilters {
+  nombre?: string;
+  orderBy?: "nombre" | "created_at";
+  orderDirection?: "asc" | "desc";
 }

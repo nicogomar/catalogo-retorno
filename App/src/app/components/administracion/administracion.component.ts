@@ -11,6 +11,7 @@ import { StorageService } from "../../services/storage.service";
 import { ProductModalComponent } from "../product-modal/product-modal.component";
 import { ImageGalleryComponent } from "../image-gallery/image-gallery.component";
 import { MensajesPanelComponent } from "../mensajes-panel/mensajes-panel.component";
+import { CategoriaManagementComponent } from "../categoria-management/categoria-management.component";
 import { FormsModule } from "@angular/forms";
 
 @Component({
@@ -22,6 +23,7 @@ import { FormsModule } from "@angular/forms";
     ProductModalComponent,
     ImageGalleryComponent,
     MensajesPanelComponent,
+    CategoriaManagementComponent,
     FormsModule,
   ],
   templateUrl: "./administracion.component.html",
@@ -1136,6 +1138,7 @@ export class AdministracionComponent implements OnInit {
   filtroProductoPeso: string = "";
   filtroProductoPrecioMin: string = "";
   filtroProductoPrecioMax: string = "";
+  filtroProductoCategoria: string = "";
 
   // Estadísticas de imágenes
   imagenesCount: number = 0;
@@ -1165,6 +1168,7 @@ export class AdministracionComponent implements OnInit {
     const titles: { [key: string]: string } = {
       inicio: "Dashboard",
       productos: "Gestión de Productos",
+      categorias: "Gestión de Categorías",
       mensajes: "Mensajes",
       pedidos: "Pedidos",
       imagenes: "Galería de Imágenes",
@@ -1230,6 +1234,14 @@ export class AdministracionComponent implements OnInit {
       }
     }
 
+    // Filtrar por categoría
+    if (this.filtroProductoCategoria.trim() !== "") {
+      const categoriaLower = this.filtroProductoCategoria.trim().toLowerCase();
+      productosFiltrados = productosFiltrados.filter((producto) =>
+        producto.categoria?.toLowerCase().includes(categoriaLower),
+      );
+    }
+
     return productosFiltrados;
   }
 
@@ -1239,6 +1251,7 @@ export class AdministracionComponent implements OnInit {
     this.filtroProductoPeso = "";
     this.filtroProductoPrecioMin = "";
     this.filtroProductoPrecioMax = "";
+    this.filtroProductoCategoria = "";
   }
 
   openProductModal(product: Producto | null = null): void {

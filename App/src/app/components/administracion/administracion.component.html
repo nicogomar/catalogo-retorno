@@ -20,6 +20,14 @@
       </a>
       <a
         class="nav-item"
+        [class.active]="currentSection === 'categorias'"
+        (click)="changeSection('categorias')"
+      >
+        <i class="icon">🏷️</i>
+        <span>Categorías</span>
+      </a>
+      <a
+        class="nav-item"
         [class.active]="currentSection === 'mensajes'"
         (click)="changeSection('mensajes')"
       >
@@ -153,6 +161,16 @@
             />
           </div>
           <div class="filtro-input-group">
+            <label for="filtroProductoCategoria">🏷️ Categoría:</label>
+            <input
+              type="text"
+              id="filtroProductoCategoria"
+              [(ngModel)]="filtroProductoCategoria"
+              placeholder="Buscar por categoría..."
+              class="filtro-input"
+            />
+          </div>
+          <div class="filtro-input-group">
             <button
               class="btn-limpiar-filtros"
               (click)="limpiarFiltrosProductos()"
@@ -244,6 +262,11 @@
     <!-- Mensajes Section -->
     <div class="content-body" *ngIf="currentSection === 'mensajes'" style="padding: 0; height: calc(100vh - 150px);">
       <app-mensajes-panel></app-mensajes-panel>
+    </div>
+
+    <!-- Categorias Section -->
+    <div class="content-body" *ngIf="currentSection === 'categorias'">
+      <app-categoria-management></app-categoria-management>
     </div>
 
     <!-- Pedidos Section -->

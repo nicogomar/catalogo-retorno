@@ -54,25 +54,33 @@
 
     <!-- Cuadrícula de productos -->
     @if (!isLoading && !loadError) {
-      <div class="products-grid">
-        @if (products.length === 0) {
-          <div class="no-products-message">
-            <p>No hay productos disponibles en este momento.</p>
+      @if (products.length === 0) {
+        <div class="no-products-message">
+          <p>No hay productos disponibles en este momento.</p>
+        </div>
+      } @else {
+        @for (categoryGroup of getProductsByCategory(); track categoryGroup.category) {
+          <div class="category-section">
+            <h2 class="category-title">
+              {{ categoryGroup.category }}
+              <span class="product-count">({{ categoryGroup.products.length }} productos)</span>
+            </h2>
+            <div class="products-grid">
+              @for (product of categoryGroup.products; track product.id) {
+                <app-card
+                  [productImage]="product.image"
+                  [productName]="product.name"
+                  [productWeight]="product.weight"
+                  [productPrice]="product.price"
+                  [productId]="product.id"
+                  (cardClick)="onProductSelect($event)"
+                >
+                </app-card>
+              }
+            </div>
           </div>
-        } @else {
-          @for (product of products; track product.id) {
-            <app-card
-              [productImage]="product.image"
-              [productName]="product.name"
-              [productWeight]="product.weight"
-              [productPrice]="product.price"
-              [productId]="product.id"
-              (cardClick)="onProductSelect($event)"
-            >
-            </app-card>
-          }
         }
-      </div>
+      }
     }
 
     <!-- Product Description Modal -->

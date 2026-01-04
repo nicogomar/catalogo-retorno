@@ -1,0 +1,206 @@
+<div class="categoria-management">
+  <!-- Header -->
+  <div class="header">
+    <h2>Gestión de Categorías</h2>
+    <button class="btn btn-primary" (click)="openCreateModal()">
+      + Nueva Categoría
+    </button>
+  </div>
+
+  <!-- Messages -->
+  <div *ngIf="error" class="error">
+    {{ error }}
+  </div>
+
+  <div *ngIf="success" class="success">
+    {{ success }}
+  </div>
+
+  <!-- Search Bar -->
+  <div class="search-bar">
+    <input
+      type="text"
+      class="search-input"
+      placeholder="Buscar categorías por nombre..."
+      [(ngModel)]="searchTerm"
+      (input)="onSearchChange()"
+      (keyup.enter)="onSearchSubmit()"
+    />
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading">
+    <p>Cargando categorías...</p>
+  </div>
+
+  <!-- Categorias Grid -->
+  <div *ngIf="!loading" class="categorias-grid">
+    <div
+      *ngFor="let categoria of categorias"
+      class="categoria-card"
+    >
+      <div class="categoria-header">
+        <div>
+          <div class="categoria-id">ID: {{ categoria.id }}</div>
+          <h3 class="categoria-nombre">{{ categoria.nombre || 'Sin nombre' }}</h3>
+          <div class="categoria-fecha">
+            Creada: {{ formatDate(categoria.created_at) }}
+          </div>
+        </div>
+        <div class="categoria-actions">
+          <button
+            class="btn btn-warning btn-sm"
+            (click)="openEditModal(categoria)"
+            title="Editar categoría"
+          >
+            ✏️
+          </button>
+          <button
+            class="btn btn-danger btn-sm"
+            (click)="openDeleteModal(categoria)"
+            title="Eliminar categoría"
+          >
+            🗑️
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!loading && categorias.length === 0" class="empty-state">
+    <h3>No hay categorías</h3>
+    <p *ngIf="searchTerm">
+      No se encontraron categorías que coincidan con "{{ searchTerm }}"
+    </p>
+    <p *ngIf="!searchTerm">
+      Comienza creando tu primera categoría usando el botón de arriba.
+    </p>
+  </div>
+
+  <!-- Create Modal -->
+  <div
+    class="modal"
+    [class.show]="showCreateModal"
+    (click)="closeModals()"
+  >
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Nueva Categoría</h3>
+        <button class="close" (click)="closeModals()">&times;</button>
+      </div>
+      <form (ngSubmit)="createCategoria()">
+        <div class="form-group">
+          <label for="nombre">Nombre de la Categoría *</label>
+          <input
+            type="text"
+            id="nombre"
+            class="form-control"
+            [(ngModel)]="categoriaForm.nombre"
+            name="nombre"
+            required
+            placeholder="Ej: Electrónicos, Ropa, Alimentos"
+          />
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="closeModals()"
+          >
+            Cancelar
+          </button>
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="loading || !categoriaForm.nombre.trim()"
+          >
+            {{ loading ? 'Creando...' : 'Crear Categoría' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Edit Modal -->
+  <div
+    class="modal"
+    [class.show]="showEditModal"
+    (click)="closeModals()"
+  >
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Editar Categoría</h3>
+        <button class="close" (click)="closeModals()">&times;</button>
+      </div>
+      <form (ngSubmit)="updateCategoria()">
+        <div class="form-group">
+          <label for="edit-nombre">Nombre de la Categoría *</label>
+          <input
+            type="text"
+            id="edit-nombre"
+            class="form-control"
+            [(ngModel)]="editCategoriaForm.nombre"
+            name="edit-nombre"
+            required
+            placeholder="Ej: Electrónicos, Ropa, Alimentos"
+          />
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="closeModals()"
+          >
+            Cancelar
+          </button>
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="loading || !editCategoriaForm.nombre?.trim()"
+          >
+            {{ loading ? 'Actualizando...' : 'Actualizar Categoría' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Delete Modal -->
+  <div
+    class="modal"
+    [class.show]="showDeleteModal"
+    (click)="closeModals()"
+  >
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Eliminar Categoría</h3>
+        <button class="close" (click)="closeModals()">&times;</button>
+      </div>
+      <p>
+        ¿Está seguro que desea eliminar la categoría "
+        <strong>{{ selectedCategoria?.nombre }}</strong>"?
+      </p>
+      <p style="color: #dc3545; font-size: 0.875rem;">
+        Esta acción no se puede deshacer.
+      </p>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="closeModals()"
+        >
+          Cancelar
+        </button>
+        <button
+          type="button"
+          class="btn btn-danger"
+          (click)="deleteCategoria()"
+          [disabled]="loading"
+        >
+          {{ loading ? 'Eliminando...' : 'Eliminar Categoría' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output, OnInit } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { Producto } from "../../services/producto.service";
+import { CategoriaService, Categoria } from "../../services/categoria.service";
 
 @Component({
   selector: "app-product-modal",
@@ -60,6 +61,21 @@ import { Producto } from "../../services/producto.service";
                   class="form-control"
                 />
               </div>
+            </div>
+
+            <div class="form-group">
+              <label for="categoria">Categoría</label>
+              <select
+                id="categoria"
+                name="categoria"
+                [(ngModel)]="formData.categoria"
+                class="form-control"
+              >
+                <option value="">Selecciona una categoría</option>
+                @for (categoria of categorias; track categoria.id) {
+                  <option [value]="categoria.nombre">{{ categoria.nombre }}</option>
+                }
+              </select>
             </div>
 
             <div class="form-group">
@@ -338,17 +354,33 @@ export class ProductModalComponent implements OnInit {
     peso: '',
     precio: 0,
     img_url: '',
-    descripcion: ''
+    descripcion: '',
+    categoria: ''
   };
 
+  categorias: Categoria[] = [];
   isEditMode: boolean = false;
   isSaving: boolean = false;
+
+  constructor(private categoriaService: CategoriaService) {}
 
   ngOnInit(): void {
     if (this.product) {
       this.isEditMode = true;
       this.formData = { ...this.product };
     }
+    this.loadCategorias();
+  }
+
+  loadCategorias(): void {
+    this.categoriaService.getCategorias().subscribe({
+      next: (data) => {
+        this.categorias = data;
+      },
+      error: (error) => {
+        console.error('Error loading categorias:', error);
+      }
+    });
   }
 
   onClose(): void {

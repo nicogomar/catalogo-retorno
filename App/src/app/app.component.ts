@@ -20,6 +20,7 @@ interface Product {
   image: string;
   detailImage?: string;
   description?: string;
+  categoria?: string | null;
 }
 
 @Component({
@@ -70,7 +71,7 @@ export class AppComponent implements OnInit {
     this.isLoading = true;
     this.loadError = null;
 
-    this.productoService.getProductos().subscribe({
+    this.productoService.getProductosOrderedByCategoriaAndNombre().subscribe({
       next: (productos: Producto[]) => {
         this.products = productos.map((producto) => ({
           id: producto.id || 0,
@@ -82,6 +83,7 @@ export class AppComponent implements OnInit {
           image: producto.img_url || "assets/img/default-product.jpg",
           detailImage: producto.img_url || "assets/img/default-product.jpg",
           description: producto.descripcion || "Sin descripción disponible",
+          categoria: producto.categoria || null,
         }));
         this.isLoading = false;
       },
@@ -109,6 +111,30 @@ export class AppComponent implements OnInit {
     if (this.cartComponent) {
       this.cartComponent.toggle();
     }
+  }
+
+  // Group products by category
+  getProductsByCategory(): { category: string | null; products: Product[] }[] {
+    const grouped = new Map<string | null, Product[]>();
+    
+    // Group products by category
+    this.products.forEach(product => {
+      const category = product.categoria || 'Sin categoría';
+      if (!grouped.has(category)) {
+        grouped.set(category, []);
+      }
+      grouped.get(category)!.push(product);
+    });
+
+    // Convert to array and sort by category name
+    return Array.from(grouped.entries())
+      .map(([category, products]) => ({ category, products }))
+      .sort((a, b) => {
+        // Put "Sin categoría" at the end
+        if (a.category === 'Sin categoría') return 1;
+        if (b.category === 'Sin categoría') return -1;
+        return a.category!.localeCompare(b.category!);
+      });
   }
 
   logout(): void {
