@@ -153,6 +153,11 @@ export class PedidoController {
         return;
       }
 
+      // Set default estado to 'COBRAR' if not provided
+      if (!pedidoData.estado) {
+        pedidoData.estado = "COBRAR";
+      }
+
       const newPedido = await pedidoService.createPedido(pedidoData);
 
       // Send email notification

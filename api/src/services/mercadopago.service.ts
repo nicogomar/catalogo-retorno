@@ -91,7 +91,7 @@ class MercadoPagoService {
           picture_url: item.picture_url || "",
           category_id: item.category_id || "others",
           quantity: item.quantity,
-          currency_id: item.currency_id || "ARS",
+          currency_id: item.currency_id || "UYU",
           unit_price: item.unit_price,
         })),
         back_urls: backUrls,

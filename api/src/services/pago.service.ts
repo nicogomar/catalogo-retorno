@@ -63,7 +63,7 @@ class PagoService {
         external_reference: external_reference,
         estado: "pending" as EstadoPago,
         monto: monto,
-        moneda: pagoData.items[0]?.currency_id || "ARS",
+        moneda: pagoData.items[0]?.currency_id || "UYU",
         detalles: {
           items: pagoData.items,
           payer: pagoData.payer,
