@@ -1,8 +1,25 @@
 {
+  "name": "catalogo-retorno-fullstack",
+  "version": "1.0.0",
+  "description": "Catálogo Retorno - Backend API y Frontend Angular",
   "scripts": {
-    "dev": "./start-dev.sh"
+    "install:all": "cd api && npm install && cd ../App && npm install",
+    "build": "npm run build:api && npm run build:app",
+    "build:api": "cd api && npm run build",
+    "build:app": "cd App && npm run build",
+    "start": "cd api && npm start",
+    "dev": "./start-dev.sh",
+    "dev:concurrent": "concurrently \"cd api && npm run dev\" \"cd App && npm run start\"",
+    "postbuild": "echo 'Build completado: API en api/dist y Frontend en App/dist'"
   },
   "dependencies": {
     "vercel": "^48.7.1"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
   }
 }
