@@ -20,4 +20,10 @@ export class CardComponent {
     console.log("Card clicked with ID:", this.productId);
     this.cardClick.emit(this.productId);
   }
+
+  onImageError(event: Event): void {
+    const img = event.target as HTMLImageElement;
+    img.src = 'assets/images/default-product.svg';
+    console.warn(`Failed to load image: ${this.productImage}, using fallback`);
+  }
 }

@@ -80,8 +80,8 @@ export class AppComponent implements OnInit {
           price: producto.precio
             ? `$${producto.precio.toLocaleString("es-AR")}`
             : "Consultar",
-          image: producto.img_url || "assets/img/default-product.jpg",
-          detailImage: producto.img_url || "assets/img/default-product.jpg",
+          image: producto.img_url || "assets/images/default-product.svg",
+          detailImage: producto.img_url || "assets/images/default-product.svg",
           description: producto.descripcion || "Sin descripción disponible",
           categoria: producto.categoria || null,
         }));

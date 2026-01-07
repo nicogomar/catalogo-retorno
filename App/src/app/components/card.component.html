@@ -1,6 +1,6 @@
 <div class="product-card" (click)="onCardClick()">
   <div class="product-image-container">
-    <img [src]="productImage" [alt]="productName" class="product-image">
+    <img [src]="productImage" [alt]="productName" class="product-image" (error)="onImageError($event)">
   </div>
   <div class="product-footer">
     <div class="product-info">
