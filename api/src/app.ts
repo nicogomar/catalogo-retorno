@@ -119,9 +119,10 @@ const createApp = (): Application => {
       // In production, serve the frontend
       // Try different possible paths for the frontend build
       const possiblePaths = [
-        path.join(__dirname, "../../public"),
-        path.join(__dirname, "../../../public"),
-        path.join(process.cwd(), "public"),
+        path.join(__dirname, "../../App/dist/app/browser"),
+        path.join(__dirname, "../../../App/dist/app/browser"),
+        path.join(process.cwd(), "../App/dist/app/browser"),
+        "/opt/render/project/src/App/dist/app/browser",
         "/opt/render/project/src/public"
       ];
       
@@ -158,9 +159,10 @@ const createApp = (): Application => {
   if (process.env.NODE_ENV === "production") {
     // Try different possible paths for the frontend build
     const possiblePaths = [
-      path.join(__dirname, "../../public"),
-      path.join(__dirname, "../../../public"),
-      path.join(process.cwd(), "public"),
+      path.join(__dirname, "../../App/dist/app/browser"),
+      path.join(__dirname, "../../../App/dist/app/browser"),
+      path.join(process.cwd(), "../App/dist/app/browser"),
+      "/opt/render/project/src/App/dist/app/browser",
       "/opt/render/project/src/public"
     ];
     

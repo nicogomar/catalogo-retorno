@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: catalogo-retorno
+    runtime: node
+    plan: free
+    rootDir: api
+    buildCommand: npm install && npm run build:all
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+    autoDeploy: true
