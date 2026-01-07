@@ -113,14 +113,21 @@ const createApp = (): Application => {
     app.use(morgan("combined"));
   }
 
-  // Root endpoint
+  // Root endpoint - redirect to frontend in production
   app.get("/", (_req: Request, res: Response) => {
-    res.json({
-      success: true,
-      message: "Welcome to Catalogo KDN API",
-      version: "1.0.0",
-      documentation: "/api",
-    });
+    if (process.env.NODE_ENV === "production") {
+      // In production, serve the frontend
+      const angularPath = path.join(__dirname, "../../public");
+      res.sendFile(path.join(angularPath, "index.html"));
+    } else {
+      // In development, show API info
+      res.json({
+        success: true,
+        message: "Welcome to Catalogo KDN API",
+        version: "1.0.0",
+        documentation: "/api",
+      });
+    }
   });
 
   // API routes
@@ -128,7 +135,7 @@ const createApp = (): Application => {
 
   // Serve static files from Angular app in production
   if (process.env.NODE_ENV === "production") {
-    const angularPath = path.join(__dirname, "../../App/dist/app/browser");
+    const angularPath = path.join(__dirname, "../../public");
     app.use(express.static(angularPath));
     
     // For Angular routing - always return index.html for non-API routes
