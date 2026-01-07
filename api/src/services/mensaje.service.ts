@@ -13,7 +13,7 @@ export class MensajeService {
     try {
       const { data, error } = await supabaseAdmin
         .from(this.tableName)
-        .select("telefono")
+        .select("telefono, mensaje, created_at")
         .order("created_at", { ascending: false });
 
       if (error) {
