@@ -9,7 +9,6 @@
     "build": "tsc",
     "build:frontend": "cd ../App && npm run build",
     "build:all": "npm run build && npm run build:frontend",
-    "postinstall": "npm run build:all",
     "lint": "eslint . --ext .ts",
     "test": "jest"
   },
