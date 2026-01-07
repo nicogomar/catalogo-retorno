@@ -1,0 +1,14 @@
+dist/controllers/*.js
+dist/routes/*.js
+dist/services/*.js
+dist/middleware/*.js
+dist/config/*.js
+dist/types/*.js
+dist/app.js
+dist/index.js
+src/
+node_modules/
+*.ts
+*.d.ts
+*.js.map
+*.d.ts.map
