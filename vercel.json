@@ -1,5 +1,7 @@
 {
   "version": 2,
+  "buildCommand": "cd App && npm run build",
+  "outputDirectory": "App/dist/app/browser",
   "builds": [
     {
       "src": "api/src/vercel-handler.ts",
