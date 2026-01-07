@@ -117,18 +117,8 @@ import { CartService, CartItem } from "../../services/cart.service";
                   <input
                     type="radio"
                     formControlName="paymentMethod"
-                    value="mercadopago"
-                  />
-                  <div class="payment-option-content">
-                    <span class="payment-title">💳 Pago Online (MercadoPago)</span>
-                    <span class="payment-description">Paga ahora con tarjeta de crédito/débito</span>
-                  </div>
-                </label>
-                <label class="payment-option">
-                  <input
-                    type="radio"
-                    formControlName="paymentMethod"
                     value="contra_entrega"
+                    checked
                   />
                   <div class="payment-option-content">
                     <span class="payment-title">💵 Pago Contra Entrega</span>
@@ -402,7 +392,7 @@ export class CustomerModalComponent implements OnInit {
       email: ["", [Validators.required, Validators.email]],
       location: ["", [Validators.required]],
       details: [""],
-      paymentMethod: ["mercadopago", [Validators.required]],
+      paymentMethod: ["contra_entrega", [Validators.required]],
     });
   }
 

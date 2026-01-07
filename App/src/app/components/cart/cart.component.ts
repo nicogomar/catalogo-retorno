@@ -488,7 +488,7 @@ export class CartComponent {
       localidad: orderData.customer.location,
       productos: productos, // Transformed items stored as JSON
       detalles: orderData.customer.details, // Add the details field
-      estado: "Pendiente", // Set default status to Pendiente
+      estado: "COBRAR", // Set default status to COBRAR
       metodo_pago: paymentMethod, // Add payment method
     };
 

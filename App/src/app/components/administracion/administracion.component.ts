@@ -10,7 +10,6 @@ import {
 import { StorageService } from "../../services/storage.service";
 import { ProductModalComponent } from "../product-modal/product-modal.component";
 import { ImageGalleryComponent } from "../image-gallery/image-gallery.component";
-import { MensajesPanelComponent } from "../mensajes-panel/mensajes-panel.component";
 import { CategoriaManagementComponent } from "../categoria-management/categoria-management.component";
 import { FormsModule } from "@angular/forms";
 
@@ -22,7 +21,6 @@ import { FormsModule } from "@angular/forms";
     RouterModule,
     ProductModalComponent,
     ImageGalleryComponent,
-    MensajesPanelComponent,
     CategoriaManagementComponent,
     FormsModule,
   ],
@@ -758,8 +756,8 @@ import { FormsModule } from "@angular/forms";
       }
 
       .pedidos-table thead {
-        background-color: #4a1d4a;
-        color: white;
+        background-color: #4a1d4a !important;
+        color: white !important;
       }
 
       .pedidos-table th {
@@ -767,6 +765,9 @@ import { FormsModule } from "@angular/forms";
         text-align: left;
         font-weight: 600;
         white-space: nowrap;
+        background-color: #4a1d4a !important;
+        color: white !important;
+        border-bottom: 2px solid #3a1520;
       }
 
       .pedidos-table td {
@@ -1118,8 +1119,8 @@ export class AdministracionComponent implements OnInit {
   isPedidosLoading: boolean = false;
   pedidosLoadError: string | null = null;
   estadosDisponibles: EstadoPedido[] = [
-    "Pendiente",
-    "Aprobado",
+    "COBRAR",
+    "PAGO",
     "En curso",
     "Finalizado",
   ];
@@ -1169,7 +1170,6 @@ export class AdministracionComponent implements OnInit {
       inicio: "Dashboard",
       productos: "Gestión de Productos",
       categorias: "Gestión de Categorías",
-      mensajes: "Mensajes",
       pedidos: "Pedidos",
       imagenes: "Galería de Imágenes",
     };
@@ -1436,9 +1436,9 @@ export class AdministracionComponent implements OnInit {
 
   getEstadoClass(estado?: EstadoPedido | null): string {
     switch (estado) {
-      case "Pendiente":
+      case "COBRAR":
         return "estado-pendiente";
-      case "Aprobado":
+      case "PAGO":
         return "estado-aprobado";
       case "En curso":
         return "estado-en-curso";
@@ -1524,18 +1524,12 @@ export class AdministracionComponent implements OnInit {
   }
 
   /**
-   * Obtiene la cantidad de pedidos con estado "Pendiente"
+   * Obtiene la cantidad de pedidos con estado "COBRAR"
    */
   getPedidosPendientesCount(): number {
-    return this.pedidos.filter((pedido) => pedido.estado === "Pendiente").length;
+    return this.pedidos.filter((pedido) => pedido.estado === "COBRAR").length;
   }
 
-  /**
-   * Obtiene la cantidad de mensajes (actualmente 0, no implementado)
-   */
-  getMensajesCount(): number {
-    return 0;
-  }
 
   /**
    * Obtiene la cantidad de imágenes del bucket

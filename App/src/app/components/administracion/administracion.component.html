@@ -28,14 +28,6 @@
       </a>
       <a
         class="nav-item"
-        [class.active]="currentSection === 'mensajes'"
-        (click)="changeSection('mensajes')"
-      >
-        <i class="icon">💬</i>
-        <span>Mensajes</span>
-      </a>
-      <a
-        class="nav-item"
         [class.active]="currentSection === 'pedidos'"
         (click)="changeSection('pedidos')"
       >
@@ -81,13 +73,6 @@
           <div class="stat-info">
             <h3>Productos</h3>
             <p class="stat-number">{{ productos.length }}</p>
-          </div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon">💬</div>
-          <div class="stat-info">
-            <h3>Mensajes</h3>
-            <p class="stat-number">{{ getMensajesCount() }}</p>
           </div>
         </div>
         <div class="stat-card">
@@ -259,10 +244,6 @@
       }
     </div>
 
-    <!-- Mensajes Section -->
-    <div class="content-body" *ngIf="currentSection === 'mensajes'" style="padding: 0; height: calc(100vh - 150px);">
-      <app-mensajes-panel></app-mensajes-panel>
-    </div>
 
     <!-- Categorias Section -->
     <div class="content-body" *ngIf="currentSection === 'categorias'">
@@ -289,15 +270,15 @@
           </button>
           <button
             class="btn-filtro"
-            [class.active]="filtroEstadoPedido === 'Pendiente'"
-            (click)="cambiarFiltroPedido('Pendiente')"
+            [class.active]="filtroEstadoPedido === 'COBRAR'"
+            (click)="cambiarFiltroPedido('COBRAR')"
           >
             ⏳ Pendientes
           </button>
           <button
             class="btn-filtro"
-            [class.active]="filtroEstadoPedido === 'Aprobado'"
-            (click)="cambiarFiltroPedido('Aprobado')"
+            [class.active]="filtroEstadoPedido === 'PAGO'"
+            (click)="cambiarFiltroPedido('PAGO')"
           >
             ✅ Aprobados
           </button>

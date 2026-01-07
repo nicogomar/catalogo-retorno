@@ -5,7 +5,7 @@ import { ApiService } from "./api.service";
 /**
  * Tipo que representa el estado de un pedido
  */
-export type EstadoPedido = "Pendiente" | "Aprobado" | "En curso" | "Finalizado";
+export type EstadoPedido = "COBRAR" | "PAGO" | "En curso" | "Finalizado";
 
 /**
  * Tipo que representa el método de pago del pedido
