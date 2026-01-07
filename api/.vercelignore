@@ -1,14 +1,20 @@
-dist/controllers/*.js
-dist/routes/*.js
-dist/services/*.js
-dist/middleware/*.js
-dist/config/*.js
-dist/types/*.js
-dist/app.js
-dist/index.js
+# Excluir todo excepto el handler principal
+dist/
 src/
+backup_before_cleanup/
 node_modules/
 *.ts
 *.d.ts
 *.js.map
 *.d.ts.map
+
+# Excluir archivos JS individuales que no son funciones
+test-*.js
+check-*.js
+cleanup.js
+cors-*.js
+*.sh
+Procfile
+
+# Permitir explícitamente solo el handler necesario
+!api/index.js
