@@ -23,8 +23,8 @@ RUN npm run build
 # Production stage
 FROM node:18-alpine AS production
 
-# Set working directory
-WORKDIR /app
+# Set working directory for Render
+WORKDIR /opt/render/project/src
 
 # Copy package files for production
 COPY package*.json ./
@@ -36,7 +36,7 @@ RUN npm ci --only=production
 # Copy built backend
 COPY --from=builder /app/api/dist ./api/dist
 
-# Copy built frontend
+# Copy built frontend to the expected location
 COPY --from=builder /app/App/dist/app/browser ./public
 
 # Copy API source files

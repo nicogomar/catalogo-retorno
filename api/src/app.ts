@@ -117,7 +117,28 @@ const createApp = (): Application => {
   app.get("/", (_req: Request, res: Response) => {
     if (process.env.NODE_ENV === "production") {
       // In production, serve the frontend
-      const angularPath = path.join(__dirname, "../../public");
+      // Try different possible paths for the frontend build
+      const possiblePaths = [
+        path.join(__dirname, "../../public"),
+        path.join(__dirname, "../../../public"),
+        path.join(process.cwd(), "public"),
+        "/opt/render/project/src/public"
+      ];
+      
+      let angularPath = possiblePaths[0];
+      
+      // Find the first path that exists
+      for (const testPath of possiblePaths) {
+        try {
+          if (require('fs').existsSync(testPath)) {
+            angularPath = testPath;
+            break;
+          }
+        } catch (error) {
+          // Continue to next path
+        }
+      }
+      
       res.sendFile(path.join(angularPath, "index.html"));
     } else {
       // In development, show API info
@@ -135,7 +156,29 @@ const createApp = (): Application => {
 
   // Serve static files from Angular app in production
   if (process.env.NODE_ENV === "production") {
-    const angularPath = path.join(__dirname, "../../public");
+    // Try different possible paths for the frontend build
+    const possiblePaths = [
+      path.join(__dirname, "../../public"),
+      path.join(__dirname, "../../../public"),
+      path.join(process.cwd(), "public"),
+      "/opt/render/project/src/public"
+    ];
+    
+    let angularPath = possiblePaths[0];
+    
+    // Find the first path that exists
+    for (const testPath of possiblePaths) {
+      try {
+        if (require('fs').existsSync(testPath)) {
+          angularPath = testPath;
+          console.log(`Found frontend at: ${angularPath}`);
+          break;
+        }
+      } catch (error) {
+        // Continue to next path
+      }
+    }
+    
     app.use(express.static(angularPath));
     
     // For Angular routing - always return index.html for non-API routes
