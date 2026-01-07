@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "Catálogo Retorno - Backend API y Frontend Angular",
   "scripts": {
-    "install:all": "cd api && npm install && cd ../App && npm install",
+    "install:all": "cd api && npm install --include=dev && cd ../App && npm install",
+    "prebuild": "npm run install:all",
     "build": "npm run build:api && npm run build:app",
     "build:api": "cd api && npm run build",
     "build:app": "cd App && npm run build",
