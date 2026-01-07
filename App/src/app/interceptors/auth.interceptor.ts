@@ -69,7 +69,13 @@ export class AuthInterceptor implements HttpInterceptor {
    */
   private isProtectedRoute(url: string): boolean {
     // Public routes that don't need authentication
-    const publicRoutes = ["/productos", "/auth/login", "/auth/register"];
+    const publicRoutes = [
+      "/productos", 
+      "/auth/login", 
+      "/auth/register",
+      "/storage/url",
+      "/storage/info"
+    ];
 
     // Check if the URL contains any public route
     return !publicRoutes.some((route) => url.includes(route));
