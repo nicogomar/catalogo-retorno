@@ -1,0 +1,28 @@
+{
+  "cors": {
+    "allowedOrigins": [
+      "https://catalogo-retorno.onrender.com",
+      "https://catalogo-retorno.onrender.com/api",
+      "http://localhost:3000",
+      "http://localhost:4200",
+      "https://vercel.com",
+      "*"
+    ],
+    "allowedMethods": [
+      "GET",
+      "POST",
+      "PUT",
+      "DELETE",
+      "OPTIONS"
+    ],
+    "allowedHeaders": [
+      "Content-Type",
+      "Authorization",
+      "apikey",
+      "X-Client-Info"
+    ],
+    "exposedHeaders": [],
+    "maxAge": 3600,
+    "credentials": true
+  }
+}

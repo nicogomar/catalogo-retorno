@@ -28,16 +28,20 @@ export class StorageService {
         return { data: [], error: error.message };
       }
 
-      // Obtener URLs públicas para cada imagen
+      // Obtener URLs públicas para cada imagen con transformación para asegurar acceso
       const imagesWithUrls = data.map((file) => {
+        const filePath = folder ? `${folder}/${file.name}` : file.name;
         const { data: urlData } = supabaseAdmin.storage
           .from(this.bucketName)
-          .getPublicUrl(folder ? `${folder}/${file.name}` : file.name);
+          .getPublicUrl(filePath);
 
+        // Construir URL con parámetros para evitar cache y CORS issues
+        const publicUrl = `${urlData.publicUrl}?t=${Date.now()}`;
+        
         return {
           ...file,
-          url: urlData.publicUrl,
-          path: folder ? `${folder}/${file.name}` : file.name,
+          url: publicUrl,
+          path: filePath,
         };
       });
 
@@ -74,7 +78,7 @@ export class StorageService {
         return { data: null, error: error.message };
       }
 
-      // Obtener la URL pública
+      // Obtener la URL pública con timestamp para evitar cache
       const { data: urlData } = supabaseAdmin.storage
         .from(this.bucketName)
         .getPublicUrl(uniqueFileName);
@@ -82,7 +86,7 @@ export class StorageService {
       return {
         data: {
           ...data,
-          url: urlData.publicUrl,
+          url: `${urlData.publicUrl}?t=${Date.now()}`,
           name: uniqueFileName,
         },
         error: null,
@@ -146,14 +150,14 @@ export class StorageService {
   }
 
   /**
-   * Obtiene la URL pública de un archivo
+   * Obtiene la URL pública de un archivo con timestamp para evitar cache
    */
   getPublicUrl(filePath: string): string {
     const { data } = supabaseAdmin.storage
       .from(this.bucketName)
       .getPublicUrl(filePath);
 
-    return data.publicUrl;
+    return `${data.publicUrl}?t=${Date.now()}`;
   }
 
   /**
