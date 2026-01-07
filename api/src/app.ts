@@ -4,6 +4,7 @@ import helmet from "helmet";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
+import path from "path";
 import routes from "./routes";
 import emailService from "./services/email.service";
 // Load environment variables
@@ -125,11 +126,24 @@ const createApp = (): Application => {
   // API routes
   app.use("/api", routes);
 
-  // 404 handler
-  app.use((req: Request, res: Response) => {
+  // Serve static files from Angular app in production
+  if (process.env.NODE_ENV === "production") {
+    const angularPath = path.join(__dirname, "../../App/dist/app/browser");
+    app.use(express.static(angularPath));
+    
+    // For Angular routing - always return index.html for non-API routes
+    app.get("*", (req: Request, res: Response) => {
+      if (!req.path.startsWith("/api")) {
+        res.sendFile(path.join(angularPath, "index.html"));
+      }
+    });
+  }
+
+  // 404 handler for API routes only
+  app.use("/api/*", (req: Request, res: Response) => {
     res.status(404).json({
       success: false,
-      error: "Endpoint not found",
+      error: "API endpoint not found",
       path: req.path,
     });
   });
