@@ -9,6 +9,7 @@
       "src": "App/package.json",
       "use": "@vercel/static-build",
       "config": {
+        "buildCommand": "cd App && npm run build",
         "distDir": "dist/app/browser"
       }
     }
