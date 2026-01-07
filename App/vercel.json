@@ -1,6 +1,35 @@
 {
   "buildCommand": "npm run build",
   "outputDirectory": "dist/app/browser",
+  "headers": [
+    {
+      "source": "/styles.(css|scss)",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/css"
+        }
+      ]
+    },
+    {
+      "source": "/assets/styles/(.*)",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/css"
+        }
+      ]
+    },
+    {
+      "source": "/(.*\\.(css|scss))",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/css"
+        }
+      ]
+    }
+  ],
   "rewrites": [
     {
       "source": "/(.*)",
