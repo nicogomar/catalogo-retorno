@@ -3,5 +3,5 @@
 
 export const environment = {
   production: true,
-  apiUrl: "https://catalogo-retorno-backend.vercel.app/api",
+  apiUrl: "/api",
 };
