@@ -17,7 +17,16 @@ const createApp = (): Application => {
   const app: Application = express();
 
   // Security middleware
-  app.use(helmet());
+  app.use(
+    helmet({
+      contentSecurityPolicy: {
+        directives: {
+          ...helmet.contentSecurityPolicy.getDefaultDirectives(),
+          "img-src": ["'self'", "data:", "blob:", "https:"],
+        },
+      },
+    }),
+  );
 
   // Apply CORS configuration using the utility
   app.use(

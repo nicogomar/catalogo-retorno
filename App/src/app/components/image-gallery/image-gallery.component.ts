@@ -454,6 +454,12 @@ export class ImageGalleryComponent implements OnInit {
    * Maneja errores de carga de imágenes
    */
   onImageError(event: any): void {
-    event.target.src = "assets/img/default-product.jpg";
+    const img = event?.target as HTMLImageElement | undefined;
+    if (!img) return;
+
+    const fallbackSrc = "assets/images/default-product.svg";
+    if (img.src && img.src.includes(fallbackSrc)) return;
+
+    img.src = fallbackSrc;
   }
 }
