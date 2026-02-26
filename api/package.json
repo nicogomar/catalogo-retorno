@@ -21,7 +21,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@supabase/supabase-js": "^2.75.1",
+    "@supabase/supabase-js": "^2.97.0",
     "@types/cookie-parser": "^1.4.9",
     "@types/multer": "^2.0.0",
     "axios": "^1.13.1",
@@ -47,6 +47,6 @@
     "@typescript-eslint/parser": "^8.19.1",
     "eslint": "^9.18.0",
     "tsx": "^4.19.2",
-    "typescript": "^5.7.2"
+    "typescript": "^5.9.3"
   }
 }

@@ -30,7 +30,7 @@ export class EmailService {
       console.log("Email service is ready to send messages");
       return true;
     } catch (error) {
-      console.error("Error verifying email connection:", error);
+      console.warn("Error verifying email connection:", error);
       return false;
     }
   }

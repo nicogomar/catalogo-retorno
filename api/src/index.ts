@@ -21,8 +21,10 @@ const startServer = async () => {
     const isConnected = await testConnection();
 
     if (!isConnected) {
-      console.error("❌ Failed to connect to database. Exiting...");
-      process.exit(1);
+      console.warn("⚠️  Database connection failed. Server will continue running but database operations may fail.");
+      console.warn("🔧 Please check your database configuration and try again.");
+    } else {
+      console.log("✅ Database connection successful");
     }
 
     // Create Express app

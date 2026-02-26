@@ -223,16 +223,20 @@ const createApp = (): Application => {
     });
   });
 
-  // Initialize email service
-  emailService.verifyConnection().then((isConnected) => {
-    if (isConnected) {
-      console.log("Email service initialized successfully");
-    } else {
-      console.warn(
-        "Email service could not be initialized, notifications will not be sent",
-      );
-    }
-  });
+  // Initialize email service (optional)
+  if (process.env.EMAIL_USER && process.env.EMAIL_PASSWORD) {
+    emailService.verifyConnection().then((isConnected) => {
+      if (isConnected) {
+        console.log("Email service initialized successfully");
+      } else {
+        console.warn(
+          "Email service could not be initialized, notifications will not be sent",
+        );
+      }
+    });
+  } else {
+    console.warn("Email credentials not provided, email service disabled");
+  }
 
   return app;
 };
