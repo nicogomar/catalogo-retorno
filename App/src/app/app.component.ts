@@ -10,6 +10,7 @@ import { AlertComponent } from "./components/alert/alert.component";
 import { ProductoService, Producto } from "./services/producto.service";
 import { AuthService } from "./services/auth.service";
 import { WhatsappFloatComponent } from "./components/whatsapp-float/whatsapp-float.component";
+import { CategoryDrawerComponent, Category } from "./components/category-drawer/category-drawer.component";
 import { AppConfig, getTitle } from "./config";
 
 interface Product {
@@ -36,6 +37,7 @@ interface Product {
     CartComponent,
     AlertComponent,
     WhatsappFloatComponent,
+    CategoryDrawerComponent,
   ],
   templateUrl: "./app.component.html",
   styleUrl: "./app.component.css",
@@ -45,8 +47,12 @@ export class AppComponent implements OnInit {
   @ViewChild(CartComponent) cartComponent!: CartComponent;
 
   products: Product[] = [];
+  filteredProducts: Product[] = [];
   isLoading: boolean = true;
   loadError: string | null = null;
+  searchTerm: string = '';
+  selectedCategory: string | null = null;
+  isDrawerOpen: boolean = false;
 
   selectedProduct: Product | null = null;
 
@@ -85,6 +91,7 @@ export class AppComponent implements OnInit {
           description: producto.descripcion || "Sin descripción disponible",
           categoria: producto.categoria || null,
         }));
+        this.filteredProducts = [...this.products];
         this.isLoading = false;
       },
       error: (error) => {
@@ -117,8 +124,11 @@ export class AppComponent implements OnInit {
   getProductsByCategory(): { category: string | null; products: Product[] }[] {
     const grouped = new Map<string | null, Product[]>();
     
+    // Use filtered products for display
+    const productsToUse = this.getFilteredProducts();
+    
     // Group products by category
-    this.products.forEach(product => {
+    productsToUse.forEach(product => {
       const category = product.categoria || 'Sin categoría';
       if (!grouped.has(category)) {
         grouped.set(category, []);
@@ -135,6 +145,83 @@ export class AppComponent implements OnInit {
         if (b.category === 'Sin categoría') return -1;
         return a.category!.localeCompare(b.category!);
       });
+  }
+
+  // Get categories with counts
+  getCategories(): Category[] {
+    const categoryMap = new Map<string, number>();
+    
+    this.products.forEach(product => {
+      const category = product.categoria || 'Sin categoría';
+      categoryMap.set(category, (categoryMap.get(category) || 0) + 1);
+    });
+
+    return Array.from(categoryMap.entries())
+      .map(([name, count]) => ({ name, count }))
+      .sort((a, b) => {
+        // Put "Sin categoría" at the end
+        if (a.name === 'Sin categoría') return 1;
+        if (b.name === 'Sin categoría') return -1;
+        return a.name.localeCompare(b.name);
+      });
+  }
+
+  // Get total product count
+  getTotalProductCount(): number {
+    return this.products.length;
+  }
+
+  // Get filtered products based on search and category
+  getFilteredProducts(): Product[] {
+    let products = this.products;
+
+    // Filter by category
+    if (this.selectedCategory) {
+      products = products.filter(product => 
+        product.categoria === this.selectedCategory
+      );
+    }
+
+    // Filter by search term
+    if (this.searchTerm.trim()) {
+      const term = this.searchTerm.toLowerCase().trim();
+      products = products.filter(product => 
+        product.name.toLowerCase().includes(term) ||
+        (product.description && product.description.toLowerCase().includes(term)) ||
+        (product.categoria && product.categoria.toLowerCase().includes(term))
+      );
+    }
+
+    return products;
+  }
+
+  // Filter products based on search term
+  onSearchChange(): void {
+    // The filtering is now handled by getFilteredProducts()
+    // This method is kept for compatibility but no longer needs to update filteredProducts
+  }
+
+  clearSearch(): void {
+    this.searchTerm = '';
+  }
+
+  // Drawer methods
+  openDrawer(): void {
+    this.isDrawerOpen = true;
+  }
+
+  closeDrawer(): void {
+    this.isDrawerOpen = false;
+  }
+
+  onCategorySelected(category: string | null): void {
+    this.selectedCategory = category;
+    this.closeDrawer();
+  }
+
+  openMaps(): void {
+    const mapsUrl = 'https://www.google.com/maps/search/?api=1&query=Mundo+Telas+Dr+Ivo+Ferreira+264+Tacuarembó';
+    window.open(mapsUrl, '_blank');
   }
 
   logout(): void {
