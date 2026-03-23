@@ -125,6 +125,17 @@ import { CartService, CartItem } from "../../services/cart.service";
                     <span class="payment-description">Paga en efectivo al recibir tu pedido</span>
                   </div>
                 </label>
+                <label class="payment-option">
+                  <input
+                    type="radio"
+                    formControlName="paymentMethod"
+                    value="mercadopago"
+                  />
+                  <div class="payment-option-content">
+                    <span class="payment-title">🛒 Mercado Pago</span>
+                    <span class="payment-description">Paga de forma segura con tarjeta u otros métodos</span>
+                  </div>
+                </label>
               </div>
               <div *ngIf="submitted && f['paymentMethod'].errors" class="error-message">
                 <div *ngIf="f['paymentMethod'].errors['required']">
