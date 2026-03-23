@@ -7,6 +7,7 @@ import {
   Pedido,
   EstadoPedido,
 } from "../../services/pedido.service";
+import { PagoService, Pago, EstadoPago } from "../../services/pago.service";
 import { StorageService } from "../../services/storage.service";
 import { ProductModalComponent } from "../product-modal/product-modal.component";
 import { ImageGalleryComponent } from "../image-gallery/image-gallery.component";
@@ -1209,7 +1210,17 @@ import { FormsModule } from "@angular/forms";
     `,
     `
       .badge-pago,
-      .badge-cobrar {
+      .badge-cobrar,
+      .badge-approved,
+      .badge-pending,
+      .badge-rejected,
+      .badge-cancelled,
+      .badge-refunded,
+      .badge-process,
+      .badge-mediation,
+      .badge-authorized,
+      .badge-charged-back,
+      .badge-unknown {
         display: inline-block;
         padding: 4px 8px;
         border-radius: 4px;
@@ -1224,6 +1235,36 @@ import { FormsModule } from "@angular/forms";
       }
       .badge-cobrar {
         background-color: #ff9800; /* Naranja para pagos pendientes */
+      }
+      .badge-approved {
+        background-color: #28a745; /* Verde para pagos aprobados */
+      }
+      .badge-pending {
+        background-color: #ffc107; /* Amarillo para pagos pendientes */
+      }
+      .badge-rejected {
+        background-color: #dc3545; /* Rojo para pagos rechazados */
+      }
+      .badge-cancelled {
+        background-color: #6c757d; /* Gris para pagos cancelados */
+      }
+      .badge-refunded {
+        background-color: #17a2b8; /* Azul claro para reembolsos */
+      }
+      .badge-process {
+        background-color: #007bff; /* Azul para pagos en proceso */
+      }
+      .badge-mediation {
+        background-color: #fd7e14; /* Naranja oscuro para mediación */
+      }
+      .badge-authorized {
+        background-color: #6610f2; /* Púrpura para autorizados */
+      }
+      .badge-charged-back {
+        background-color: #e83e8c; /* Rosa para contracargos */
+      }
+      .badge-unknown {
+        background-color: #343a40; /* Negro oscuro para desconocidos */
       }
       .td-estado-pago {
         text-align: center;
@@ -1287,15 +1328,20 @@ export class AdministracionComponent implements OnInit {
   // Carrusel de imágenes
   currentImageIndex: { [key: number]: number } = {};
 
+  // Pagos
+  pagos: Pago[] = [];
+
   constructor(
     private productoService: ProductoService,
     private pedidoService: PedidoService,
+    private pagoService: PagoService,
     private storageService: StorageService,
   ) {}
 
   ngOnInit(): void {
     this.loadProductos();
     this.loadPedidos();
+    this.loadPagos();
     this.loadImagenesCount();
   }
 
@@ -1305,6 +1351,7 @@ export class AdministracionComponent implements OnInit {
       this.loadProductos();
     } else if (section === "pedidos") {
       this.loadPedidos();
+      this.loadPagos(); // Cargar pagos para tener los estados actualizados
     }
   }
 
@@ -1549,6 +1596,17 @@ export class AdministracionComponent implements OnInit {
     });
   }
 
+  loadPagos(): void {
+    this.pagoService.getPagos().subscribe({
+      next: (pagos) => {
+        this.pagos = pagos;
+      },
+      error: (error) => {
+        console.error("Error al cargar pagos:", error);
+      },
+    });
+  }
+
   // Obtener pedidos filtrados
   getPedidosFiltrados(): Pedido[] {
     let pedidosFiltrados = this.pedidos;
@@ -1682,21 +1740,89 @@ export class AdministracionComponent implements OnInit {
   }
 
   /**
-   * Determina el estado de pago de un pedido basado en su método de pago
+   * Determina el estado de pago de un pedido basado en el estado real del pago
    * @param pedido El pedido a evaluar
-   * @returns 'PAGO' para pagos con MercadoPago, 'COBRAR' para contra entrega
+   * @returns El estado formateado del pago según su estado real
    */
   getEstadoPago(pedido: Pedido): string {
-    return pedido.metodo_pago === "mercadopago" ? "PAGO" : "COBRAR";
+    // Si el método de pago es contra entrega, siempre mostrar "COBRAR"
+    if (pedido.metodo_pago === "contra_entrega") {
+      return "COBRAR";
+    }
+
+    // Si es MercadoPago, buscar el estado real del pago
+    const pago = this.pagos.find(p => p.pedido_id === pedido.id);
+    
+    if (!pago) {
+      return "PENDIENTE";
+    }
+
+    // Mapear el estado del pago a texto legible
+    switch (pago.estado) {
+      case "approved":
+        return "PAGADO";
+      case "pending":
+        return "PENDIENTE";
+      case "rejected":
+        return "RECHAZADO";
+      case "cancelled":
+        return "CANCELADO";
+      case "refunded":
+        return "REEMBOLSADO";
+      case "in_process":
+        return "PROCESANDO";
+      case "in_mediation":
+        return "MEDIACIÓN";
+      case "authorized":
+        return "AUTORIZADO";
+      case "charged_back":
+        return "CONTRACARGO";
+      default:
+        return "DESCONOCIDO";
+    }
   }
 
   /**
    * Determina la clase CSS para el badge del estado de pago
    * @param pedido El pedido a evaluar
-   * @returns 'badge-pago' o 'badge-cobrar' según el método de pago
+   * @returns La clase CSS según el estado real del pago
    */
   getEstadoPagoClass(pedido: Pedido): string {
-    return pedido.metodo_pago === "mercadopago" ? "badge-pago" : "badge-cobrar";
+    // Si el método de pago es contra entrega
+    if (pedido.metodo_pago === "contra_entrega") {
+      return "badge-cobrar";
+    }
+
+    // Si es MercadoPago, buscar el estado real del pago
+    const pago = this.pagos.find(p => p.pedido_id === pedido.id);
+    
+    if (!pago) {
+      return "badge-pending";
+    }
+
+    // Clases CSS según el estado
+    switch (pago.estado) {
+      case "approved":
+        return "badge-approved";
+      case "pending":
+        return "badge-pending";
+      case "rejected":
+        return "badge-rejected";
+      case "cancelled":
+        return "badge-cancelled";
+      case "refunded":
+        return "badge-refunded";
+      case "in_process":
+        return "badge-process";
+      case "in_mediation":
+        return "badge-mediation";
+      case "authorized":
+        return "badge-authorized";
+      case "charged_back":
+        return "badge-charged-back";
+      default:
+        return "badge-unknown";
+    }
   }
 
   /**
