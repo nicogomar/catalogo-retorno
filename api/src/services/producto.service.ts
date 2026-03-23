@@ -4,7 +4,8 @@ import {
   NuevoProducto,
   ActualizarProducto,
   ProductoFilters,
-  PaginationParams
+  PaginationParams,
+  ImageUrlHelper
 } from '../types';
 
 /**
@@ -12,6 +13,16 @@ import {
  */
 export class ProductoService {
   private readonly TABLE_NAME = 'producto';
+
+  /**
+   * Helper method to normalize image URLs in producto data
+   */
+  private normalizeProductoImages(producto: Producto): Producto {
+    return {
+      ...producto,
+      img_url: ImageUrlHelper.normalizeImageUrls(producto.img_url)
+    };
+  }
 
   /**
    * Get all productos with optional filters and pagination
@@ -58,7 +69,8 @@ export class ProductoService {
         throw error;
       }
 
-      return data as Producto[];
+      // Normalizar imágenes en los productos
+      return (data as Producto[]).map(producto => this.normalizeProductoImages(producto));
     } catch (error) {
       console.error('Error getting productos:', error);
       throw error;
@@ -83,7 +95,8 @@ export class ProductoService {
         throw error;
       }
 
-      return data as Producto;
+      // Normalizar imágenes en el producto
+      return this.normalizeProductoImages(data as Producto);
     } catch (error) {
       console.error(`Error getting producto with id ${id}:`, error);
       throw error;
@@ -95,10 +108,18 @@ export class ProductoService {
    */
   async createProducto(producto: NuevoProducto): Promise<Producto> {
     try {
+      // Procesar img_url para manejar múltiples imágenes
+      const productoToSave = {
+        ...producto,
+        img_url: producto.img_url ? ImageUrlHelper.serializeImageUrls(
+          Array.isArray(producto.img_url) ? producto.img_url : [producto.img_url]
+        ) : null
+      };
+
       // Try with regular client first
       const { data, error } = await supabase
         .from(this.TABLE_NAME)
-        .insert(producto)
+        .insert(productoToSave)
         .select()
         .single();
 
@@ -107,7 +128,7 @@ export class ProductoService {
         // If regular client fails, try with admin client
         const adminResult = await supabaseAdmin
           .from(this.TABLE_NAME)
-          .insert(producto)
+          .insert(productoToSave)
           .select()
           .single();
 
@@ -133,9 +154,19 @@ export class ProductoService {
     producto: ActualizarProducto
   ): Promise<Producto | null> {
     try {
+      // Procesar img_url para manejar múltiples imágenes
+      const productoToUpdate = {
+        ...producto,
+        img_url: producto.img_url !== undefined 
+          ? (producto.img_url ? ImageUrlHelper.serializeImageUrls(
+              Array.isArray(producto.img_url) ? producto.img_url : [producto.img_url]
+            ) : null)
+          : undefined
+      };
+
       const { data, error } = await supabase
         .from(this.TABLE_NAME)
-        .update(producto)
+        .update(productoToUpdate)
         .eq('id', id)
         .select()
         .single();

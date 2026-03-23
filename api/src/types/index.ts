@@ -22,7 +22,7 @@ export interface Producto {
   nombre?: string | null;
   peso?: string | null;
   precio?: number | null;
-  img_url?: string | null;
+  img_url?: string | string[] | null;
   descripcion?: string | null;
   categoria?: string | null;
 }
@@ -34,7 +34,7 @@ export interface NuevoProducto {
   nombre: string;
   peso?: string | null;
   precio: number;
-  img_url?: string | null;
+  img_url?: string | string[] | null;
   descripcion?: string | null;
   categoria?: string | null;
 }
@@ -46,7 +46,7 @@ export interface ActualizarProducto {
   nombre?: string | null;
   peso?: string | null;
   precio?: number | null;
-  img_url?: string | null;
+  img_url?: string | string[] | null;
   descripcion?: string | null;
   categoria?: string | null;
 }
@@ -511,6 +511,46 @@ export interface NuevaCategoria {
  */
 export interface ActualizarCategoria {
   nombre?: string | null;
+}
+
+/**
+ * Helper functions for image URL handling
+ */
+export class ImageUrlHelper {
+  /**
+   * Convierte img_url a array de URLs
+   */
+  static normalizeImageUrls(img_url: string | string[] | null | undefined): string[] {
+    if (!img_url) return [];
+    
+    if (Array.isArray(img_url)) {
+      return img_url.filter(url => url && url.trim() !== '');
+    }
+    
+    // Si es un string, separar por comas
+    if (typeof img_url === 'string') {
+      return img_url.split(',')
+        .map(url => url.trim())
+        .filter(url => url !== '');
+    }
+    
+    return [];
+  }
+
+  /**
+   * Convierte array de URLs a string separado por comas para almacenar
+   */
+  static serializeImageUrls(urls: string[]): string {
+    return urls.filter(url => url && url.trim() !== '').join(',');
+  }
+
+  /**
+   * Obtiene la primera imagen de un producto
+   */
+  static getPrimaryImage(img_url: string | string[] | null | undefined): string | null {
+    const urls = this.normalizeImageUrls(img_url);
+    return urls.length > 0 ? urls[0] : null;
+  }
 }
 
 /**

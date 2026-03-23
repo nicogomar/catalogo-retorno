@@ -2,21 +2,22 @@ import { Component, EventEmitter, Input, Output } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { CartService } from "../../services/cart.service";
+import { ImageCarouselComponent } from "../image-carousel/image-carousel.component";
 
 interface Product {
   id: number;
   name: string;
   weight: string;
   price: string;
-  image: string;
-  detailImage?: string;
+  image: string | string[];
+  detailImage?: string | string[];
   description?: string;
 }
 
 @Component({
   selector: "app-product-description",
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ImageCarouselComponent],
   template: `
     <div class="modal-backdrop" (click)="closeModal()">
       <div class="modal-container" (click)="$event.stopPropagation()">
@@ -28,13 +29,14 @@ interface Product {
           </button>
         </div>
 
-        <!-- Product image -->
+        <!-- Product image carousel -->
         <div class="product-image-container">
-          <img
-            [src]="product?.detailImage || product?.image"
-            [alt]="product?.name"
-            class="product-detail-image"
-          />
+          <app-image-carousel 
+            [images]="productImages"
+            [showThumbnails]="true"
+            [autoPlay]="true"
+            [autoPlayInterval]="2000">
+          </app-image-carousel>
         </div>
 
         <!-- Product info section -->
@@ -94,9 +96,9 @@ interface Product {
       .modal-container {
         background-color: #f8f4ee;
         border-radius: 8px;
-        width: 90%;
-        max-width: 500px;
-        max-height: 90vh;
+        width: 95%;
+        max-width: 900px;
+        max-height: 95vh;
         overflow-y: auto;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
         display: flex;
@@ -135,8 +137,8 @@ interface Product {
       /* Product image styles */
       .product-image-container {
         width: 100%;
-        height: 240px;
-        overflow: hidden;
+        min-height: 500px;
+        margin-bottom: 20px;
       }
 
       .product-detail-image {
@@ -247,9 +249,10 @@ interface Product {
       }
 
       /* Responsive adjustments */
-      @media (max-width: 480px) {
+      @media (max-width: 768px) {
         .modal-container {
-          width: 95%;
+          width: 98%;
+          max-width: none;
         }
 
         .product-title {
@@ -257,7 +260,7 @@ interface Product {
         }
 
         .product-image-container {
-          height: 200px;
+          min-height: 350px;
         }
       }
     `,
@@ -269,6 +272,31 @@ export class ProductDescriptionComponent {
   quantity: number = 1;
 
   constructor(private cartService: CartService) {}
+
+  // Getter para obtener las imágenes del producto como array
+  get productImages(): string[] {
+    if (!this.product) return [];
+    
+    // Priorizar detailImage si existe
+    if (this.product.detailImage) {
+      if (Array.isArray(this.product.detailImage)) {
+        return this.product.detailImage.filter(img => img && img.trim() !== '');
+      } else if (typeof this.product.detailImage === 'string') {
+        return this.product.detailImage.split(',').map(img => img.trim()).filter(img => img !== '');
+      }
+    }
+    
+    // Usar image como fallback
+    if (this.product.image) {
+      if (Array.isArray(this.product.image)) {
+        return this.product.image.filter(img => img && img.trim() !== '');
+      } else if (typeof this.product.image === 'string') {
+        return [this.product.image];
+      }
+    }
+    
+    return [];
+  }
 
   closeModal(): void {
     this.close.emit();
@@ -287,7 +315,7 @@ export class ProductDescriptionComponent {
   addToCart(): void {
     if (this.product && this.quantity > 0) {
       this.cartService.addToCart(this.product, this.quantity);
-      this.close.emit(); // Close the modal after adding to cart
+      this.close.emit(); // Close modal after adding to cart
     }
   }
 }

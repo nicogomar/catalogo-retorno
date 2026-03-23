@@ -196,13 +196,51 @@
               @for (producto of getProductosFiltrados(); track producto.id) {
                 <div class="product-card-admin">
                   <div class="product-image-section">
-                    <img
-                      [src]="
-                        producto.img_url || 'assets/img/default-product.jpg'
-                      "
-                      [alt]="producto.nombre || 'Producto'"
-                      (error)="onImageError($event)"
-                    />
+                    @if (getProductImages(producto).length > 1) {
+                      <!-- Carrusel para múltiples imágenes -->
+                      <div class="admin-carousel">
+                        <div class="carousel-image-container">
+                          <img
+                            [src]="getProductImages(producto)[currentImageIndex[producto.id!] || 0]"
+                            [alt]="producto.nombre || 'Producto'"
+                            (error)="onImageError($event)"
+                            class="carousel-image"
+                          />
+                          @if (getProductImages(producto).length > 1) {
+                            <button 
+                              class="carousel-btn prev" 
+                              (click)="previousImage(producto)"
+                              [disabled]="isLoading"
+                            >
+                              ‹
+                            </button>
+                            <button 
+                              class="carousel-btn next" 
+                              (click)="nextImage(producto)"
+                              [disabled]="isLoading"
+                            >
+                              ›
+                            </button>
+                          }
+                        </div>
+                        <div class="carousel-indicators">
+                          @for (img of getProductImages(producto); track img; let i = $index) {
+                            <button 
+                              class="indicator" 
+                              [class.active]="i === (currentImageIndex[producto.id!] || 0)"
+                              (click)="goToImage(producto, i)"
+                            ></button>
+                          }
+                        </div>
+                      </div>
+                    } @else {
+                      <!-- Imagen única -->
+                      <img
+                        [src]="getProductImages(producto)[0] || 'assets/img/default-product.jpg'"
+                        [alt]="producto.nombre || 'Producto'"
+                        (error)="onImageError($event)"
+                      />
+                    }
                   </div>
                   <div class="product-info-section">
                     <h3 class="product-title">{{ producto.nombre }}</h3>

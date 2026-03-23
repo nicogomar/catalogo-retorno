@@ -1066,6 +1066,112 @@ import { FormsModule } from "@angular/forms";
           padding: 4px 12px;
         }
       }
+
+      /* Admin Carousel Styles */
+      .admin-carousel {
+        position: relative;
+        width: 100%;
+        height: 150px;
+      }
+
+      .carousel-image-container {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        border-radius: 6px;
+      }
+
+      .carousel-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .carousel-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(0, 0, 0, 0.5);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        font-size: 16px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        z-index: 10;
+      }
+
+      .carousel-btn:hover:not(:disabled) {
+        background: rgba(0, 0, 0, 0.7);
+      }
+
+      .carousel-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      .carousel-btn.prev {
+        left: 5px;
+      }
+
+      .carousel-btn.next {
+        right: 5px;
+      }
+
+      .carousel-indicators {
+        position: absolute;
+        bottom: 8px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 6px;
+        z-index: 10;
+      }
+
+      .indicator {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        border: none;
+        background: rgba(255, 255, 255, 0.5);
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .indicator.active {
+        background: white;
+        transform: scale(1.2);
+      }
+
+      @media (max-width: 768px) {
+        .carousel-btn {
+          width: 25px;
+          height: 25px;
+          font-size: 14px;
+        }
+
+        .carousel-btn.prev {
+          left: 3px;
+        }
+
+        .carousel-btn.next {
+          right: 3px;
+        }
+
+        .indicator {
+          width: 6px;
+          height: 6px;
+        }
+      }
     `,
     `
       .badge-pago,
@@ -1143,6 +1249,9 @@ export class AdministracionComponent implements OnInit {
 
   // Estadísticas de imágenes
   imagenesCount: number = 0;
+
+  // Carrusel de imágenes
+  currentImageIndex: { [key: number]: number } = {};
 
   constructor(
     private productoService: ProductoService,
@@ -1275,13 +1384,9 @@ export class AdministracionComponent implements OnInit {
         next: () => {
           this.loadProductos();
           this.closeProductModal();
-          alert("Producto actualizado exitosamente");
         },
         error: (error) => {
-          console.error("Error al actualizar producto:", error);
-          alert(
-            "Error al actualizar el producto. Por favor, intente nuevamente.",
-          );
+          console.error("Error updating producto:", error);
         },
       });
     } else {
@@ -1290,11 +1395,9 @@ export class AdministracionComponent implements OnInit {
         next: () => {
           this.loadProductos();
           this.closeProductModal();
-          alert("Producto creado exitosamente");
         },
         error: (error) => {
-          console.error("Error al crear producto:", error);
-          alert("Error al crear el producto. Por favor, intente nuevamente.");
+          console.error("Error creating producto:", error);
         },
       });
     }
@@ -1303,6 +1406,46 @@ export class AdministracionComponent implements OnInit {
   confirmDelete(producto: Producto): void {
     this.productToDelete = producto;
     this.showDeleteModal = true;
+  }
+
+  // Métodos para manejar carrusel de imágenes
+  getProductImages(producto: Producto): string[] {
+    if (!producto.img_url) return [];
+    
+    if (Array.isArray(producto.img_url)) {
+      return producto.img_url.filter(img => img && img.trim() !== '');
+    } else if (typeof producto.img_url === 'string') {
+      return producto.img_url.split(',').map(img => img.trim()).filter(img => img !== '');
+    }
+    
+    return [];
+  }
+
+  nextImage(producto: Producto): void {
+    const images = this.getProductImages(producto);
+    if (images.length <= 1) return;
+    
+    const productId = producto.id!;
+    const currentIndex = this.currentImageIndex[productId] || 0;
+    const nextIndex = (currentIndex + 1) % images.length;
+    this.currentImageIndex[productId] = nextIndex;
+  }
+
+  previousImage(producto: Producto): void {
+    const images = this.getProductImages(producto);
+    if (images.length <= 1) return;
+    
+    const productId = producto.id!;
+    const currentIndex = this.currentImageIndex[productId] || 0;
+    const prevIndex = currentIndex === 0 ? images.length - 1 : currentIndex - 1;
+    this.currentImageIndex[productId] = prevIndex;
+  }
+
+  goToImage(producto: Producto, index: number): void {
+    const images = this.getProductImages(producto);
+    if (index >= 0 && index < images.length) {
+      this.currentImageIndex[producto.id!] = index;
+    }
   }
 
   closeDeleteModal(): void {

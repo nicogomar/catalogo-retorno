@@ -11,7 +11,7 @@ export interface Producto {
   nombre?: string | null;
   peso?: string | null;
   precio?: number | null;
-  img_url?: string | null;
+  img_url?: string | string[] | null;
   descripcion?: string | null;
   categoria?: string | null;
 }

@@ -18,8 +18,8 @@ interface Product {
   name: string;
   weight: string;
   price: string;
-  image: string;
-  detailImage?: string;
+  image: string | string[];
+  detailImage?: string | string[];
   description?: string;
   categoria?: string | null;
 }
