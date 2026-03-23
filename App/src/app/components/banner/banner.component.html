@@ -1,0 +1,31 @@
+<div class="banner-container">
+  <div class="banner-image-wrapper">
+    <img 
+      [src]="getCurrentImage()" 
+      alt="Banner image" 
+      class="banner-image"
+      loading="lazy"
+    />
+    
+    @if (hasMultipleImages()) {
+      <!-- Controles del carrusel -->
+      <button class="carousel-btn prev" (click)="previousImage()">
+        ‹
+      </button>
+      <button class="carousel-btn next" (click)="nextImage()">
+        ›
+      </button>
+      
+      <!-- Indicadores -->
+      <div class="carousel-indicators">
+        @for (img of getBannerImages(); track img; let i = $index) {
+          <button 
+            class="indicator" 
+            [class.active]="i === currentImageIndex"
+            (click)="goToImage(i)"
+          ></button>
+        }
+      </div>
+    }
+  </div>
+</div>

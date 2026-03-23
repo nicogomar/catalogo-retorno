@@ -11,6 +11,7 @@ import { ProductoService, Producto } from "./services/producto.service";
 import { AuthService } from "./services/auth.service";
 import { WhatsappFloatComponent } from "./components/whatsapp-float/whatsapp-float.component";
 import { CategoryDrawerComponent, Category } from "./components/category-drawer/category-drawer.component";
+import { BannerComponent } from "./components/banner/banner.component";
 import { AppConfig, getTitle } from "./config";
 
 interface Product {
@@ -38,6 +39,7 @@ interface Product {
     AlertComponent,
     WhatsappFloatComponent,
     CategoryDrawerComponent,
+    BannerComponent,
   ],
   templateUrl: "./app.component.html",
   styleUrl: "./app.component.css",
@@ -120,7 +122,25 @@ export class AppComponent implements OnInit {
     }
   }
 
-  // Group products by category
+  // Get banner products (products with category "Banner")
+  getBannerProducts(): Product[] {
+    const banners = this.products.filter(product => product.categoria === 'Banner');
+    console.log('Banner products found:', banners);
+    console.log('All products:', this.products);
+    return banners;
+  }
+
+  // Get non-banner products
+  getNonBannerProducts(): Product[] {
+    return this.products.filter(product => product.categoria !== 'Banner');
+  }
+
+  // Handle banner click
+  onBannerSelect(productId: number): void {
+    this.onProductSelect(productId);
+  }
+
+  // Group products by category (excluding banners)
   getProductsByCategory(): { category: string | null; products: Product[] }[] {
     const grouped = new Map<string | null, Product[]>();
     
@@ -171,9 +191,9 @@ export class AppComponent implements OnInit {
     return this.products.length;
   }
 
-  // Get filtered products based on search and category
+  // Get filtered products based on search and category (excluding banners)
   getFilteredProducts(): Product[] {
-    let products = this.products;
+    let products = this.getNonBannerProducts(); // Exclude banners from normal filtering
 
     // Filter by category
     if (this.selectedCategory) {

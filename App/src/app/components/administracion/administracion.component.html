@@ -194,7 +194,12 @@
           } @else {
             <div class="products-grid">
               @for (producto of getProductosFiltrados(); track producto.id) {
-                <div class="product-card-admin">
+                <div class="product-card-admin" [class.banner-card]="producto.categoria === 'Banner'">
+                  @if (producto.categoria === 'Banner') {
+                    <div class="banner-indicator">
+                      🎯 BANNER
+                    </div>
+                  }
                   <div class="product-image-section">
                     @if (getProductImages(producto).length > 1) {
                       <!-- Carrusel para múltiples imágenes -->

@@ -308,6 +308,7 @@ export class ProductoService {
 
   /**
    * Get productos ordered by categoria and then by nombre
+   * Banner products appear first, then the rest ordered by categoria and nombre
    */
   async getProductosOrderedByCategoriaAndNombre(): Promise<Producto[]> {
     try {
@@ -321,7 +322,24 @@ export class ProductoService {
         throw error;
       }
 
-      return data as Producto[];
+      const productos = data as Producto[];
+      
+      // Separar banners y productos normales
+      const banners = productos.filter(p => p.categoria === 'Banner');
+      const otrosProductos = productos.filter(p => p.categoria !== 'Banner');
+      
+      // Ordenar productos normales por categoría y luego por nombre
+      otrosProductos.sort((a, b) => {
+        const catA = a.categoria || '';
+        const catB = b.categoria || '';
+        if (catA !== catB) {
+          return catA.localeCompare(catB);
+        }
+        return (a.nombre || '').localeCompare(b.nombre || '');
+      });
+
+      // Retornar banners primero, luego el resto
+      return [...banners, ...otrosProductos];
     } catch (error) {
       console.error('Error getting productos ordered by categoria and nombre:', error);
       throw error;

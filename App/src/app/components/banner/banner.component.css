@@ -1,0 +1,153 @@
+.banner-container {
+  width: 100%;
+  margin: 20px 0;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.banner-image-wrapper {
+  position: relative;
+  width: 100%;
+  padding-bottom: 25%; /* Aspect ratio 4:1 para banner */
+  overflow: hidden;
+}
+
+.banner-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+/* Controles del carrusel */
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  z-index: 10;
+  opacity: 0.8;
+}
+
+.carousel-btn:hover {
+  background: rgba(0, 0, 0, 0.8);
+  opacity: 1;
+  transform: translateY(-50%) scale(1.1);
+}
+
+.carousel-btn.prev {
+  left: 15px;
+}
+
+.carousel-btn.next {
+  right: 15px;
+}
+
+/* Indicadores del carrusel */
+.carousel-indicators {
+  position: absolute;
+  bottom: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 10;
+}
+
+.indicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  opacity: 0.8;
+}
+
+.indicator:hover {
+  background: rgba(255, 255, 255, 0.8);
+  transform: scale(1.2);
+}
+
+.indicator.active {
+  background: white;
+  transform: scale(1.3);
+  opacity: 1;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .banner-image-wrapper {
+    padding-bottom: 35%; /* Más altura en mobile */
+  }
+  
+  .carousel-btn {
+    width: 35px;
+    height: 35px;
+    font-size: 18px;
+  }
+  
+  .carousel-btn.prev {
+    left: 10px;
+  }
+  
+  .carousel-btn.next {
+    right: 10px;
+  }
+  
+  .carousel-indicators {
+    bottom: 10px;
+    gap: 6px;
+  }
+  
+  .indicator {
+    width: 8px;
+    height: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .banner-image-wrapper {
+    padding-bottom: 50%; /* Aún más altura en mobile pequeño */
+  }
+  
+  .carousel-btn {
+    width: 30px;
+    height: 30px;
+    font-size: 16px;
+  }
+  
+  .carousel-btn.prev {
+    left: 8px;
+  }
+  
+  .carousel-btn.next {
+    right: 8px;
+  }
+  
+  .carousel-indicators {
+    bottom: 8px;
+    gap: 4px;
+  }
+  
+  .indicator {
+    width: 6px;
+    height: 6px;
+  }
+}

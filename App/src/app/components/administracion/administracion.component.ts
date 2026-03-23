@@ -370,6 +370,40 @@ import { FormsModule } from "@angular/forms";
         border-radius: 8px;
         transition: all 0.3s ease;
         background: white;
+        position: relative;
+      }
+
+      .product-card-admin.banner-card {
+        border: 2px solid #ff6b35;
+        background: linear-gradient(135deg, #fff8f3 0%, #ffffff 100%);
+        box-shadow: 0 4px 15px rgba(255, 107, 53, 0.2);
+      }
+
+      .banner-indicator {
+        position: absolute;
+        top: -10px;
+        left: 20px;
+        background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+        color: white;
+        padding: 6px 16px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        box-shadow: 0 2px 8px rgba(255, 107, 53, 0.3);
+        z-index: 10;
+        animation: pulse-banner 2s infinite;
+      }
+
+      @keyframes pulse-banner {
+        0%, 100% {
+          transform: scale(1);
+          box-shadow: 0 2px 8px rgba(255, 107, 53, 0.3);
+        }
+        50% {
+          transform: scale(1.05);
+          box-shadow: 0 4px 12px rgba(255, 107, 53, 0.4);
+        }
       }
 
       .product-card-admin:hover {
@@ -1350,6 +1384,22 @@ export class AdministracionComponent implements OnInit {
         producto.categoria?.toLowerCase().includes(categoriaLower),
       );
     }
+
+    // Ordenar: Banners primero, luego el resto por nombre
+    productosFiltrados.sort((a, b) => {
+      // Si A es Banner y B no es, A va primero
+      if (a.categoria === 'Banner' && b.categoria !== 'Banner') {
+        return -1;
+      }
+      // Si B es Banner y A no es, B va primero
+      if (b.categoria === 'Banner' && a.categoria !== 'Banner') {
+        return 1;
+      }
+      // Si ambos son Banner o ninguno es, ordenar por nombre
+      const nombreA = a.nombre || '';
+      const nombreB = b.nombre || '';
+      return nombreA.localeCompare(nombreB);
+    });
 
     return productosFiltrados;
   }

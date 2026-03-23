@@ -28,6 +28,19 @@
     </div>
   </header>
 
+  <!-- Banner Section - Hidden on admin route, only shown on home page -->
+  @if (router.url === "/" || router.url === "") {
+    @if (!isLoading && !loadError && getBannerProducts().length > 0) {
+      <div class="banner-section">
+        @for (banner of getBannerProducts(); track banner.id) {
+          <app-banner
+            [bannerImages]="banner.image"
+          ></app-banner>
+        }
+      </div>
+    }
+  }
+
   <!-- Search Bar - Hidden on admin route -->
   <div class="search-container">
     @if (selectedCategory) {
@@ -232,7 +245,7 @@
     
     <div class="footer-bottom">
       <div class="footer-bottom-content">
-        <p>&copy; 2024 Catálogo Retorno - Todos los derechos reservados</p>
+        <p>&copy; 2026 Catálogo Retorno - Todos los derechos reservados</p>
         <div class="footer-bottom-links">
           <a href="#">Sobre Nosotros</a>
           <a href="#">Términos y Condiciones</a>
