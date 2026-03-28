@@ -3,5 +3,5 @@
 
 export const environment = {
   production: true,
-  apiUrl: "/api",
+  apiUrl: "https://catalogo-retorno.onrender.com/api",
 };
