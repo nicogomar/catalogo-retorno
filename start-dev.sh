@@ -106,7 +106,7 @@ echo -e "${GREEN}🚀 Iniciando servicios...${NC}"
 echo -e "${BLUE}═══════════════════════════════════════${NC}"
 echo ""
 echo -e "${YELLOW}API Backend:${NC}      http://localhost:3000"
-echo -e "${YELLOW}Frontend:${NC}         http://localhost:4200"
+echo -e "${YELLOW}Frontend:${NC}         http://localhost:4200 (o 4201 si 4200 está ocupado)"
 echo -e "${YELLOW}API Health Check:${NC} http://localhost:3000/api/health"
 echo ""
 echo -e "${BLUE}Presiona Ctrl+C para detener ambos servicios${NC}"
@@ -152,7 +152,17 @@ echo -e "${GREEN}✓ API corriendo en http://localhost:3000${NC}"
 # Iniciar Frontend en background
 echo -e "${BLUE}[Frontend]${NC} Iniciando..."
 cd App
-npm start > "../$LOG_DIR/frontend.log" 2>&1 &
+
+# Verificar si el puerto 4200 está en uso y usar uno alternativo si es necesario
+if lsof -Pi :4200 -sTCP:LISTEN -t >/dev/null 2>&1; then
+    echo -e "${YELLOW}⚠️  Puerto 4200 en uso, usando puerto 4201...${NC}"
+    npm start -- --port 4201 > "../$LOG_DIR/frontend.log" 2>&1 &
+    FRONTEND_PORT=4201
+else
+    npm start > "../$LOG_DIR/frontend.log" 2>&1 &
+    FRONTEND_PORT=4200
+fi
+
 FRONTEND_PID=$!
 cd - > /dev/null
 
@@ -168,7 +178,7 @@ if ! kill -0 $FRONTEND_PID 2>/dev/null; then
     exit 1
 fi
 
-echo -e "${GREEN}✓ Frontend corriendo en http://localhost:4200${NC}"
+echo -e "${GREEN}✓ Frontend corriendo en http://localhost:${FRONTEND_PORT}${NC}"
 echo ""
 echo -e "${GREEN}════════════════════════════════════════${NC}"
 echo -e "${GREEN}✅ ¡Todos los servicios están corriendo!${NC}"

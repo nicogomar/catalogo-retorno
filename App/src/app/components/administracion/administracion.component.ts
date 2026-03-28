@@ -877,6 +877,33 @@ import { FormsModule } from "@angular/forms";
         min-width: 140px;
       }
 
+      .td-acciones {
+        min-width: 120px;
+        text-align: center;
+      }
+
+      .btn-delete-pedido {
+        padding: 6px 12px;
+        background-color: #dc3545;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .btn-delete-pedido:hover {
+        background-color: #c82333;
+        transform: translateY(-1px);
+        box-shadow: 0 2px 8px rgba(220, 53, 69, 0.3);
+      }
+
+      .btn-delete-pedido:active {
+        transform: translateY(0);
+      }
+
       .estado-select {
         width: 100%;
         padding: 6px 10px;
@@ -1294,6 +1321,10 @@ export class AdministracionComponent implements OnInit {
 
   showDeleteModal: boolean = false;
   productToDelete: Producto | null = null;
+
+  // Pedidos deletion properties
+  showDeletePedidoModal: boolean = false;
+  pedidoToDelete: Pedido | null = null;
 
   // Pedidos properties
   pedidos: Pedido[] = [];
@@ -1855,5 +1886,34 @@ export class AdministracionComponent implements OnInit {
    */
   getImagenesCount(): number {
     return this.imagenesCount;
+  }
+
+  // Order deletion methods
+  confirmDeletePedido(pedido: Pedido): void {
+    this.pedidoToDelete = pedido;
+    this.showDeletePedidoModal = true;
+  }
+
+  closeDeletePedidoModal(): void {
+    this.showDeletePedidoModal = false;
+    this.pedidoToDelete = null;
+  }
+
+  deletePedido(): void {
+    if (this.pedidoToDelete && this.pedidoToDelete.id) {
+      this.pedidoService.deletePedido(this.pedidoToDelete.id).subscribe({
+        next: () => {
+          this.loadPedidos();
+          this.closeDeletePedidoModal();
+          alert("Pedido eliminado exitosamente");
+        },
+        error: (error) => {
+          console.error("Error al eliminar pedido:", error);
+          alert(
+            "Error al eliminar el pedido. Por favor, intente nuevamente.",
+          );
+        },
+      });
+    }
   }
 }

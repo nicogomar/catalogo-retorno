@@ -431,6 +431,7 @@
                     <th>Total</th>
                     <th>Estado Pago</th>
                     <th>Estado</th>
+                    <th>Acciones</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -481,6 +482,15 @@
                             <option [value]="estado">{{ estado }}</option>
                           }
                         </select>
+                      </td>
+                      <td class="td-acciones">
+                        <button
+                          class="btn-delete-pedido"
+                          (click)="confirmDeletePedido(pedido)"
+                          title="Eliminar pedido"
+                        >
+                          🗑️ Eliminar
+                        </button>
                       </td>
                     </tr>
                   }
@@ -599,6 +609,31 @@
           Cancelar
         </button>
         <button class="btn-delete" (click)="deleteProducto()">Eliminar</button>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- Delete Order Confirmation Modal -->
+@if (showDeletePedidoModal) {
+  <div class="modal-overlay" (click)="closeDeletePedidoModal()">
+    <div class="modal-content modal-small" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>Confirmar Eliminación de Pedido</h2>
+      </div>
+      <div class="modal-body">
+        <p>
+          ¿Estás seguro que deseas eliminar el pedido
+          <strong>#{{ pedidoToDelete?.id }}</strong
+          >?
+        </p>
+        <p class="warning-text">Esta acción no se puede deshacer y eliminará permanentemente el pedido y todos sus datos.</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" (click)="closeDeletePedidoModal()">
+          Cancelar
+        </button>
+        <button class="btn-delete" (click)="deletePedido()">Eliminar</button>
       </div>
     </div>
   </div>
