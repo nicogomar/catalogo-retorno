@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { RouterModule } from "@angular/router";
 import { ProductoService, Producto } from "../../services/producto.service";
@@ -26,7 +26,6 @@ import { FormsModule } from "@angular/forms";
     FormsModule,
   ],
   templateUrl: "./administracion.component.html",
-  encapsulation: ViewEncapsulation.None,
   styles: [
     `
       .admin-container {
@@ -794,7 +793,7 @@ import { FormsModule } from "@angular/forms";
         -webkit-overflow-scrolling:touch;
       }
 
-      .pedidos-table{width:100%;border-collapse:collapse;font-size:14px;min-width:1200px;table-layout:fixed}
+      .pedidos-table{width:100%;border-collapse:collapse;font-size:14px !important;table-layout:auto}
 
       .pedidos-table thead{
         background:#4a1d4a;
@@ -805,6 +804,7 @@ import { FormsModule } from "@angular/forms";
         padding:12px 8px;
         text-align:left;
         font-weight:600;
+        font-size:14px !important;
         white-space:nowrap;
         background:#4a1d4a;
         color:#fff;
@@ -827,6 +827,7 @@ import { FormsModule } from "@angular/forms";
         padding:12px 8px;
         border-bottom:1px solid #e0e0e0;
         vertical-align:top;
+        font-size:14px !important;
         overflow:hidden;
         text-overflow:ellipsis;
         white-space:nowrap;
@@ -965,46 +966,6 @@ import { FormsModule } from "@angular/forms";
       .text-muted{
         color:#999;
         font-style:italic;
-      }
-
-      @media (max-width:1200px){
-        .pedidos-table{
-          font-size:12px;
-          min-width:1000px;
-        }
-        .pedidos-table th,
-        .pedidos-table td{
-          padding:8px 6px;
-        }
-        .pedidos-table th:nth-child(1){width:50px}
-        .pedidos-table th:nth-child(2){width:120px}
-        .pedidos-table th:nth-child(3){width:140px}
-        .pedidos-table th:nth-child(4){width:100px}
-        .pedidos-table th:nth-child(5){width:100px}
-        .pedidos-table th:nth-child(6){width:140px}
-        .pedidos-table th:nth-child(7){width:90px}
-        .pedidos-table th:nth-child(8){width:80px}
-        .pedidos-table th:nth-child(9){width:100px}
-        .pedidos-table th:nth-child(10){width:120px}
-        .pedidos-table th:nth-child(11){width:90px}
-      }
-
-      @media (max-width:768px){
-        .pedidos-table-container{
-          padding:10px;
-        }
-        .pedidos-table{
-          font-size:11px;
-          min-width:800px;
-        }
-        .pedidos-table th,
-        .pedidos-table td{
-          padding:6px 4px;
-        }
-        .estado-select{
-          font-size:11px;
-          padding:4px 6px;
-        }
       }
 
       .productos-modal{max-width:700px;width:90%;max-height:80vh;overflow-y:auto}
