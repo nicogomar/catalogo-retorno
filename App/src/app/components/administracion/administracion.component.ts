@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewEncapsulation } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { RouterModule } from "@angular/router";
 import { ProductoService, Producto } from "../../services/producto.service";
@@ -26,12 +26,14 @@ import { FormsModule } from "@angular/forms";
     FormsModule,
   ],
   templateUrl: "./administracion.component.html",
+  encapsulation: ViewEncapsulation.None,
   styles: [
     `
       .admin-container {
         display: flex;
         min-height: 100vh;
         background-color: #f5f5f5;
+        overflow-x: visible;
       }
 
       /* Sidebar Styles */
@@ -128,6 +130,8 @@ import { FormsModule } from "@angular/forms";
         flex: 1;
         margin-left: 260px;
         padding: 30px;
+        overflow-x: visible;
+        min-width: 0;
       }
 
       .content-header {
@@ -143,6 +147,8 @@ import { FormsModule } from "@angular/forms";
 
       .content-body {
         animation: fadeIn 0.3s ease;
+        overflow-x: visible;
+        min-width: 0;
       }
 
       @keyframes fadeIn {
@@ -776,12 +782,14 @@ import { FormsModule } from "@angular/forms";
         padding:20px;
         box-shadow:0 2px 4px rgba(0,0,0,.1);
         overflow-x:auto;
+        overflow-y:visible;
         width:100%;
         min-width:0;
       }
 
       .table-responsive{
         overflow-x:auto;
+        overflow-y:visible;
         max-width:100%;
         -webkit-overflow-scrolling:touch;
       }
