@@ -770,35 +770,234 @@ import { FormsModule } from "@angular/forms";
         }
       }
 
-      .pedidos-table-container{background:#fff;border-radius:8px;padding:20px;box-shadow:0 2px 4px rgba(0,0,0,.1);overflow-x:auto;width:100%}
+      .pedidos-table-container{
+        background:#fff;
+        border-radius:8px;
+        padding:20px;
+        box-shadow:0 2px 4px rgba(0,0,0,.1);
+        overflow-x:auto;
+        width:100%;
+        min-width:0;
+      }
 
-      .table-responsive{overflow-x:auto;max-width:100%;-webkit-overflow-scrolling:touch}.pedidos-table{width:100%;border-collapse:collapse;font-size:14px;min-width:1200px;table-layout:fixed}
+      .table-responsive{
+        overflow-x:auto;
+        max-width:100%;
+        -webkit-overflow-scrolling:touch;
+      }
 
-      .pedidos-table thead{background:#4a1d4a;color:#fff}.pedidos-table th{padding:12px 8px;text-align:left;font-weight:600;white-space:nowrap;background:#4a1d4a;color:#fff;border-bottom:2px solid #3a1520}
+      .pedidos-table{width:100%;border-collapse:collapse;font-size:14px;min-width:1200px;table-layout:fixed}
 
-      .pedidos-table th:nth-child(1){width:60px}.pedidos-table th:nth-child(2){width:140px}.pedidos-table th:nth-child(3){width:160px}.pedidos-table th:nth-child(4){width:120px}.pedidos-table th:nth-child(5){width:120px}.pedidos-table th:nth-child(6){width:160px}.pedidos-table th:nth-child(7){width:100px}.pedidos-table th:nth-child(8){width:90px}.pedidos-table th:nth-child(9){width:110px}.pedidos-table th:nth-child(10){width:130px}.pedidos-table th:nth-child(11){width:100px}
+      .pedidos-table thead{
+        background:#4a1d4a;
+        color:#fff;
+      }
 
-      .pedidos-table td{padding:12px 8px;border-bottom:1px solid #e0e0e0;vertical-align:top;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+      .pedidos-table th{
+        padding:12px 8px;
+        text-align:left;
+        font-weight:600;
+        white-space:nowrap;
+        background:#4a1d4a;
+        color:#fff;
+        border-bottom:2px solid #3a1520;
+      }
 
-      .pedidos-table tbody tr:hover{background:#f9f9f9}.td-id{font-weight:600;color:#4a1d4a}.td-fecha{font-size:13px;color:#666;min-width:120px}.td-comercio{font-weight:500;min-width:150px}.td-localidad,.td-telefono{min-width:100px}.td-email{min-width:150px;font-size:13px}.productos-cell{text-align:center}
+      .pedidos-table th:nth-child(1){width:60px}
+      .pedidos-table th:nth-child(2){width:140px}
+      .pedidos-table th:nth-child(3){width:160px}
+      .pedidos-table th:nth-child(4){width:120px}
+      .pedidos-table th:nth-child(5){width:120px}
+      .pedidos-table th:nth-child(6){width:160px}
+      .pedidos-table th:nth-child(7){width:100px}
+      .pedidos-table th:nth-child(8){width:90px}
+      .pedidos-table th:nth-child(9){width:110px}
+      .pedidos-table th:nth-child(10){width:130px}
+      .pedidos-table th:nth-child(11){width:100px}
 
-      .btn-ver-productos{padding:6px 16px;background:#4a1d4a;color:#fff;border:none;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer}
+      .pedidos-table td{
+        padding:12px 8px;
+        border-bottom:1px solid #e0e0e0;
+        vertical-align:top;
+        overflow:hidden;
+        text-overflow:ellipsis;
+        white-space:nowrap;
+      }
 
-      .btn-ver-productos:hover{background:#331333}.btn-ver-productos:active{transform:translateY(0)}
+      .pedidos-table tbody tr:hover{
+        background:#f9f9f9;
+      }
 
-      .td-total{font-size:15px;color:#4a1d4a;min-width:80px}.td-estado{min-width:140px}.td-acciones{min-width:120px;text-align:center}.btn-delete-pedido{padding:6px 12px;background:#dc3545;color:#fff;border:none;border-radius:4px;font-size:12px;font-weight:600;cursor:pointer}.btn-delete-pedido:hover{background:#c82333}.btn-delete-pedido:active{transform:translateY(0)}
+      .td-id{
+        font-weight:600;
+        color:#4a1d4a;
+      }
 
-      .estado-select{width:100%;padding:6px 10px;border:2px solid #ddd;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer}
+      .td-fecha{
+        font-size:13px;
+        color:#666;
+        min-width:120px;
+      }
 
-      .estado-select:hover{border-color:#4a1d4a}.estado-select:focus{outline:none;border-color:#4a1d4a}
+      .td-comercio{
+        font-weight:500;
+        min-width:150px;
+      }
 
-      .estado-pendiente{background:#fff3cd;color:#856404;border-color:#ffc107}.estado-aprobado{background:#d1ecf1;color:#0c5460;border-color:#17a2b8}.estado-en-curso{background:#d4edda;color:#155724;border-color:#28a745}.estado-finalizado{background:#e2e3e5;color:#383d41;border-color:#6c757d}
+      .td-localidad,
+      .td-telefono{
+        min-width:100px;
+      }
 
-      .text-muted{color:#999;font-style:italic}
+      .td-email{
+        min-width:150px;
+        font-size:13px;
+      }
 
-      @media (max-width:1200px){.pedidos-table{font-size:12px;min-width:1000px}.pedidos-table th,.pedidos-table td{padding:8px 6px}.pedidos-table th:nth-child(1){width:50px}.pedidos-table th:nth-child(2){width:120px}.pedidos-table th:nth-child(3){width:140px}.pedidos-table th:nth-child(4){width:100px}.pedidos-table th:nth-child(5){width:100px}.pedidos-table th:nth-child(6){width:140px}.pedidos-table th:nth-child(7){width:90px}.pedidos-table th:nth-child(8){width:80px}.pedidos-table th:nth-child(9){width:100px}.pedidos-table th:nth-child(10){width:120px}.pedidos-table th:nth-child(11){width:90px}}
+      .productos-cell{
+        text-align:center;
+      }
 
-      @media (max-width:768px){.pedidos-table-container{padding:10px}.pedidos-table{font-size:11px;min-width:800px}.pedidos-table th,.pedidos-table td{padding:6px 4px}.estado-select{font-size:11px;padding:4px 6px}}
+      .btn-ver-productos{
+        padding:6px 16px;
+        background:#4a1d4a;
+        color:#fff;
+        border:none;
+        border-radius:6px;
+        font-size:13px;
+        font-weight:600;
+        cursor:pointer;
+      }
+
+      .btn-ver-productos:hover{
+        background:#331333;
+      }
+
+      .btn-ver-productos:active{
+        transform:translateY(0);
+      }
+
+      .td-total{
+        font-size:15px;
+        color:#4a1d4a;
+        min-width:80px;
+      }
+
+      .td-estado{
+        min-width:140px;
+      }
+
+      .td-acciones{
+        min-width:120px;
+        text-align:center;
+      }
+
+      .btn-delete-pedido{
+        padding:6px 12px;
+        background:#dc3545;
+        color:#fff;
+        border:none;
+        border-radius:4px;
+        font-size:12px;
+        font-weight:600;
+        cursor:pointer;
+      }
+
+      .btn-delete-pedido:hover{
+        background:#c82333;
+      }
+
+      .btn-delete-pedido:active{
+        transform:translateY(0);
+      }
+
+      .estado-select{
+        width:100%;
+        padding:6px 10px;
+        border:2px solid #ddd;
+        border-radius:6px;
+        font-size:13px;
+        font-weight:600;
+        cursor:pointer;
+      }
+
+      .estado-select:hover{
+        border-color:#4a1d4a;
+      }
+
+      .estado-select:focus{
+        outline:none;
+        border-color:#4a1d4a;
+      }
+
+      .estado-pendiente{
+        background:#fff3cd;
+        color:#856404;
+        border-color:#ffc107;
+      }
+
+      .estado-aprobado{
+        background:#d1ecf1;
+        color:#0c5460;
+        border-color:#17a2b8;
+      }
+
+      .estado-en-curso{
+        background:#d4edda;
+        color:#155724;
+        border-color:#28a745;
+      }
+
+      .estado-finalizado{
+        background:#e2e3e5;
+        color:#383d41;
+        border-color:#6c757d;
+      }
+
+      .text-muted{
+        color:#999;
+        font-style:italic;
+      }
+
+      @media (max-width:1200px){
+        .pedidos-table{
+          font-size:12px;
+          min-width:1000px;
+        }
+        .pedidos-table th,
+        .pedidos-table td{
+          padding:8px 6px;
+        }
+        .pedidos-table th:nth-child(1){width:50px}
+        .pedidos-table th:nth-child(2){width:120px}
+        .pedidos-table th:nth-child(3){width:140px}
+        .pedidos-table th:nth-child(4){width:100px}
+        .pedidos-table th:nth-child(5){width:100px}
+        .pedidos-table th:nth-child(6){width:140px}
+        .pedidos-table th:nth-child(7){width:90px}
+        .pedidos-table th:nth-child(8){width:80px}
+        .pedidos-table th:nth-child(9){width:100px}
+        .pedidos-table th:nth-child(10){width:120px}
+        .pedidos-table th:nth-child(11){width:90px}
+      }
+
+      @media (max-width:768px){
+        .pedidos-table-container{
+          padding:10px;
+        }
+        .pedidos-table{
+          font-size:11px;
+          min-width:800px;
+        }
+        .pedidos-table th,
+        .pedidos-table td{
+          padding:6px 4px;
+        }
+        .estado-select{
+          font-size:11px;
+          padding:4px 6px;
+        }
+      }
 
       .productos-modal{max-width:700px;width:90%;max-height:80vh;overflow-y:auto}
 
