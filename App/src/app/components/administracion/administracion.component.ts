@@ -793,7 +793,7 @@ import { FormsModule } from "@angular/forms";
         -webkit-overflow-scrolling:touch;
       }
 
-      .pedidos-table{width:100%;border-collapse:collapse;font-size:14px !important;table-layout:auto}
+      .pedidos-table{width:100%;border-collapse:collapse;font-size:14px;table-layout:auto}
 
       .pedidos-table thead{
         background:#4a1d4a;
@@ -804,7 +804,7 @@ import { FormsModule } from "@angular/forms";
         padding:12px 8px;
         text-align:left;
         font-weight:600;
-        font-size:14px !important;
+        font-size:14px;
         white-space:nowrap;
         background:#4a1d4a;
         color:#fff;
@@ -827,7 +827,7 @@ import { FormsModule } from "@angular/forms";
         padding:12px 8px;
         border-bottom:1px solid #e0e0e0;
         vertical-align:top;
-        font-size:14px !important;
+        font-size:14px;
         overflow:hidden;
         text-overflow:ellipsis;
         white-space:nowrap;
@@ -843,7 +843,6 @@ import { FormsModule } from "@angular/forms";
       }
 
       .td-fecha{
-        font-size:13px;
         color:#666;
         min-width:120px;
       }
@@ -860,7 +859,6 @@ import { FormsModule } from "@angular/forms";
 
       .td-email{
         min-width:150px;
-        font-size:13px;
       }
 
       .productos-cell{
