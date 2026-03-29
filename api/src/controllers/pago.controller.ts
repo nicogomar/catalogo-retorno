@@ -566,6 +566,116 @@ export class PagoController {
   }
 
   /**
+   * GET /api/pagos/:id/debug
+   * Debug endpoint to check payment details
+   */
+  async debugPago(req: Request, res: Response): Promise<void> {
+    try {
+      const id = parseInt(req.params.id);
+
+      if (isNaN(id)) {
+        res.status(400).json({
+          success: false,
+          error: "Invalid payment ID",
+        });
+        return;
+      }
+
+      const pago = await pagoService.getPagoById(id);
+
+      if (!pago) {
+        res.status(404).json({
+          success: false,
+          error: "Payment not found",
+        });
+        return;
+      }
+
+      // Check if MercadoPago is configured
+      const mpConfigured = mercadoPagoService.isReady();
+
+      // Try to get MercadoPago payment info if we have the ID
+      let mpPaymentInfo = null;
+      if (pago.mercadopago_payment_id && mpConfigured) {
+        try {
+          mpPaymentInfo = await mercadoPagoService.getPayment(pago.mercadopago_payment_id);
+        } catch (error: any) {
+          mpPaymentInfo = { error: error.message };
+        }
+      }
+
+      // Try to search by external reference
+      let searchResults: any[] = [];
+      if (pago.external_reference && mpConfigured) {
+        try {
+          searchResults = await mercadoPagoService.searchPaymentsByExternalReference(pago.external_reference);
+        } catch (error: any) {
+          searchResults = [{ error: error.message }];
+        }
+      }
+
+      res.json({
+        success: true,
+        data: {
+          database_payment: pago,
+          mercadopago_configured: mpConfigured,
+          mercadopago_payment_info: mpPaymentInfo,
+          search_by_external_reference: searchResults,
+        },
+      });
+    } catch (error: any) {
+      console.error("Error in debugPago:", error);
+      res.status(500).json({
+        success: false,
+        error: error.message || "Error debugging payment",
+      });
+    }
+  }
+
+  /**
+   * POST /api/pagos/:id/sync
+   * Manually sync payment status from MercadoPago
+   */
+  async syncPaymentStatus(req: Request, res: Response): Promise<void> {
+    try {
+      const id = parseInt(req.params.id);
+
+      if (isNaN(id)) {
+        res.status(400).json({
+          success: false,
+          error: "Invalid payment ID",
+        });
+        return;
+      }
+
+      console.log(`Attempting to sync payment with ID: ${id}`);
+      const updatedPago = await pagoService.syncPaymentStatus(id);
+
+      if (!updatedPago) {
+        console.log(`Payment not found or could not be synced for ID: ${id}`);
+        res.status(404).json({
+          success: false,
+          error: "Payment not found or could not be synced",
+        });
+        return;
+      }
+
+      console.log(`Payment synced successfully. New status: ${updatedPago.estado}`);
+      res.json({
+        success: true,
+        data: updatedPago,
+        message: "Payment status synced successfully",
+      });
+    } catch (error: any) {
+      console.error("Error in syncPaymentStatus:", error);
+      res.status(500).json({
+        success: false,
+        error: error.message || "Error syncing payment status",
+      });
+    }
+  }
+
+  /**
    * GET /api/pagos/check-config
    * Check if MercadoPago is properly configured
    */

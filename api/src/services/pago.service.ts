@@ -371,6 +371,128 @@ class PagoService {
   }
 
   /**
+   * Manually sync payment status from MercadoPago
+   * @param id - Payment ID in database
+   * @returns Updated payment record or null if not found
+   */
+  async syncPaymentStatus(id: number): Promise<Pago | null> {
+    try {
+      console.log(`[PagoService] Starting sync for payment ID: ${id}`);
+      
+      // Check if MercadoPago is configured
+      if (!mercadoPagoService.isReady()) {
+        throw new Error("MercadoPago service is not properly configured. Please check MERCADOPAGO_ACCESS_TOKEN environment variable.");
+      }
+      
+      // Get payment record from database
+      const pago = await this.getPagoById(id);
+      
+      if (!pago) {
+        console.error(`[PagoService] Payment record not found for ID: ${id}`);
+        return null;
+      }
+
+      console.log(`[PagoService] Found payment:`, {
+        id: pago.id,
+        pedido_id: pago.pedido_id,
+        estado: pago.estado,
+        mercadopago_payment_id: pago.mercadopago_payment_id,
+        external_reference: pago.external_reference
+      });
+
+      // If payment doesn't have a MercadoPago payment ID, try to find it
+      if (!pago.mercadopago_payment_id && pago.external_reference) {
+        console.log(`[PagoService] Searching for MercadoPago payment with external reference: ${pago.external_reference}`);
+        
+        try {
+          const payments = await mercadoPagoService.searchPaymentsByExternalReference(pago.external_reference);
+          
+          if (payments.length === 0) {
+            console.warn(`[PagoService] No MercadoPago payments found for external reference: ${pago.external_reference}`);
+            return pago;
+          }
+
+          // Use the most recent payment
+          const latestPayment = payments.sort((a, b) => 
+            new Date(b.date_created).getTime() - new Date(a.date_created).getTime()
+          )[0];
+
+          console.log(`[PagoService] Found MercadoPago payment: ${latestPayment.id}`);
+
+          // Update the payment record with the MercadoPago payment ID
+          await this.updatePago(id, {
+            mercadopago_payment_id: latestPayment.id.toString(),
+          });
+
+          // Update the local pago object with the payment ID
+          pago.mercadopago_payment_id = latestPayment.id.toString();
+        } catch (searchError: any) {
+          console.error(`[PagoService] Error searching for MercadoPago payment:`, searchError);
+          throw new Error(`Error searching MercadoPago payment: ${searchError.message}`);
+        }
+      }
+
+      // If we still don't have a MercadoPago payment ID, we can't sync
+      if (!pago.mercadopago_payment_id) {
+        console.warn(`[PagoService] No MercadoPago payment ID found for payment ID: ${id}`);
+        return pago;
+      }
+
+      // Get payment info from MercadoPago
+      console.log(`[PagoService] Getting payment info from MercadoPago for payment ID: ${pago.mercadopago_payment_id}`);
+      
+      let paymentInfo;
+      try {
+        paymentInfo = await mercadoPagoService.getPayment(pago.mercadopago_payment_id);
+        console.log(`[PagoService] MercadoPago payment info:`, {
+          id: paymentInfo.id,
+          status: paymentInfo.status,
+          status_detail: paymentInfo.status_detail
+        });
+      } catch (mpError: any) {
+        console.error(`[PagoService] Error getting payment from MercadoPago:`, mpError);
+        throw new Error(`Error getting payment from MercadoPago: ${mpError.message}`);
+      }
+
+      // Update payment record with latest status
+      const updateData: ActualizarPago = {
+        estado: paymentInfo.status,
+        metodo_pago: paymentInfo.payment_method_id,
+        monto: paymentInfo.transaction_amount,
+        moneda: paymentInfo.currency_id,
+        fecha_aprobacion: paymentInfo.date_approved,
+        detalles: {
+          ...((pago.detalles as any) || {}),
+          payment_info: paymentInfo,
+          last_sync: new Date().toISOString(),
+        },
+      };
+
+      const updatedPago = await this.updatePago(id, updateData);
+      console.log(`[PagoService] Payment updated in database with new status: ${paymentInfo.status}`);
+
+      // If payment is approved and pedido status is not already "PAGO", update it
+      if (paymentInfo.status === "approved" && pago.pedido_id) {
+        try {
+          await pedidoService.updatePedido(pago.pedido_id, {
+            estado: "PAGO",
+          });
+          console.log(`[PagoService] Pedido ${pago.pedido_id} status updated to PAGO`);
+        } catch (error) {
+          console.error("[PagoService] Error updating pedido status:", error);
+          // Don't throw here, the payment sync was successful even if pedido update failed
+        }
+      }
+
+      console.log(`[PagoService] Payment ${id} synced successfully. New status: ${paymentInfo.status}`);
+      return updatedPago;
+    } catch (error: any) {
+      console.error("[PagoService] Error syncing payment status:", error);
+      throw error; // Re-throw to let controller handle it
+    }
+  }
+
+  /**
    * Get payment statistics
    * @returns Payment statistics
    */

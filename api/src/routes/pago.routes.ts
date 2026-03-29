@@ -110,6 +110,24 @@ router.patch("/:id/estado", (req, res) =>
 router.post("/:id/refund", (req, res) => pagoController.refundPago(req, res));
 
 /**
+ * @route   GET /api/pagos/:id/debug
+ * @desc    Debug endpoint to check payment details
+ * @param   id - Payment ID
+ * @access  Public (should be protected in production)
+ */
+router.get("/:id/debug", (req, res) => pagoController.debugPago(req, res));
+
+/**
+ * @route   POST /api/pagos/:id/sync
+ * @desc    Manually sync payment status from MercadoPago
+ * @param   id - Payment ID
+ * @access  Public (should be protected in production)
+ */
+router.post("/:id/sync", (req, res) =>
+  pagoController.syncPaymentStatus(req, res),
+);
+
+/**
  * @route   DELETE /api/pagos/:id
  * @desc    Delete a payment
  * @param   id - Payment ID
