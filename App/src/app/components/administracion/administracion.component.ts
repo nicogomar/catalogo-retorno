@@ -777,17 +777,22 @@ import { FormsModule } from "@angular/forms";
         padding: 20px;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         overflow-x: auto;
+        width: 100%;
+        min-width: 0;
       }
 
       .table-responsive {
         overflow-x: auto;
         max-width: 100%;
+        -webkit-overflow-scrolling: touch;
       }
 
       .pedidos-table {
         width: 100%;
         border-collapse: collapse;
         font-size: 14px;
+        min-width: 1200px;
+        table-layout: fixed;
       }
 
       .pedidos-table thead {
@@ -805,10 +810,25 @@ import { FormsModule } from "@angular/forms";
         border-bottom: 2px solid #3a1520;
       }
 
+      .pedidos-table th:nth-child(1) { width: 60px; } /* ID */
+      .pedidos-table th:nth-child(2) { width: 140px; } /* Fecha */
+      .pedidos-table th:nth-child(3) { width: 160px; } /* Comercio */
+      .pedidos-table th:nth-child(4) { width: 120px; } /* Localidad */
+      .pedidos-table th:nth-child(5) { width: 120px; } /* Teléfono */
+      .pedidos-table th:nth-child(6) { width: 160px; } /* Email */
+      .pedidos-table th:nth-child(7) { width: 100px; } /* Productos */
+      .pedidos-table th:nth-child(8) { width: 90px; } /* Total */
+      .pedidos-table th:nth-child(9) { width: 110px; } /* Estado Pago */
+      .pedidos-table th:nth-child(10) { width: 130px; } /* Estado */
+      .pedidos-table th:nth-child(11) { width: 100px; } /* Acciones */
+
       .pedidos-table td {
         padding: 12px 8px;
         border-bottom: 1px solid #e0e0e0;
         vertical-align: top;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
 
       .pedidos-table tbody tr:hover {
@@ -957,12 +977,25 @@ import { FormsModule } from "@angular/forms";
       @media (max-width: 1200px) {
         .pedidos-table {
           font-size: 12px;
+          min-width: 1000px;
         }
 
         .pedidos-table th,
         .pedidos-table td {
           padding: 8px 6px;
         }
+
+        .pedidos-table th:nth-child(1) { width: 50px; } /* ID */
+        .pedidos-table th:nth-child(2) { width: 120px; } /* Fecha */
+        .pedidos-table th:nth-child(3) { width: 140px; } /* Comercio */
+        .pedidos-table th:nth-child(4) { width: 100px; } /* Localidad */
+        .pedidos-table th:nth-child(5) { width: 100px; } /* Teléfono */
+        .pedidos-table th:nth-child(6) { width: 140px; } /* Email */
+        .pedidos-table th:nth-child(7) { width: 90px; } /* Productos */
+        .pedidos-table th:nth-child(8) { width: 80px; } /* Total */
+        .pedidos-table th:nth-child(9) { width: 100px; } /* Estado Pago */
+        .pedidos-table th:nth-child(10) { width: 120px; } /* Estado */
+        .pedidos-table th:nth-child(11) { width: 90px; } /* Acciones */
       }
 
       @media (max-width: 768px) {
@@ -972,6 +1005,7 @@ import { FormsModule } from "@angular/forms";
 
         .pedidos-table {
           font-size: 11px;
+          min-width: 800px;
         }
 
         .pedidos-table th,
@@ -1298,16 +1332,7 @@ import { FormsModule } from "@angular/forms";
         padding: 8px 4px;
         white-space: nowrap;
       }
-      .pedidos-table th,
-      .pedidos-table td {
-        padding: 10px 8px;
-        vertical-align: middle;
-      }
-      .pedidos-table th {
-        font-weight: 600;
-        background-color: #f5f5f5;
-      }
-    `,
+      `,
   ],
 })
 export class AdministracionComponent implements OnInit {
