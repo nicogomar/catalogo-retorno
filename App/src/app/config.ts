@@ -120,6 +120,16 @@ export function getColor(path: string): string {
  * @deprecated Usa getTexto() desde personalizacion.ts
  */
 export function getTitle(path: string): string {
-  return getTexto(`homepage.header.${path.replace('titles.', '')}`) || '';
+  // Mapeo de nombres de propiedades en config.ts a personalizacion.ts
+  const propertyMap: Record<string, string> = {
+    'mainTitle': 'titulo',
+    'pageTitle': 'titulo',
+    'subtitle': 'subtitulo',
+    'logoAlt': 'logoAlt'
+  };
+
+  const cleanPath = path.replace('titles.', '');
+  const mappedProperty = propertyMap[cleanPath] || cleanPath;
+  return getTexto(`homepage.header.${mappedProperty}`) || '';
 }
 

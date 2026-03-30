@@ -1,5 +1,6 @@
 import { Component, Input, OnInit, OnDestroy } from "@angular/core";
 import { CommonModule } from "@angular/common";
+import { ComponentesTextos } from "../../personalizacion";
 
 @Component({
   selector: "app-banner",
@@ -12,6 +13,9 @@ export class BannerComponent implements OnInit, OnDestroy {
   @Input() bannerImages: string | string[] = "";
   currentImageIndex: number = 0;
   private autoplayInterval: any = null;
+
+  // Textos centralizados
+  textos = ComponentesTextos;
 
   ngOnInit(): void {
     console.log('Banner images input:', this.bannerImages);

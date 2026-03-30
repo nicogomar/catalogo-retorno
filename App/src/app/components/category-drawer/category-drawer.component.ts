@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ComponentesTextos } from '../../personalizacion';
 
 export interface Category {
   name: string;
@@ -19,6 +20,9 @@ export class CategoryDrawerComponent {
   @Input() selectedCategory: string | null = null;
   @Output() closeDrawer = new EventEmitter<void>();
   @Output() categorySelected = new EventEmitter<string | null>();
+
+  // Textos centralizados
+  textos = ComponentesTextos;
 
   onCloseDrawer(): void {
     this.closeDrawer.emit();

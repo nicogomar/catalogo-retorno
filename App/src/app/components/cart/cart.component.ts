@@ -7,6 +7,7 @@ import { AlertService } from "../../services/alert.service";
 import { AlertComponent } from "../alert/alert.component";
 import { PedidoService, NuevoPedido } from "../../services/pedido.service";
 import { PagoService, NuevoPago, PagoItem } from "../../services/pago.service";
+import { ComponentesTextos, MensajesSistema } from "../../personalizacion";
 
 @Component({
   selector: "app-cart",
@@ -16,7 +17,7 @@ import { PagoService, NuevoPago, PagoItem } from "../../services/pago.service";
     <div class="cart-modal" [class.is-open]="isOpen">
       <div class="cart-container">
         <div class="cart-header">
-          <h2>Carrito de Compras</h2>
+          <h2>{{ textos.carrito.titulo }}</h2>
           <button class="close-button" (click)="close()">×</button>
         </div>
 
@@ -25,7 +26,7 @@ import { PagoService, NuevoPago, PagoItem } from "../../services/pago.service";
         <div class="cart-content">
           @if (cartService.getCartItems()().length === 0) {
             <div class="empty-cart">
-              <p>Su carrito está vacío</p>
+              <p>{{ textos.carrito.vacio.titulo }}</p>
             </div>
           } @else {
             <div class="cart-items">
@@ -73,13 +74,13 @@ import { PagoService, NuevoPago, PagoItem } from "../../services/pago.service";
 
             <div class="cart-summary">
               <div class="cart-total">
-                <span>Total:</span>
+                <span>{{ textos.carrito.totales.total }}</span>
                 <span>{{
                   cartService.formatPrice(cartService.totalPrice())
                 }}</span>
               </div>
               <button class="checkout-btn" (click)="checkout()">
-                Finalizar Compra
+                {{ textos.carrito.botones.finalizar }}
               </button>
             </div>
 
@@ -428,6 +429,10 @@ export class CartComponent {
   isOpen = false;
   isCustomerModalOpen = false;
 
+  // Textos centralizados
+  textos = ComponentesTextos;
+  mensajes = MensajesSistema;
+
   constructor(
     public cartService: CartService,
     private alertService: AlertService,
@@ -495,10 +500,10 @@ export class CartComponent {
     // Mostrar mensaje de procesamiento según el método de pago
     if (paymentMethod === "mercadopago") {
       this.alertService.showSuccess(
-        "Procesando su pedido y generando link de pago...",
+        this.mensajes.cargando.procesando,
       );
     } else {
-      this.alertService.showSuccess("Procesando su pedido...");
+      this.alertService.showSuccess(this.mensajes.cargando.procesando);
     }
 
     // Save the order to the database

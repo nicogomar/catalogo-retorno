@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { PagoService } from '../../services/pago.service';
+import { ComponentesTextos, MensajesSistema, AdministracionTextos } from '../../personalizacion';
 
 @Component({
   selector: 'app-payment-failure',
@@ -16,30 +17,30 @@ import { PagoService } from '../../services/pago.service';
           </svg>
         </div>
 
-        <h1>Pago Rechazado</h1>
-        <p class="subtitle">No se pudo procesar tu pago</p>
+        <h1>{{ textos.pagos.fallido.titulo }}</h1>
+        <p class="subtitle">{{ textos.pagos.fallido.mensaje }}</p>
 
         @if (loading) {
           <div class="loading">
             <div class="spinner"></div>
-            <p>Verificando información del pago...</p>
+            <p>{{ mensajes.cargando.procesando }}</p>
           </div>
         } @else {
           @if (pago) {
             <div class="payment-details">
               <div class="detail-row">
-                <span class="label">Número de Pedido:</span>
+                <span class="label">ID:</span>
                 <span class="value">#{{ pago.pedido_id }}</span>
               </div>
               @if (pago.mercadopago_payment_id) {
                 <div class="detail-row">
-                  <span class="label">ID de Pago:</span>
+                  <span class="label">ID de pago:</span>
                   <span class="value">{{ pago.mercadopago_payment_id }}</span>
                 </div>
               }
               @if (pago.monto) {
                 <div class="detail-row">
-                  <span class="label">Monto:</span>
+                  <span class="label">{{ textos.carrito.totales.total }}</span>
                   <span class="value amount">{{ formatCurrency(pago.monto) }}</span>
                 </div>
               }
@@ -51,17 +52,17 @@ import { PagoService } from '../../services/pago.service';
           }
 
           <div class="error-box">
-            <svg class="error-icon" viewBox="0 0 24 24" fill="currentColor">
+            <svg class="error-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
               <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
             </svg>
             <div class="error-text">
-              <p><strong>¿Por qué fue rechazado?</strong></p>
-              <p>El pago puede haber sido rechazado por varios motivos:</p>
+              <p><strong>{{ textos.pagos.fallido.titulo }}</strong></p>
+              <p>{{ textos.pagos.fallido.mensaje }}</p>
               <ul>
-                <li>Fondos insuficientes en la tarjeta</li>
-                <li>Datos de tarjeta incorrectos</li>
-                <li>Límite de compra excedido</li>
-                <li>Tarjeta vencida o bloqueada</li>
+                <li>{{ mensajes.errores.generico }}</li>
+                <li>{{ textos.login.errores.camposRequeridos }}</li>
+                <li>{{ textos.login.errores.camposRequeridos }}</li>
+                <li>{{ mensajes.errores.conexion }}</li>
               </ul>
             </div>
           </div>
@@ -71,11 +72,11 @@ import { PagoService } from '../../services/pago.service';
               <path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             <div class="info-text">
-              <p><strong>¿Qué puedes hacer?</strong></p>
-              <p>• Verifica los datos de tu tarjeta</p>
-              <p>• Intenta con otro método de pago</p>
-              <p>• Contacta a tu banco para más información</p>
-              <p>• Intenta realizar el pago nuevamente</p>
+              <p><strong>{{ textos.pagos.pendiente.titulo }}</strong></p>
+              <p>• {{ textos.login.errores.credencialesInvalidas }}</p>
+              <p>• {{ textos.pagos.fallido.botonReintentar }}</p>
+              <p>• {{ mensajes.errores.conexion }}</p>
+              <p>• {{ textos.pagos.fallido.botonVolver }}</p>
             </div>
           </div>
         }
@@ -85,17 +86,17 @@ import { PagoService } from '../../services/pago.service';
             <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
             </svg>
-            Intentar de Nuevo
+            {{ textos.pagos.fallido.botonReintentar }}
           </button>
           <button class="btn-secondary" (click)="goToHome()">
-            Volver al Inicio
+            {{ textos.pagos.fallido.botonVolver }}
           </button>
           @if (supportPhone || supportEmail) {
             <button class="btn-tertiary" (click)="contactSupport()">
               <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
               </svg>
-              Contactar Soporte
+              {{ textos.whatsapp.tooltip }}
             </button>
           }
         </div>
@@ -422,6 +423,11 @@ export class PaymentFailureComponent implements OnInit {
   externalReference: string | null = null;
   supportPhone = ''; // Add your support phone
   supportEmail = ''; // Add your support email
+
+  // Textos centralizados
+  textos = ComponentesTextos;
+  textosAdmin = AdministracionTextos;
+  mensajes = MensajesSistema;
 
   constructor(
     private route: ActivatedRoute,

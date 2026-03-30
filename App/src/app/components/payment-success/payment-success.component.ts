@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { PagoService } from '../../services/pago.service';
 import { PedidoService } from '../../services/pedido.service';
+import { ComponentesTextos, MensajesSistema, AdministracionTextos } from '../../personalizacion';
 
 @Component({
   selector: 'app-payment-success',
@@ -17,27 +18,27 @@ import { PedidoService } from '../../services/pedido.service';
           </svg>
         </div>
 
-        <h1>¡Pago Exitoso!</h1>
-        <p class="subtitle">Tu pedido ha sido procesado correctamente</p>
+        <h1>{{ textos.pagos.exito.titulo }}</h1>
+        <p class="subtitle">{{ textos.pagos.exito.mensaje }}</p>
 
         @if (loading) {
           <div class="loading">
             <div class="spinner"></div>
-            <p>Cargando información del pago...</p>
+            <p>{{ mensajes.cargando.cargando }}</p>
           </div>
         } @else if (pago) {
           <div class="payment-details">
             <div class="detail-row">
-              <span class="label">Número de Pedido:</span>
+              <span class="label">ID:</span>
               <span class="value">#{{ pago.pedido_id }}</span>
             </div>
             <div class="detail-row">
-              <span class="label">ID de Pago:</span>
-              <span class="value">{{ pago.mercadopago_payment_id || 'Procesando...' }}</span>
+              <span class="label">ID:</span>
+              <span class="value">{{ pago.mercadopago_payment_id || mensajes.cargando.procesando }}</span>
             </div>
             @if (pago.monto) {
               <div class="detail-row">
-                <span class="label">Monto:</span>
+                <span class="label">{{ textos.carrito.totales.total }}</span>
                 <span class="value amount">{{ formatCurrency(pago.monto) }}</span>
               </div>
             }
@@ -58,8 +59,8 @@ import { PedidoService } from '../../services/pedido.service';
               <path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             <div class="info-text">
-              <p><strong>¿Qué sigue?</strong></p>
-              <p>Recibirás un correo electrónico con la confirmación de tu pedido y los detalles del envío.</p>
+              <p><strong>{{ textos.pagos.exito.titulo }}</strong></p>
+              <p>{{ textos.pagos.exito.mensaje }}</p>
             </div>
           </div>
         } @else if (error) {
@@ -73,11 +74,11 @@ import { PedidoService } from '../../services/pedido.service';
             <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
             </svg>
-            Volver al Inicio
+            {{ textos.pagos.exito.botonVolver }}
           </button>
           @if (pago) {
             <button class="btn-secondary" (click)="viewOrder()">
-              Ver Detalles del Pedido
+              Ver
             </button>
           }
         </div>
@@ -353,6 +354,11 @@ export class PaymentSuccessComponent implements OnInit {
   error: string | null = null;
   paymentId: string | null = null;
   externalReference: string | null = null;
+
+  // Textos centralizados
+  textos = ComponentesTextos;
+  textosAdmin = AdministracionTextos;
+  mensajes = MensajesSistema;
 
   constructor(
     private route: ActivatedRoute,

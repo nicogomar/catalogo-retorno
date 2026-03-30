@@ -13,6 +13,7 @@ import { WhatsappFloatComponent } from "./components/whatsapp-float/whatsapp-flo
 import { CategoryDrawerComponent, Category } from "./components/category-drawer/category-drawer.component";
 import { BannerComponent } from "./components/banner/banner.component";
 import { AppConfig, getTitle } from "./config";
+import { HomepageTextos } from "./personalizacion";
 
 interface Product {
   id: number;
@@ -63,6 +64,9 @@ export class AppComponent implements OnInit {
   appTitle = getTitle('titles.mainTitle');
   appSubtitle = getTitle('titles.subtitle');
   appLogoAlt = getTitle('titles.logoAlt');
+
+  // Textos centralizados
+  textos = HomepageTextos;
 
   constructor(
     public cartService: CartService,

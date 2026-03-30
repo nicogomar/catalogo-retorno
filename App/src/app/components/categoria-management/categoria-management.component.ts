@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { CategoriaService, Categoria, NuevaCategoria, ActualizarCategoria } from "../../services/categoria.service";
+import { AdministracionTextos } from "../../personalizacion";
 
 @Component({
   selector: "app-categoria-management",
@@ -279,6 +280,9 @@ export class CategoriaManagementComponent implements OnInit {
   loading = false;
   error: string | null = null;
   success: string | null = null;
+
+  // Textos centralizados
+  textos = AdministracionTextos;
 
   // Modal properties
   showCreateModal = false;

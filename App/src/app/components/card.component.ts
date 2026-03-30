@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from "@angular/core";
 import { CommonModule } from "@angular/common";
+import { ComponentesTextos } from "../personalizacion";
 
 @Component({
   selector: "app-card",
@@ -15,6 +16,9 @@ export class CardComponent {
   @Input() productPrice: string = "";
   @Input() productId: number = 0;
   @Output() cardClick = new EventEmitter<number>();
+
+  // Textos centralizados
+  textos = ComponentesTextos;
 
   // Getter para obtener la primera imagen del producto
   get displayImage(): string {

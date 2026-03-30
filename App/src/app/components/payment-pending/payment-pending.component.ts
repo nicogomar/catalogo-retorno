@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { PagoService } from '../../services/pago.service';
+import { ComponentesTextos, MensajesSistema, AdministracionTextos } from '../../personalizacion';
 
 @Component({
   selector: 'app-payment-pending',
@@ -16,30 +17,30 @@ import { PagoService } from '../../services/pago.service';
           </svg>
         </div>
 
-        <h1>Pago Pendiente</h1>
-        <p class="subtitle">Tu pago está siendo procesado</p>
+        <h1>{{ textos.pagos.pendiente.titulo }}</h1>
+        <p class="subtitle">{{ textos.pagos.pendiente.mensaje }}</p>
 
         @if (loading) {
           <div class="loading">
             <div class="spinner"></div>
-            <p>Verificando estado del pago...</p>
+            <p>{{ mensajes.cargando.cargando }}</p>
           </div>
         } @else {
           @if (pago) {
             <div class="payment-details">
               <div class="detail-row">
-                <span class="label">Número de Pedido:</span>
+                <span class="label">ID:</span>
                 <span class="value">#{{ pago.pedido_id }}</span>
               </div>
               @if (pago.mercadopago_payment_id) {
                 <div class="detail-row">
-                  <span class="label">ID de Pago:</span>
+                  <span class="label">ID:</span>
                   <span class="value">{{ pago.mercadopago_payment_id }}</span>
                 </div>
               }
               @if (pago.monto) {
                 <div class="detail-row">
-                  <span class="label">Monto:</span>
+                  <span class="label">{{ textos.carrito.totales.total }}</span>
                   <span class="value amount">{{ formatCurrency(pago.monto) }}</span>
                 </div>
               }
@@ -49,7 +50,7 @@ import { PagoService } from '../../services/pago.service';
               </div>
               @if (pago.created_at) {
                 <div class="detail-row">
-                  <span class="label">Fecha de solicitud:</span>
+                  <span class="label">Fecha:</span>
                   <span class="value">{{ formatDate(pago.created_at) }}</span>
                 </div>
               }
@@ -61,13 +62,13 @@ import { PagoService } from '../../services/pago.service';
               <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
             </svg>
             <div class="warning-text">
-              <p><strong>¿Por qué está pendiente?</strong></p>
-              <p>Tu pago está siendo procesado. Esto puede deberse a:</p>
+              <p><strong>{{ textos.pagos.pendiente.titulo }}</strong></p>
+              <p>{{ textos.pagos.pendiente.mensaje }}</p>
               <ul>
-                <li>Pago con efectivo en puntos de pago</li>
-                <li>Transferencia bancaria pendiente de acreditación</li>
-                <li>Verificación adicional requerida por el banco</li>
-                <li>Procesamiento en horario no bancario</li>
+                <li>{{ textos.pagos.pendiente.mensaje }}</li>
+                <li>{{ textos.pagos.pendiente.mensaje }}</li>
+                <li>{{ mensajes.cargando.procesando }}</li>
+                <li>{{ textos.pagos.pendiente.mensaje }}</li>
               </ul>
             </div>
           </div>
@@ -77,42 +78,42 @@ import { PagoService } from '../../services/pago.service';
               <path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             <div class="info-text">
-              <p><strong>¿Qué sucede ahora?</strong></p>
-              <p>• El pago puede tardar hasta 48 horas en procesarse</p>
-              <p>• Recibirás un email cuando se confirme el pago</p>
-              <p>• Puedes verificar el estado en cualquier momento</p>
-              <p>• Tu pedido se procesará una vez confirmado el pago</p>
+              <p><strong>{{ textos.pagos.pendiente.titulo }}</strong></p>
+              <p>• {{ textos.pagos.pendiente.mensaje }}</p>
+              <p>• {{ textos.pagos.exito.mensaje }}</p>
+              <p>• {{ textos.pagos.pendiente.botonVolver }}</p>
+              <p>• {{ textos.pagos.exito.mensaje }}</p>
             </div>
           </div>
 
           <div class="timeline">
-            <h3>Proceso de tu pago</h3>
+            <h3>Detalle</h3>
             <div class="timeline-item completed">
               <div class="timeline-marker"></div>
               <div class="timeline-content">
-                <h4>Pedido creado</h4>
-                <p>Tu pedido fue registrado exitosamente</p>
+                <h4>ID</h4>
+                <p>{{ textos.pagos.exito.mensaje }}</p>
               </div>
             </div>
             <div class="timeline-item active">
               <div class="timeline-marker"></div>
               <div class="timeline-content">
-                <h4>Pago en proceso</h4>
-                <p>Esperando confirmación del pago</p>
+                <h4>{{ textos.pagos.pendiente.titulo }}</h4>
+                <p>{{ textos.pagos.pendiente.mensaje }}</p>
               </div>
             </div>
             <div class="timeline-item">
               <div class="timeline-marker"></div>
               <div class="timeline-content">
-                <h4>Pago confirmado</h4>
-                <p>Una vez aprobado, procesaremos tu pedido</p>
+                <h4>{{ textos.pagos.exito.titulo }}</h4>
+                <p>{{ textos.pagos.exito.mensaje }}</p>
               </div>
             </div>
             <div class="timeline-item">
               <div class="timeline-marker"></div>
               <div class="timeline-content">
-                <h4>Pedido enviado</h4>
-                <p>Recibirás información de seguimiento</p>
+                <h4>{{ textos.carrito.botones.finalizar }}</h4>
+                <p>{{ textos.pagos.exito.mensaje }}</p>
               </div>
             </div>
           </div>
@@ -126,11 +127,11 @@ import { PagoService } from '../../services/pago.service';
             Verificar Estado
           </button>
           <button class="btn-secondary" (click)="goToHome()">
-            Volver al Inicio
+            {{ textos.pagos.pendiente.botonVolver }}
           </button>
           @if (pago) {
             <button class="btn-tertiary" (click)="viewOrder()">
-              Ver Detalles del Pedido
+              Ver
             </button>
           }
         </div>
@@ -575,6 +576,11 @@ export class PaymentPendingComponent implements OnInit {
   error: string | null = null;
   paymentId: string | null = null;
   externalReference: string | null = null;
+
+  // Textos centralizados
+  textos = ComponentesTextos;
+  textosAdmin = AdministracionTextos;
+  mensajes = MensajesSistema;
 
   constructor(
     private route: ActivatedRoute,

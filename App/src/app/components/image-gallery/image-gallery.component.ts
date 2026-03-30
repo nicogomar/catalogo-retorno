@@ -3,6 +3,7 @@ import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { StorageService, StorageImage } from "../../services/storage.service";
 import { AlertService } from "../../services/alert.service";
+import { AdministracionTextos } from "../../personalizacion";
 
 @Component({
   selector: "app-image-gallery",
@@ -38,6 +39,9 @@ export class ImageGalleryComponent implements OnInit {
   filteredImages: StorageImage[] = [];
   isLoading: boolean = false;
   loadError: string | null = null;
+
+  // Textos centralizados
+  textos = AdministracionTextos;
 
   selectedImages: Set<string> = new Set();
   selectMode: boolean = false;
@@ -89,8 +93,7 @@ export class ImageGalleryComponent implements OnInit {
       },
       error: (error) => {
         console.error("Error al cargar imágenes:", error);
-        this.loadError =
-          "No se pudieron cargar las imágenes. Por favor, intente nuevamente.";
+        this.loadError = this.textos.imagenes.cargando;
         this.isLoading = false;
       },
     });

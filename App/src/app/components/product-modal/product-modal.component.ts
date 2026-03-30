@@ -3,6 +3,7 @@ import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { Producto } from "../../services/producto.service";
 import { CategoriaService, Categoria } from "../../services/categoria.service";
+import { AdministracionTextos, MensajesSistema } from "../../personalizacion";
 
 @Component({
   selector: "app-product-modal",
@@ -12,7 +13,7 @@ import { CategoriaService, Categoria } from "../../services/categoria.service";
     <div class="modal-overlay" (click)="onClose()">
       <div class="modal-content" (click)="$event.stopPropagation()">
         <div class="modal-header">
-          <h2>{{ isEditMode ? 'Editar Producto' : 'Nuevo Producto' }}</h2>
+          <h2>{{ isEditMode ? textos.productos.modal.tituloEditar : textos.productos.botonNuevo }}</h2>
           <button class="close-button" (click)="onClose()">
             <span>&times;</span>
           </button>
@@ -21,21 +22,21 @@ import { CategoriaService, Categoria } from "../../services/categoria.service";
         <div class="modal-body">
           <form #productForm="ngForm">
             <div class="form-group">
-              <label for="nombre">Nombre del Producto *</label>
+              <label for="nombre">{{ textos.productos.tabla.encabezados.nombre }} *</label>
               <input
                 type="text"
                 id="nombre"
                 name="nombre"
                 [(ngModel)]="formData.nombre"
                 required
-                placeholder="Ej: Miel de Abeja"
+                [placeholder]="textos.productos.filtros.nombre.placeholder"
                 class="form-control"
               />
             </div>
 
             <div class="form-row">
               <div class="form-group">
-                <label for="peso">Peso *</label>
+                <label for="peso">{{ textos.productos.tabla.encabezados.peso }} *</label>
                 <input
                   type="text"
                   id="peso"
@@ -48,7 +49,7 @@ import { CategoriaService, Categoria } from "../../services/categoria.service";
               </div>
 
               <div class="form-group">
-                <label for="precio">Precio *</label>
+                <label for="precio">{{ textos.productos.tabla.encabezados.precio }} *</label>
                 <input
                   type="number"
                   id="precio"
@@ -64,14 +65,14 @@ import { CategoriaService, Categoria } from "../../services/categoria.service";
             </div>
 
             <div class="form-group">
-              <label for="categoria">Categoría</label>
+              <label for="categoria">{{ textos.categorias.tabla.encabezados.nombre }}</label>
               <select
                 id="categoria"
                 name="categoria"
                 [(ngModel)]="formData.categoria"
                 class="form-control"
               >
-                <option value="">Selecciona una categoría</option>
+                <option value="">{{ textos.categorias.modal.campos.nombre.placeholder }}</option>
                 @for (categoria of categorias; track categoria.id) {
                   <option [value]="categoria.nombre">{{ categoria.nombre }}</option>
                 }
@@ -79,9 +80,9 @@ import { CategoriaService, Categoria } from "../../services/categoria.service";
             </div>
 
             <div class="form-group">
-              <label>Imágenes del Producto *</label>
+              <label>{{ textos.imagenes.tabla.encabezados.nombre }} *</label>
               <div class="image-inputs-header">
-                <p class="input-instruction">Agrega las URLs de las imágenes una por una. Puedes añadir tantas imágenes como necesites.</p>
+                <p class="input-instruction">{{ textos.imagenes.dragDrop.tiposPermitidos }}</p>
               </div>
               <div class="image-urls-container">
                 @for (imageUrl of imageUrls; track imageUrl; let i = $index) {
@@ -100,7 +101,7 @@ import { CategoriaService, Categoria } from "../../services/categoria.service";
                         type="button" 
                         class="btn-remove-image" 
                         (click)="removeImageUrl(i)"
-                        title="Eliminar esta imagen"
+                        [title]="textos.imagenes.tabla.botones.eliminar"
                       >
                         ×
                       </button>
@@ -114,15 +115,15 @@ import { CategoriaService, Categoria } from "../../services/categoria.service";
                   class="btn-add-image" 
                   (click)="addImageUrl()"
                 >
-                  + Agregar otra imagen
+                  + {{ textos.imagenes.botonSubir }}
                 </button>
               </div>
-              <small class="form-help">Ingresa URLs completas de imágenes. Las imágenes se guardarán separadas por comas en la base de datos.</small>
+              <small class="form-help">{{ textos.imagenes.dragDrop.tiposPermitidos }}</small>
             </div>
 
             @if (imageUrls.length > 0 && imageUrls[0]) {
               <div class="image-preview">
-                <label>Vista Previa:</label>
+                <label>{{ textos.imagenes.tabla.encabezados.preview }}:</label>
                 <div class="preview-grid">
                   @for (url of imageUrls; track url; let i = $index) {
                     @if (url) {
@@ -132,7 +133,7 @@ import { CategoriaService, Categoria } from "../../services/categoria.service";
                           type="button" 
                           class="btn-remove-preview" 
                           (click)="removeImageUrl(i)"
-                          title="Eliminar imagen"
+                          [title]="textos.imagenes.tabla.botones.eliminar"
                         >
                           ×
                         </button>
@@ -144,13 +145,13 @@ import { CategoriaService, Categoria } from "../../services/categoria.service";
             }
 
             <div class="form-group">
-              <label for="descripcion">Descripción</label>
+              <label for="descripcion">{{ textos.categorias.tabla.encabezados.nombre }}</label>
               <textarea
                 id="descripcion"
                 name="descripcion"
                 [(ngModel)]="formData.descripcion"
                 rows="4"
-                placeholder="Describe el producto..."
+                                placeholder="Describe el producto..."
                 class="form-control"
               ></textarea>
             </div>
@@ -159,14 +160,14 @@ import { CategoriaService, Categoria } from "../../services/categoria.service";
 
         <div class="modal-footer">
           <button class="btn-secondary" (click)="onClose()">
-            Cancelar
+            {{ textos.categorias.modal.botones.cancelar }}
           </button>
           <button
             class="btn-primary"
             [disabled]="!hasValidImages() || isSaving"
             (click)="onSave()"
           >
-            {{ isSaving ? 'Guardando...' : (isEditMode ? 'Actualizar' : 'Guardar') }}
+            {{ isSaving ? mensajes.cargando.guardando : (isEditMode ? textos.categorias.tabla.botones.editar : textos.categorias.modal.botones.guardar) }}
           </button>
         </div>
       </div>
@@ -524,6 +525,10 @@ export class ProductModalComponent implements OnInit {
   @Input() product: Producto | null = null;
   @Output() close = new EventEmitter<void>();
   @Output() save = new EventEmitter<Producto>();
+
+  // Textos centralizados
+  textos = AdministracionTextos;
+  mensajes = MensajesSistema;
 
   formData: Producto = {
     nombre: '',

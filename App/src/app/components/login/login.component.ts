@@ -9,6 +9,7 @@ import {
 import { Router, ActivatedRoute } from "@angular/router";
 import { AuthService } from "../../services/auth.service";
 import { HttpErrorResponse } from "@angular/common/http";
+import { ComponentesTextos, MensajesSistema } from "../../personalizacion";
 
 @Component({
   selector: "app-login",
@@ -22,6 +23,10 @@ export class LoginComponent implements OnInit {
   isSubmitting = false;
   errorMessage: string | null = null;
   returnUrl: string = "/";
+
+  // Textos centralizados
+  textos = ComponentesTextos;
+  mensajes = MensajesSistema;
 
   constructor(
     private fb: FormBuilder,
@@ -63,7 +68,7 @@ export class LoginComponent implements OnInit {
 
     // Verificar que los campos tengan valores
     if (!email || !password) {
-      this.errorMessage = "Debe proporcionar correo electrónico y contraseña";
+      this.errorMessage = this.textos.login.errores.camposRequeridos;
       this.isSubmitting = false;
       return;
     }
@@ -97,7 +102,7 @@ export class LoginComponent implements OnInit {
       error: (error: Error | HttpErrorResponse) => {
         console.error("❌ Error de login:", error);
 
-        let errorMsg = "Credenciales inválidas. Por favor intente nuevamente.";
+        let errorMsg = this.textos.login.errores.credencialesInvalidas;
 
         // Log detallado del error para diagnóstico
         if (error instanceof HttpErrorResponse) {
@@ -109,13 +114,11 @@ export class LoginComponent implements OnInit {
           });
 
           if (error.status === 0) {
-            errorMsg =
-              "Error de conexión con el servidor. Verifique su conexión a internet.";
+            errorMsg = this.mensajes.errores.conexion;
           } else if (error.status === 401) {
-            errorMsg =
-              "Credenciales incorrectas. Verifique su correo y contraseña.";
+            errorMsg = this.textos.login.errores.credencialesInvalidas;
           } else if (error.status >= 500) {
-            errorMsg = "Error en el servidor. Por favor intente más tarde.";
+            errorMsg = this.mensajes.errores.servidor;
           }
 
           // Intentar extraer mensaje específico

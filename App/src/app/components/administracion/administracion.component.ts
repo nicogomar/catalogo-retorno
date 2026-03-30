@@ -13,6 +13,7 @@ import { ProductModalComponent } from "../product-modal/product-modal.component"
 import { ImageGalleryComponent } from "../image-gallery/image-gallery.component";
 import { CategoriaManagementComponent } from "../categoria-management/categoria-management.component";
 import { FormsModule } from "@angular/forms";
+import { AdministracionTextos } from "../../personalizacion";
 
 @Component({
   selector: "app-administracion",
@@ -1223,6 +1224,9 @@ export class AdministracionComponent implements OnInit {
   isLoading: boolean = false;
   loadError: string | null = null;
 
+  // Textos centralizados
+  textos = AdministracionTextos;
+
   showProductModal: boolean = false;
   selectedProduct: Producto | null = null;
 
@@ -1294,14 +1298,14 @@ export class AdministracionComponent implements OnInit {
   }
 
   getSectionTitle(): string {
-    const titles: { [key: string]: string } = {
-      inicio: "Dashboard",
-      productos: "Gestión de Productos",
-      categorias: "Gestión de Categorías",
-      pedidos: "Pedidos",
-      imagenes: "Galería de Imágenes",
+    const sectionTitles: { [key: string]: string } = {
+      inicio: this.textos.secciones.inicio,
+      productos: this.textos.secciones.productos,
+      categorias: this.textos.secciones.categorias,
+      pedidos: this.textos.secciones.pedidos,
+      imagenes: this.textos.secciones.imagenes,
     };
-    return titles[this.currentSection] || "Administración";
+    return sectionTitles[this.currentSection] || this.textos.secciones.inicio;
   }
 
   loadProductos(): void {
@@ -1316,7 +1320,7 @@ export class AdministracionComponent implements OnInit {
       error: (error) => {
         console.error("Error al cargar productos:", error);
         this.loadError =
-          "No se pudieron cargar los productos. Por favor, intente nuevamente.";
+          this.textos.productos.errorReintentar;
         this.isLoading = false;
       },
     });

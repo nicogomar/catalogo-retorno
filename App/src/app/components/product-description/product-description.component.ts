@@ -3,6 +3,7 @@ import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { CartService } from "../../services/cart.service";
 import { ImageCarouselComponent } from "../image-carousel/image-carousel.component";
+import { ComponentesTextos } from "../../personalizacion";
 
 interface Product {
   id: number;
@@ -42,19 +43,19 @@ interface Product {
         <!-- Product info section -->
         <div class="product-info-row">
           <div class="info-item">
-            <span class="info-label">Peso: </span>
+            <span class="info-label">{{ textos.modalProducto.especificaciones.peso }}: </span>
             <span class="info-value">{{ product?.weight }}</span>
           </div>
           <div class="info-item">
-            <span class="info-label">Precio: </span>
+            <span class="info-label">{{ textos.modalProducto.especificaciones.categoria }}: </span>
             <span class="info-value">{{ product?.price }}</span>
           </div>
         </div>
 
         <!-- Description section -->
         <div class="product-description-section">
-          <h3 class="section-title">Descripción</h3>
-          <p class="description-text">{{ product?.description }}</p>
+          <h3 class="section-title">{{ textos.modalProducto.especificaciones.categoria }}</h3>
+          <p class="description-text">{{ product?.description || textos.modalProducto.sinDescripcion }}</p>
         </div>
 
         <!-- Quantity and add to cart -->
@@ -70,7 +71,7 @@ interface Product {
             <button class="quantity-btn" (click)="increaseQuantity()">+</button>
           </div>
           <button class="add-to-cart-btn" (click)="addToCart()">
-            Añadir al carrito
+            {{ textos.modalProducto.botonAgregar }}
           </button>
         </div>
       </div>
@@ -270,6 +271,9 @@ export class ProductDescriptionComponent {
   @Input() product: Product | null = null;
   @Output() close = new EventEmitter<void>();
   quantity: number = 1;
+
+  // Textos centralizados
+  textos = ComponentesTextos;
 
   constructor(private cartService: CartService) {}
 

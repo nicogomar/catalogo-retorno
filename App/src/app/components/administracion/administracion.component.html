@@ -7,46 +7,46 @@
         [class.active]="currentSection === 'inicio'"
         (click)="changeSection('inicio')"
       >
-        <i class="icon">🏠</i>
-        <span>Inicio</span>
+        <i class="icon">{{ textos.sidebar.menu.inicio.icono }}</i>
+        <span>{{ textos.sidebar.menu.inicio.texto }}</span>
       </a>
       <a
         class="nav-item"
         [class.active]="currentSection === 'productos'"
         (click)="changeSection('productos')"
       >
-        <i class="icon">📦</i>
-        <span>Productos</span>
+        <i class="icon">{{ textos.sidebar.menu.productos.icono }}</i>
+        <span>{{ textos.sidebar.menu.productos.texto }}</span>
       </a>
       <a
         class="nav-item"
         [class.active]="currentSection === 'categorias'"
         (click)="changeSection('categorias')"
       >
-        <i class="icon">🏷️</i>
-        <span>Categorías</span>
+        <i class="icon">{{ textos.sidebar.menu.categorias.icono }}</i>
+        <span>{{ textos.sidebar.menu.categorias.texto }}</span>
       </a>
       <a
         class="nav-item"
         [class.active]="currentSection === 'pedidos'"
         (click)="changeSection('pedidos')"
       >
-        <i class="icon">🛒</i>
-        <span>Pedidos</span>
+        <i class="icon">{{ textos.sidebar.menu.pedidos.icono }}</i>
+        <span>{{ textos.sidebar.menu.pedidos.texto }}</span>
       </a>
       <a
         class="nav-item"
         [class.active]="currentSection === 'imagenes'"
         (click)="changeSection('imagenes')"
       >
-        <i class="icon">🖼️</i>
-        <span>Imágenes</span>
+        <i class="icon">{{ textos.sidebar.menu.imagenes.icono }}</i>
+        <span>{{ textos.sidebar.menu.imagenes.texto }}</span>
       </a>
     </nav>
     <div class="sidebar-footer">
       <a routerLink="/" class="back-link">
-        <i class="icon">↩️</i>
-        <span>Volver al catálogo</span>
+        <i class="icon">{{ textos.sidebar.volverCatalogo.icono }}</i>
+        <span>{{ textos.sidebar.volverCatalogo.texto }}</span>
       </a>
     </div>
   </aside>
@@ -60,32 +60,31 @@
     <!-- Inicio Section -->
     <div class="content-body" *ngIf="currentSection === 'inicio'">
       <div class="welcome-card">
-        <h2>Bienvenido al Panel de Administración</h2>
+        <h2>{{ textos.dashboard.bienvenida.titulo }}</h2>
         <p>
-          Desde aquí podrás gestionar todos los aspectos de tu catálogo de
-          productos.
+          {{ textos.dashboard.bienvenida.descripcion }}
         </p>
       </div>
 
       <div class="stats-grid">
         <div class="stat-card">
-          <div class="stat-icon">📦</div>
+          <div class="stat-icon">{{ textos.dashboard.estadisticas.productos.icono }}</div>
           <div class="stat-info">
-            <h3>Productos</h3>
-            <p class="stat-number">{{ productos.length }}</p>
+            <h3>{{ textos.dashboard.estadisticas.productos.titulo }}</h3>
+            <p class="stat-number">{{ productos?.length }}</p>
           </div>
         </div>
         <div class="stat-card">
-          <div class="stat-icon">🛒</div>
+          <div class="stat-icon">{{ textos.dashboard.estadisticas.pedidosPendientes.icono }}</div>
           <div class="stat-info">
-            <h3>Pedidos Pendientes</h3>
+            <h3>{{ textos.dashboard.estadisticas.pedidosPendientes.titulo }}</h3>
             <p class="stat-number">{{ getPedidosPendientesCount() }}</p>
           </div>
         </div>
         <div class="stat-card">
-          <div class="stat-icon">🖼️</div>
+          <div class="stat-icon">{{ textos.dashboard.estadisticas.imagenes.icono }}</div>
           <div class="stat-info">
-            <h3>Imágenes</h3>
+            <h3>{{ textos.dashboard.estadisticas.imagenes.titulo }}</h3>
             <p class="stat-number">{{ getImagenesCount() }}</p>
           </div>
         </div>
@@ -96,62 +95,62 @@
     <div class="content-body" *ngIf="currentSection === 'productos'">
       <div class="section-actions">
         <button class="btn-primary" (click)="openProductModal()">
-          <span>+ Nuevo Producto</span>
+          <span>{{ textos.productos.botonNuevo }}</span>
         </button>
       </div>
 
       <!-- Filtros de Búsqueda para Productos -->
-      @if (!isLoading && !loadError && productos.length > 0) {
+      @if (!isLoading && !loadError && productos && productos.length > 0) {
         <div class="filtros-busqueda">
           <div class="filtro-input-group">
-            <label for="filtroProductoNombre">📦 Nombre:</label>
+            <label for="filtroProductoNombre">{{ textos.productos.filtros.nombre.label }}</label>
             <input
               type="text"
               id="filtroProductoNombre"
               [(ngModel)]="filtroProductoNombre"
-              placeholder="Buscar por nombre..."
+              [placeholder]="textos.productos.filtros.nombre.placeholder"
               class="filtro-input"
             />
           </div>
           <div class="filtro-input-group">
-            <label for="filtroProductoPeso">⚖️ Peso:</label>
+            <label for="filtroProductoPeso">{{ textos.productos.filtros.peso.label }}</label>
             <input
               type="text"
               id="filtroProductoPeso"
               [(ngModel)]="filtroProductoPeso"
-              placeholder="Buscar por peso..."
+              [placeholder]="textos.productos.filtros.peso.placeholder"
               class="filtro-input"
             />
           </div>
           <div class="filtro-input-group">
-            <label for="filtroProductoPrecioMin">💲 Precio Min:</label>
+            <label for="filtroProductoPrecioMin">{{ textos.productos.filtros.precioMin.label }}</label>
             <input
               type="number"
               id="filtroProductoPrecioMin"
               [(ngModel)]="filtroProductoPrecioMin"
-              placeholder="Ej: 1000"
+              [placeholder]="textos.productos.filtros.precioMin.placeholder"
               class="filtro-input"
               min="0"
             />
           </div>
           <div class="filtro-input-group">
-            <label for="filtroProductoPrecioMax">💲 Precio Max:</label>
+            <label for="filtroProductoPrecioMax">{{ textos.productos.filtros.precioMax.label }}</label>
             <input
               type="number"
               id="filtroProductoPrecioMax"
               [(ngModel)]="filtroProductoPrecioMax"
-              placeholder="Ej: 5000"
+              [placeholder]="textos.productos.filtros.precioMax.placeholder"
               class="filtro-input"
               min="0"
             />
           </div>
           <div class="filtro-input-group">
-            <label for="filtroProductoCategoria">🏷️ Categoría:</label>
+            <label for="filtroProductoCategoria">{{ textos.productos.filtros.categoria.label }}</label>
             <input
               type="text"
               id="filtroProductoCategoria"
               [(ngModel)]="filtroProductoCategoria"
-              placeholder="Buscar por categoría..."
+              [placeholder]="textos.productos.filtros.categoria.placeholder"
               class="filtro-input"
             />
           </div>
@@ -160,7 +159,7 @@
               class="btn-limpiar-filtros"
               (click)="limpiarFiltrosProductos()"
             >
-              🗑️ Limpiar Filtros
+              {{ textos.productos.filtros.botonLimpiar }}
             </button>
           </div>
         </div>
@@ -169,7 +168,7 @@
       @if (isLoading) {
         <div class="loading-container">
           <div class="loading-spinner"></div>
-          <p>Cargando productos...</p>
+          <p>{{ textos.productos.cargando }}</p>
         </div>
       }
 
@@ -177,18 +176,18 @@
         <div class="error-container">
           <p class="error-message">{{ loadError }}</p>
           <button class="retry-button" (click)="loadProductos()">
-            Reintentar
+            {{ textos.productos.errorReintentar }}
           </button>
         </div>
       }
 
       @if (!isLoading && !loadError) {
         <div class="products-table-container">
-          @if (productos.length === 0) {
+          @if (productos?.length === 0) {
             <div class="no-products">
-              <p>No hay productos registrados.</p>
+              <p>{{ textos.productos.sinProductos }}</p>
               <button class="btn-primary" (click)="openProductModal()">
-                Agregar primer producto
+                {{ textos.productos.botonAgregarPrimero }}
               </button>
             </div>
           } @else {
@@ -197,7 +196,7 @@
                 <div class="product-card-admin" [class.banner-card]="producto.categoria === 'Banner'">
                   @if (producto.categoria === 'Banner') {
                     <div class="banner-indicator">
-                      🎯 BANNER
+                      {{ textos.productos.bannerIndicator }}
                     </div>
                   }
                   <div class="product-image-section">
@@ -251,10 +250,10 @@
                     <h3 class="product-title">{{ producto.nombre }}</h3>
                     <div class="product-details">
                       <span class="detail-item">
-                        <strong>Peso:</strong> {{ producto.peso }}
+                        <strong>{{ textos.productos.tabla.encabezados.peso }}:</strong> {{ producto.peso }}
                       </span>
                       <span class="detail-item">
-                        <strong>Precio:</strong> ${{ producto.precio }}
+                        <strong>{{ textos.productos.tabla.encabezados.precio }}:</strong> ${{ producto.precio }}
                       </span>
                     </div>
                     @if (producto.descripcion) {
@@ -267,16 +266,16 @@
                     <button
                       class="btn-edit"
                       (click)="editProducto(producto)"
-                      title="Editar producto"
+                      [title]="textos.productos.tabla.botones.editar"
                     >
-                      ✏️ Editar
+                      {{ textos.productos.tabla.botones.editar }}
                     </button>
                     <button
                       class="btn-delete"
                       (click)="confirmDelete(producto)"
-                      title="Eliminar producto"
+                      [title]="textos.productos.tabla.botones.eliminar"
                     >
-                      🗑️ Eliminar
+                      {{ textos.productos.tabla.botones.eliminar }}
                     </button>
                   </div>
                 </div>
@@ -302,7 +301,7 @@
       </div>
 
       <!-- Filtros de Estado -->
-      @if (!isPedidosLoading && !pedidosLoadError && pedidos.length > 0) {
+      @if (!isPedidosLoading && !pedidosLoadError && pedidos && pedidos.length > 0) {
         <div class="filtros-estado">
           <button
             class="btn-filtro"
@@ -397,7 +396,7 @@
       @if (isPedidosLoading) {
         <div class="loading-container">
           <div class="loading-spinner"></div>
-          <p>Cargando pedidos...</p>
+          <p>{{ textos.pedidos.cargando }}</p>
         </div>
       }
 
@@ -414,7 +413,7 @@
         <div class="pedidos-table-container">
           @if (pedidos.length === 0) {
             <div class="no-products">
-              <p>No hay pedidos registrados.</p>
+              <p>{{ textos.pedidos.sinPedidos }}</p>
             </div>
           } @else {
             <div class="table-responsive">
@@ -517,7 +516,7 @@
       (click)="$event.stopPropagation()"
     >
       <div class="modal-header">
-        <h2>Productos del Pedido</h2>
+        <h2>{{ textos.pedidos.modalDetalle.titulo }}</h2>
         <button class="close-button" (click)="closeProductosModal()">×</button>
       </div>
       <div class="modal-body">
@@ -544,7 +543,7 @@
                       {{ producto.peso || producto.weight }}
                     </p>
                   }
-                  <div class="producto-modal-detalles">
+          <div class="producto-modal-detalles">
                     <span class="producto-modal-cantidad"
                       >Cantidad: {{ producto.quantity }}</span
                     >
@@ -599,8 +598,8 @@
       <div class="modal-body">
         <p>
           ¿Estás seguro que deseas eliminar el producto
-          <strong>{{ productToDelete?.nombre }}</strong
-          >?
+          <strong>{{ productToDelete?.nombre }}</strong>
+          ?
         </p>
         <p class="warning-text">Esta acción no se puede deshacer.</p>
       </div>
@@ -624,8 +623,8 @@
       <div class="modal-body">
         <p>
           ¿Estás seguro que deseas eliminar el pedido
-          <strong>#{{ pedidoToDelete?.id }}</strong
-          >?
+          <strong>#{{ pedidoToDelete?.id }}</strong>
+          ?
         </p>
         <p class="warning-text">Esta acción no se puede deshacer y eliminará permanentemente el pedido y todos sus datos.</p>
       </div>

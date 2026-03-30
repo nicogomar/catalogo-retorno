@@ -2,24 +2,24 @@
   <!-- Sidebar de Chats -->
   <aside class="chats-sidebar">
     <div class="chats-header">
-      <h3>💬 Chats</h3>
+      <h3>💬 {{ mensajesTextos.titulo }}</h3>
     </div>
 
     @if (isLoadingChats) {
       <div class="loading-container">
         <div class="loading-spinner"></div>
-        <span>Cargando chats...</span>
+        <span>{{ mensajesTextos.cargando.cargando }}</span>
       </div>
     } @else if (chatsError) {
       <div class="empty-chats">
         <p>{{ chatsError }}</p>
         <button class="btn-send" (click)="loadChats()" style="margin-top: 10px;">
-          Reintentar
+          {{ mensajesTextos.botones.reintentar }}
         </button>
       </div>
     } @else if (chats.length === 0) {
       <div class="empty-chats">
-        <p>No hay chats disponibles</p>
+        <p>{{ mensajesTextos.estados.vacio }}</p>
       </div>
     } @else {
       <ul class="chats-list">
@@ -42,7 +42,7 @@
   <main class="chat-panel">
     @if (!selectedChat) {
       <div class="empty-chat">
-        <p>Selecciona un chat para comenzar</p>
+        <p>{{ mensajesTextos.seleccionarChat }}</p>
       </div>
     } @else {
       <!-- Header del Chat -->
@@ -54,7 +54,7 @@
       @if (isLoadingMensajes) {
         <div class="loading-container">
           <div class="loading-spinner"></div>
-          <span>Cargando mensajes...</span>
+          <span>{{ mensajesTextos.cargando.cargando }}</span>
         </div>
       } @else if (mensajesError) {
         <div class="empty-chat">
@@ -62,7 +62,7 @@
         </div>
       } @else if (mensajes.length === 0) {
         <div class="empty-chat">
-          <p>No hay mensajes en este chat</p>
+          <p>{{ mensajesTextos.estados.sinMensajes }}</p>
         </div>
       } @else {
         <div class="chat-messages">
@@ -86,7 +86,7 @@
         <textarea
           class="message-input"
           [(ngModel)]="nuevoMensaje"
-          placeholder="Escribe tu mensaje..."
+          [placeholder]="mensajesTextos.nuevoMensajePlaceholder"
           (keypress)="onKeyPress($event)"
           [disabled]="isSending"
           rows="1"
@@ -96,7 +96,7 @@
           (click)="enviarMensaje()"
           [disabled]="!nuevoMensaje.trim() || isSending"
         >
-          {{ isSending ? '⏳' : '📤' }} Enviar
+          {{ isSending ? '⏳' : '📤' }} {{ mensajesTextos.botones.enviar }}
         </button>
       </div>
     }

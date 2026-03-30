@@ -1,9 +1,9 @@
 <div class="categoria-management">
   <!-- Header -->
   <div class="header">
-    <h2>Gestión de Categorías</h2>
+    <h2>{{ textos.categorias.tabla.encabezados.nombre }}</h2>
     <button class="btn btn-primary" (click)="openCreateModal()">
-      + Nueva Categoría
+      {{ textos.categorias.botonNueva }}
     </button>
   </div>
 
@@ -21,7 +21,7 @@
     <input
       type="text"
       class="search-input"
-      placeholder="Buscar categorías por nombre..."
+      [placeholder]="textos.categorias.modal.campos.nombre.placeholder"
       [(ngModel)]="searchTerm"
       (input)="onSearchChange()"
       (keyup.enter)="onSearchSubmit()"
@@ -30,7 +30,7 @@
 
   <!-- Loading State -->
   <div *ngIf="loading" class="loading">
-    <p>Cargando categorías...</p>
+    <p>{{ textos.categorias.sinCategorias }}</p>
   </div>
 
   <!-- Categorias Grid -->
@@ -47,34 +47,34 @@
             Creada: {{ formatDate(categoria.created_at) }}
           </div>
         </div>
-        <div class="categoria-actions">
-          <button
-            class="btn btn-warning btn-sm"
-            (click)="openEditModal(categoria)"
-            title="Editar categoría"
-          >
-            ✏️
-          </button>
-          <button
-            class="btn btn-danger btn-sm"
-            (click)="openDeleteModal(categoria)"
-            title="Eliminar categoría"
-          >
-            🗑️
-          </button>
-        </div>
+      </div>
+      <div class="categoria-actions">
+        <button
+          class="btn btn-warning btn-sm"
+          (click)="openEditModal(categoria)"
+          [title]="textos.categorias.tabla.botones.editar"
+        >
+          {{ textos.categorias.tabla.botones.editar }}
+        </button>
+        <button
+          class="btn btn-danger btn-sm"
+          (click)="openDeleteModal(categoria)"
+          [title]="textos.categorias.tabla.botones.eliminar"
+        >
+          {{ textos.categorias.tabla.botones.eliminar }}
+        </button>
       </div>
     </div>
   </div>
 
   <!-- Empty State -->
   <div *ngIf="!loading && categorias.length === 0" class="empty-state">
-    <h3>No hay categorías</h3>
+    <h3>{{ textos.categorias.sinCategorias }}</h3>
     <p *ngIf="searchTerm">
-      No se encontraron categorías que coincidan con "{{ searchTerm }}"
+      {{ textos.categorias.sinCategorias }}
     </p>
     <p *ngIf="!searchTerm">
-      Comienza creando tu primera categoría usando el botón de arriba.
+      {{ textos.categorias.modal.tituloNueva }}
     </p>
   </div>
 
@@ -86,12 +86,12 @@
   >
     <div class="modal-content" (click)="$event.stopPropagation()">
       <div class="modal-header">
-        <h3>Nueva Categoría</h3>
+        <h3>{{ textos.categorias.modal.tituloNueva }}</h3>
         <button class="close" (click)="closeModals()">&times;</button>
       </div>
       <form (ngSubmit)="createCategoria()">
         <div class="form-group">
-          <label for="nombre">Nombre de la Categoría *</label>
+          <label for="nombre">{{ textos.categorias.modal.campos.nombre.label }}</label>
           <input
             type="text"
             id="nombre"
@@ -99,7 +99,7 @@
             [(ngModel)]="categoriaForm.nombre"
             name="nombre"
             required
-            placeholder="Ej: Electrónicos, Ropa, Alimentos"
+            [placeholder]="textos.categorias.modal.campos.nombre.placeholder"
           />
         </div>
         <div class="modal-footer">
@@ -108,14 +108,14 @@
             class="btn btn-secondary"
             (click)="closeModals()"
           >
-            Cancelar
+            {{ textos.categorias.modal.botones.cancelar }}
           </button>
           <button
             type="submit"
             class="btn btn-primary"
             [disabled]="loading || !categoriaForm.nombre.trim()"
           >
-            {{ loading ? 'Creando...' : 'Crear Categoría' }}
+            {{ loading ? textos.imagenes.modal.botones.subiendo : textos.categorias.modal.botones.guardar }}
           </button>
         </div>
       </form>
@@ -130,12 +130,12 @@
   >
     <div class="modal-content" (click)="$event.stopPropagation()">
       <div class="modal-header">
-        <h3>Editar Categoría</h3>
+        <h3>{{ textos.categorias.modal.tituloEditar }}</h3>
         <button class="close" (click)="closeModals()">&times;</button>
       </div>
       <form (ngSubmit)="updateCategoria()">
         <div class="form-group">
-          <label for="edit-nombre">Nombre de la Categoría *</label>
+          <label for="edit-nombre">{{ textos.categorias.modal.campos.nombre.label }}</label>
           <input
             type="text"
             id="edit-nombre"
@@ -143,7 +143,7 @@
             [(ngModel)]="editCategoriaForm.nombre"
             name="edit-nombre"
             required
-            placeholder="Ej: Electrónicos, Ropa, Alimentos"
+            [placeholder]="textos.categorias.modal.campos.nombre.placeholder"
           />
         </div>
         <div class="modal-footer">
@@ -152,14 +152,14 @@
             class="btn btn-secondary"
             (click)="closeModals()"
           >
-            Cancelar
+            {{ textos.categorias.modal.botones.cancelar }}
           </button>
           <button
             type="submit"
             class="btn btn-primary"
             [disabled]="loading || !editCategoriaForm.nombre?.trim()"
           >
-            {{ loading ? 'Actualizando...' : 'Actualizar Categoría' }}
+            {{ loading ? textos.imagenes.modal.botones.subiendo : textos.categorias.modal.botones.guardar }}
           </button>
         </div>
       </form>
@@ -174,11 +174,11 @@
   >
     <div class="modal-content" (click)="$event.stopPropagation()">
       <div class="modal-header">
-        <h3>Eliminar Categoría</h3>
+        <h3>{{ textos.categorias.modal.tituloEditar }}</h3>
         <button class="close" (click)="closeModals()">&times;</button>
       </div>
       <p>
-        ¿Está seguro que desea eliminar la categoría "
+        {{ textos.categorias.modal.tituloEditar }}
         <strong>{{ selectedCategoria?.nombre }}</strong>"?
       </p>
       <p style="color: #dc3545; font-size: 0.875rem;">
@@ -190,7 +190,7 @@
           class="btn btn-secondary"
           (click)="closeModals()"
         >
-          Cancelar
+          {{ textos.categorias.modal.botones.cancelar }}
         </button>
         <button
           type="button"
@@ -198,7 +198,7 @@
           (click)="deleteCategoria()"
           [disabled]="loading"
         >
-          {{ loading ? 'Eliminando...' : 'Eliminar Categoría' }}
+          {{ loading ? textos.imagenes.modal.botones.subiendo : textos.categorias.tabla.botones.eliminar }}
         </button>
       </div>
     </div>

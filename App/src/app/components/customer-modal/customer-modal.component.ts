@@ -7,6 +7,7 @@ import {
   Validators,
 } from "@angular/forms";
 import { CartService, CartItem } from "../../services/cart.service";
+import { ComponentesTextos } from "../../personalizacion";
 
 @Component({
   selector: "app-customer-modal",
@@ -16,14 +17,14 @@ import { CartService, CartItem } from "../../services/cart.service";
     <div class="modal-overlay" *ngIf="isOpen" (click)="closeModal($event)">
       <div class="modal-container">
         <div class="modal-header">
-          <h2>Completar información de contacto</h2>
+          <h2>{{ textos.modalCliente.titulo }}</h2>
           <button class="close-button" (click)="close()">×</button>
         </div>
 
         <div class="modal-content">
           <form [formGroup]="customerForm" (ngSubmit)="submitOrder()">
             <div class="form-group">
-              <label for="name">Nombre/Comercio:</label>
+              <label for="name">{{ textos.modalCliente.campos.nombre.label }}:</label>
               <input
                 type="text"
                 id="name"
@@ -33,13 +34,13 @@ import { CartService, CartItem } from "../../services/cart.service";
               />
               <div *ngIf="submitted && f['name'].errors" class="error-message">
                 <div *ngIf="f['name'].errors['required']">
-                  El nombre es obligatorio
+                  {{ textos.modalCliente.errores.nombreRequerido }}
                 </div>
               </div>
             </div>
 
             <div class="form-group">
-              <label for="phone">Teléfono:</label>
+              <label for="phone">{{ textos.modalCliente.campos.telefono.label }}:</label>
               <input
                 type="tel"
                 id="phone"
@@ -49,13 +50,13 @@ import { CartService, CartItem } from "../../services/cart.service";
               />
               <div *ngIf="submitted && f['phone'].errors" class="error-message">
                 <div *ngIf="f['phone'].errors['required']">
-                  El teléfono es obligatorio
+                  {{ textos.modalCliente.errores.telefonoRequerido }}
                 </div>
               </div>
             </div>
 
             <div class="form-group">
-              <label for="email">Email:</label>
+              <label for="email">{{ textos.modalCliente.campos.email.label }}:</label>
               <input
                 type="email"
                 id="email"
@@ -65,23 +66,23 @@ import { CartService, CartItem } from "../../services/cart.service";
               />
               <div *ngIf="submitted && f['email'].errors" class="error-message">
                 <div *ngIf="f['email'].errors['required']">
-                  El email es obligatorio
+                  {{ textos.modalCliente.errores.emailRequerido }}
                 </div>
                 <div *ngIf="f['email'].errors['email']">
-                  Ingrese un email válido
+                  {{ textos.modalCliente.errores.emailInvalido }}
                 </div>
               </div>
             </div>
 
             <div class="form-group">
-              <label for="location">Localidad:</label>
+              <label for="location">{{ textos.modalCliente.campos.direccion.label }}:</label>
               <select
                 id="location"
                 formControlName="location"
                 class="form-control"
                 [ngClass]="{ invalid: submitted && f['location'].errors }"
               >
-                <option value="">Seleccione un departamento</option>
+                <option value="">{{ textos.modalCliente.campos.direccion.placeholder }}</option>
                 <option
                   *ngFor="let department of departments"
                   [value]="department"
@@ -94,24 +95,24 @@ import { CartService, CartItem } from "../../services/cart.service";
                 class="error-message"
               >
                 <div *ngIf="f['location'].errors['required']">
-                  La localidad es obligatoria
+                  {{ textos.modalCliente.errores.direccionRequerida }}
                 </div>
               </div>
             </div>
 
             <div class="form-group">
-              <label for="details">Detalles:</label>
+              <label for="details">{{ textos.modalCliente.campos.notas.label }}:</label>
               <textarea
                 id="details"
                 formControlName="details"
                 class="form-control"
                 rows="3"
-                placeholder="Información adicional sobre el pedido..."
+                placeholder="Buscar imágenes..."
               ></textarea>
             </div>
 
             <div class="form-group">
-              <label>Método de pago:</label>
+              <label>Estado:</label>
               <div class="payment-method-options">
                 <label class="payment-option">
                   <input
@@ -121,8 +122,8 @@ import { CartService, CartItem } from "../../services/cart.service";
                     checked
                   />
                   <div class="payment-option-content">
-                    <span class="payment-title">💵 Pago Contra Entrega</span>
-                    <span class="payment-description">Paga en efectivo al recibir tu pedido</span>
+                    <span class="payment-title">💵 {{ textos.carrito.botones.finalizar }}</span>
+                    <span class="payment-description">{{ textos.pagos.exito.mensaje }}</span>
                   </div>
                 </label>
                 <label class="payment-option">
@@ -132,20 +133,20 @@ import { CartService, CartItem } from "../../services/cart.service";
                     value="mercadopago"
                   />
                   <div class="payment-option-content">
-                    <span class="payment-title">🛒 Mercado Pago</span>
-                    <span class="payment-description">Paga de forma segura con tarjeta u otros métodos</span>
+                    <span class="payment-title">🛒 {{ textos.modalCliente.botones.confirmar }}</span>
+                    <span class="payment-description">{{ textos.pagos.fallido.mensaje }}</span>
                   </div>
                 </label>
               </div>
               <div *ngIf="submitted && f['paymentMethod'].errors" class="error-message">
                 <div *ngIf="f['paymentMethod'].errors['required']">
-                  Debe seleccionar un método de pago
+                  {{ textos.modalCliente.errores.nombreRequerido }}
                 </div>
               </div>
             </div>
 
             <div class="form-actions">
-              <button type="submit" class="submit-btn">Realizar pedido</button>
+              <button type="submit" class="submit-btn">{{ textos.modalCliente.botones.confirmar }}</button>
             </div>
           </form>
         </div>
@@ -362,6 +363,9 @@ export class CustomerModalComponent implements OnInit {
 
   customerForm!: FormGroup;
   submitted = false;
+
+  // Textos centralizados
+  textos = ComponentesTextos;
 
   // List of Uruguay's 19 departments
   departments: string[] = [

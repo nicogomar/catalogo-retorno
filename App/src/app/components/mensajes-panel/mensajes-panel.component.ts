@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MensajeService, Mensaje, Chat } from '../../services/mensaje.service';
 import { AlertService } from '../../services/alert.service';
+import { MensajesSistema } from '../../personalizacion';
 
 @Component({
   selector: 'app-mensajes-panel',
@@ -299,6 +300,9 @@ export class MensajesPanelComponent implements OnInit {
   chatsError: string | null = null;
   mensajesError: string | null = null;
 
+  // Textos centralizados
+  mensajesTextos = MensajesSistema;
+
   constructor(
     private mensajeService: MensajeService,
     private alertService: AlertService
@@ -324,13 +328,13 @@ export class MensajesPanelComponent implements OnInit {
             this.selectChat(this.chats[0]);
           }
         } else {
-          this.chatsError = 'Error al cargar los chats';
+          this.chatsError = this.mensajesTextos.errores.generico;
         }
         this.isLoadingChats = false;
       },
       error: (error) => {
         console.error('Error al cargar chats:', error);
-        this.chatsError = 'No se pudieron cargar los chats';
+        this.chatsError = this.mensajesTextos.errores.generico;
         this.isLoadingChats = false;
       },
     });
@@ -358,13 +362,13 @@ export class MensajesPanelComponent implements OnInit {
           // Scroll al último mensaje
           setTimeout(() => this.scrollToBottom(), 100);
         } else {
-          this.mensajesError = 'Error al cargar los mensajes';
+          this.mensajesError = this.mensajesTextos.errores.generico;
         }
         this.isLoadingMensajes = false;
       },
       error: (error) => {
         console.error('Error al cargar mensajes:', error);
-        this.mensajesError = 'No se pudieron cargar los mensajes';
+        this.mensajesError = this.mensajesTextos.errores.generico;
         this.isLoadingMensajes = false;
       },
     });
@@ -387,16 +391,16 @@ export class MensajesPanelComponent implements OnInit {
           if (response.success) {
             this.mensajes.push(response.data);
             this.nuevoMensaje = '';
-            this.alertService.showSuccess('Mensaje enviado');
+            this.alertService.showSuccess(this.mensajesTextos.exitos.creado);
             setTimeout(() => this.scrollToBottom(), 100);
           } else {
-            this.alertService.showError('Error al enviar el mensaje');
+            this.alertService.showError(this.mensajesTextos.errores.generico);
           }
           this.isSending = false;
         },
         error: (error) => {
           console.error('Error al enviar mensaje:', error);
-          this.alertService.showError('No se pudo enviar el mensaje');
+          this.alertService.showError(this.mensajesTextos.errores.generico);
           this.isSending = false;
         },
       });
