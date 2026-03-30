@@ -95,7 +95,7 @@ interface Product {
 
       /* Modal container */
       .modal-container {
-        background-color: #f8f4ee;
+        background-color: white;
         border-radius: 8px;
         width: 95%;
         max-width: 900px;
