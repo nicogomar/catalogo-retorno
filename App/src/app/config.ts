@@ -1,14 +1,39 @@
 /**
  * Configuración centralizada de la aplicación
- * Aquí se definen colores, títulos y otros parámetros globales
+ * @deprecated Este archivo se mantiene por compatibilidad. 
+ * Usa directamente 'personalizacion.ts' para nuevos desarrollos.
  */
 
+import {
+  Personalizacion,
+  EmpresaConfig,
+  HomepageTextos,
+  AdministracionTextos,
+  ComponentesTextos,
+  MensajesSistema,
+  getTexto,
+  getTextoConParametros,
+} from './personalizacion';
+
+// Re-exportar todo desde personalizacion.ts para mantener compatibilidad
+export {
+  Personalizacion,
+  EmpresaConfig,
+  HomepageTextos,
+  AdministracionTextos,
+  ComponentesTextos,
+  MensajesSistema,
+  getTexto,
+  getTextoConParametros,
+};
+
+// Configuración legacy mantenida para compatibilidad
 export const AppConfig = {
   // Información de la empresa
   company: {
-    name: 'El Retorno',
-    description: 'Catálogo de Productos',
-    email: 'admin@elretorno.com',
+    name: EmpresaConfig.nombre,
+    description: EmpresaConfig.descripcion,
+    email: EmpresaConfig.email,
   },
 
   // Colores de la aplicación
@@ -36,17 +61,17 @@ export const AppConfig = {
     white: '#ffffff',
   },
 
-  // Títulos y textos
+  // Títulos y textos - ahora desde personalizacion.ts
   titles: {
-    pageTitle: 'Catálogo de Productos El Retorno',
-    mainTitle: 'Catálogo de Productos',
-    subtitle: 'El Retorno',
-    logoAlt: 'El Retorno',
+    pageTitle: HomepageTextos.header.titulo,
+    mainTitle: HomepageTextos.header.titulo,
+    subtitle: HomepageTextos.header.subtitulo,
+    logoAlt: HomepageTextos.header.logoAlt,
   },
 
   // Contacto
   contact: {
-    whatsapp: '+59899991013',
+    whatsapp: EmpresaConfig.telefono,
   },
 
   // Estilos CSS variables
@@ -92,18 +117,9 @@ export function getColor(path: string): string {
  * Función para obtener un título de la configuración
  * @param path - Ruta del título (ej: 'titles.mainTitle')
  * @returns El valor del título
+ * @deprecated Usa getTexto() desde personalizacion.ts
  */
 export function getTitle(path: string): string {
-  const keys = path.split('.');
-  let value: any = AppConfig;
-
-  for (const key of keys) {
-    value = value[key];
-    if (value === undefined) {
-      console.warn(`Título no encontrado: ${path}`);
-      return '';
-    }
-  }
-
-  return value;
+  return getTexto(`homepage.header.${path.replace('titles.', '')}`) || '';
 }
+
