@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from "@angular/core";
+import { Component, EventEmitter, Input, Output, OnInit, OnDestroy } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { CartService } from "../../services/cart.service";
@@ -267,7 +267,7 @@ interface Product {
     `,
   ],
 })
-export class ProductDescriptionComponent {
+export class ProductDescriptionComponent implements OnInit, OnDestroy {
   @Input() product: Product | null = null;
   @Output() close = new EventEmitter<void>();
   quantity: number = 1;
@@ -276,6 +276,16 @@ export class ProductDescriptionComponent {
   textos = ComponentesTextos;
 
   constructor(private cartService: CartService) {}
+
+  ngOnInit(): void {
+    // Bloquear scroll del body cuando se abre el modal
+    document.body.style.overflow = 'hidden';
+  }
+
+  ngOnDestroy(): void {
+    // Restaurar scroll del body cuando se cierra el modal
+    document.body.style.overflow = '';
+  }
 
   // Getter para obtener las imágenes del producto como array
   get productImages(): string[] {
@@ -303,6 +313,7 @@ export class ProductDescriptionComponent {
   }
 
   closeModal(): void {
+    document.body.style.overflow = '';
     this.close.emit();
   }
 
@@ -319,6 +330,7 @@ export class ProductDescriptionComponent {
   addToCart(): void {
     if (this.product && this.quantity > 0) {
       this.cartService.addToCart(this.product, this.quantity);
+      document.body.style.overflow = '';
       this.close.emit(); // Close modal after adding to cart
     }
   }
