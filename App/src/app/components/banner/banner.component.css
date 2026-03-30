@@ -1,7 +1,7 @@
 .banner-container {
   width: 100%;
-  margin: 20px 0;
-  border-radius: 12px;
+  margin: 0;
+  border-radius: 0;
   overflow: hidden;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
@@ -9,7 +9,7 @@
 .banner-image-wrapper {
   position: relative;
   width: 100%;
-  padding-bottom: 25%; /* Aspect ratio 4:1 para banner */
+  padding-bottom: 15%; /* Aspect ratio reducido */
   overflow: hidden;
 }
 
@@ -94,7 +94,7 @@
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .banner-image-wrapper {
-    padding-bottom: 35%; /* Más altura en mobile */
+    padding-bottom: 22%; /* Reducido en mobile */
   }
   
   .carousel-btn {
@@ -124,7 +124,7 @@
 
 @media (max-width: 480px) {
   .banner-image-wrapper {
-    padding-bottom: 50%; /* Aún más altura en mobile pequeño */
+    padding-bottom: 30%; /* Reducido en mobile pequeño */
   }
   
   .carousel-btn {

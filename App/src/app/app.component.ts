@@ -201,9 +201,13 @@ export class AppComponent implements OnInit {
 
     // Filter by category
     if (this.selectedCategory) {
-      products = products.filter(product => 
-        product.categoria === this.selectedCategory
-      );
+      products = products.filter(product => {
+        if (this.selectedCategory === 'Sin categoría') {
+          // Products without category have null/undefined/empty categoria
+          return !product.categoria || product.categoria === '';
+        }
+        return product.categoria === this.selectedCategory;
+      });
     }
 
     // Filter by search term

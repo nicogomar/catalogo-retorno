@@ -19,7 +19,7 @@
 /* Search Container */
 .search-container {
   background-color: #f8f9fa;
-  padding: 20px 0;
+  padding: 20px 0 0 0;
   border-bottom: 1px solid #e9ecef;
   width: 100%;
   position: sticky;
@@ -628,7 +628,7 @@
   background-color: #f8edde;
   min-height: calc(100vh - 120px);
   padding: 20px;
-  padding-top: 200px; /* Account for sticky header (120px) + search container (~80px) */
+  padding-top: 105px; /* Minimal spacing - header (120px) + search (~45px) overlap with sticky */
   box-sizing: border-box;
   width: 100%;
   overflow-x: hidden;
@@ -757,7 +757,7 @@
 
   .catalog-container {
     padding: 15px;
-    padding-top: 180px; /* Account for mobile header (100px) + search container (~80px) */
+    padding-top: 95px; /* Minimal spacing for mobile */
   }
 
   .category-section {
@@ -864,7 +864,7 @@
 
   .catalog-container {
     padding: 10px;
-    padding-top: 170px; /* Account for mobile header (100px) + search container (~70px) */
+    padding-top: 90px; /* Minimal spacing for small mobile */
   }
 
   .products-grid {
