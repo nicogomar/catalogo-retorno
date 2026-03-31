@@ -8,7 +8,6 @@
   position: sticky;
   top: 0;
   z-index: 1000;
-  overflow: hidden;
   min-height: 80px;
   display: flex;
   align-items: center;
@@ -22,8 +21,15 @@
   border-bottom: 1px solid #e9ecef;
   width: 100%;
   position: sticky;
-  top: 120px;
+  top: 80px;
   z-index: 999;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.search-container.hidden {
+  transform: translateY(-100%);
+  opacity: 0;
+  pointer-events: none;
 }
 
 .selected-category {

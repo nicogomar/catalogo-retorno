@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { Component, OnInit, ViewChild, HostListener } from "@angular/core";
 import { Router, RouterOutlet, RouterLink } from "@angular/router";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
@@ -57,6 +57,10 @@ export class AppComponent implements OnInit {
   selectedCategory: string | null = null;
   isDrawerOpen: boolean = false;
 
+  // Scroll hide logic
+  isSearchVisible: boolean = true;
+  private lastScrollTop: number = 0;
+
   selectedProduct: Product | null = null;
 
   // Configuración de la aplicación
@@ -77,6 +81,22 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadProductos();
+  }
+
+  @HostListener('window:scroll', [])
+  onWindowScroll(): void {
+    const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+    
+    // Hide search when scrolling down past header height (100px), show when scrolling up
+    if (currentScroll > this.lastScrollTop && currentScroll > 100) {
+      // Scrolling down
+      this.isSearchVisible = false;
+    } else {
+      // Scrolling up
+      this.isSearchVisible = true;
+    }
+    
+    this.lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
   }
 
   loadProductos(): void {
