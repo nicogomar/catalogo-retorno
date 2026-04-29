@@ -305,7 +305,7 @@ Antes de ir a producción, asegúrate de:
    - Muestra estado de pagos en tiempo real
 
 2. **Personalizar Experiencia**
-   - Configura URLs de retorno personalizadas
+   - Configura URLs de EJEMPLO personalizadas
    - Agrega información del cliente (payer)
    - Personaliza items con imágenes
 

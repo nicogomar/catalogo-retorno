@@ -14,7 +14,7 @@ app.use(cors({
       "http://localhost:4200",
       "http://localhost:3000",
       "https://productosdonjoaquin.vercel.app",
-      "https://catalogo-retorno-frontend.vercel.app",
+      "https://catalogo-EJEMPLO-frontend.vercel.app",
     ];
     
     if (allowedOrigins.includes(origin) || origin.includes("vercel.app")) {

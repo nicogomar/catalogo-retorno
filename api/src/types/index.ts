@@ -332,7 +332,7 @@ export interface MercadoPagoPayer {
 }
 
 /**
- * URLs de retorno
+ * URLs de EJEMPLO
  */
 export interface MercadoPagoBackUrls {
   success?: string;

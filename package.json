@@ -1,7 +1,7 @@
 {
-  "name": "catalogo-retorno-fullstack",
+  "name": "catalogo-EJEMPLO-fullstack",
   "version": "1.0.0",
-  "description": "Catálogo Retorno - Backend API y Frontend Angular",
+  "description": "Catálogo EJEMPLO - Backend API y Frontend Angular",
   "scripts": {
     "install:all": "cd api && npm install --include=dev && cd ../App && npm install --include=dev",
     "prebuild": "npm run install:all",

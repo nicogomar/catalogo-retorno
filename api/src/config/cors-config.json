@@ -1,8 +1,8 @@
 {
   "cors": {
     "allowedOrigins": [
-      "https://catalogo-retorno.onrender.com",
-      "https://catalogo-retorno.onrender.com/api",
+      "https://catalogo-EJEMPLO.onrender.com",
+      "https://catalogo-EJEMPLO.onrender.com/api",
       "http://localhost:3000",
       "http://localhost:4200",
       "https://vercel.com",

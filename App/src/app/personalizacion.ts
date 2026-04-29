@@ -13,8 +13,8 @@ export const HomepageTextos = {
   // Header / Encabezado
   header: {
     titulo: 'Catálogo de Productos',
-    subtitulo: 'El Retorno',
-    logoAlt: 'El Retorno',
+    subtitulo: 'El EJEMPLO',
+    logoAlt: 'El EJEMPLO',
   },
 
   // Barra de búsqueda
@@ -44,7 +44,7 @@ export const HomepageTextos = {
     // Sección de contacto
     contacto: {
       titulo: 'CONTACTO',
-      nombreEmpresa: 'EL RETORNO',
+      nombreEmpresa: 'EL EJEMPLO',
       direccion: '📍 Atanasio Sierra 418 - Tacuarembó.',
       horario: '🕒 Lunes a Viernes de 08:00 a 12:30, 16:00 a 19:00 hs. Sábados de 08:00 a 12:00 hs.',
       telefono: '📞 46328493',
@@ -80,7 +80,7 @@ export const HomepageTextos = {
     },
 
     // Copyright
-    copyright: '© 2026 Catálogo Retorno - Todos los derechos reservados',
+    copyright: '© 2026 Catálogo EJEMPLO - Todos los derechos reservados',
     footerLinks: [
       { texto: 'Sobre Nosotros', url: '#' },
       { texto: 'Términos y Condiciones', url: '#' },
@@ -411,7 +411,7 @@ export const ComponentesTextos = {
     titulo: 'Acceso Administración',
     subtitulo: 'Ingresa tus credenciales',
     campos: {
-      email: { label: 'Email', placeholder: 'admin@elretorno.com' },
+      email: { label: 'Email', placeholder: 'admin@elEJEMPLO.com' },
       password: { label: 'Contraseña', placeholder: '••••••••' },
     },
     botones: {
@@ -512,10 +512,10 @@ export const MensajesSistema = {
 // ============================================================================
 
 export const EmpresaConfig = {
-  nombre: 'El Retorno',
-  nombreCompleto: 'Catálogo Retorno',
+  nombre: 'El EJEMPLO',
+  nombreCompleto: 'Catálogo EJEMPLO',
   descripcion: 'Catálogo de Productos',
-  email: 'admin@elretorno.com',
+  email: 'admin@elEJEMPLO.com',
   telefono: '+59899991013',
   telefonoFormateado: '46328493',
   direccion: 'Atanasio Sierra 418 - Tacuarembó',

@@ -1,6 +1,6 @@
-# WhatsApp Catálogo Retorno API
+# WhatsApp Catálogo EJEMPLO API
 
-API REST para enviar y recibir mensajes de WhatsApp, gestionando conversaciones y consultas para el sistema "EL RETORNO - Mayorista".
+API REST para enviar y recibir mensajes de WhatsApp, gestionando conversaciones y consultas para el sistema "EL EJEMPLO - Mayorista".
 
 ## Requisitos
 

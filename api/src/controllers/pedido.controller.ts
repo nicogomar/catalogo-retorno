@@ -165,7 +165,7 @@ export class PedidoController {
         // Get admin recipients from environment variables or use a default
         const adminEmails = process.env.ADMIN_EMAIL_RECIPIENTS
           ? process.env.ADMIN_EMAIL_RECIPIENTS.split(",")
-          : ["admin@elretorno.com"];
+          : ["admin@elEJEMPLO.com"];
 
         await emailService.sendNewOrderNotification(
           newPedido as Pedido,

@@ -74,7 +74,7 @@ app.get("/health", (req, res) => {
 });
 
 const flowPrincipal = addKeyword([]).addAnswer(
-  "🙌  * Sistema de pedidos y consultas EL RETORNO - Mayorista - *",
+  "🙌  * Sistema de pedidos y consultas EL EJEMPLO - Mayorista - *",
 );
 
 function enviarMensaje(numero, mensaje) {

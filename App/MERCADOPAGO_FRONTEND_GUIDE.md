@@ -307,7 +307,7 @@ export const routes: Routes = [
 ];
 ```
 
-### URLs de Retorno de MercadoPago
+### URLs de EJEMPLO de MercadoPago
 
 Configuradas en el backend (`mercadopago.service.ts`):
 
@@ -355,9 +355,9 @@ El flujo ya está integrado en `CartComponent`. Cuando el usuario finaliza la co
 // 3. Redirige a MercadoPago
 ```
 
-### Paso 3: Manejar el Retorno (Ya implementado)
+### Paso 3: Manejar el EJEMPLO (Ya implementado)
 
-Los componentes de pago manejan automáticamente el retorno de MercadoPago.
+Los componentes de pago manejan automáticamente el EJEMPLO de MercadoPago.
 
 ---
 
@@ -455,7 +455,7 @@ En MercadoPago, usa:
 - Vencimiento: `11/25`
 - Nombre: `OTHE`
 
-#### 3. Verificar Páginas de Retorno
+#### 3. Verificar Páginas de EJEMPLO
 
 Después de completar el pago, verifica que:
 - ✅ La URL sea correcta (`/payment/success`, `/payment/failure`, etc.)
@@ -464,7 +464,7 @@ Después de completar el pago, verifica que:
 
 ### Testing de Desarrollo
 
-#### Simular Retorno de MercadoPago
+#### Simular EJEMPLO de MercadoPago
 
 Puedes probar las páginas directamente:
 
@@ -512,7 +512,7 @@ setTimeout(() => {
 }, 2000); // 2 segundos
 ```
 
-### Problema 3: La página de retorno no muestra datos
+### Problema 3: La página de EJEMPLO no muestra datos
 
 **Error:** "No se encontró información del pago"
 

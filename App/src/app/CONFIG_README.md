@@ -141,10 +141,10 @@ Todos los archivos CSS ahora usan variables CSS en lugar de colores hardcodeados
 
 | Ruta | Descripción | Valor Actual |
 |------|-------------|--------------|
-| `titles.pageTitle` | Título de la página | Catálogo de Productos El Retorno |
+| `titles.pageTitle` | Título de la página | Catálogo de Productos El EJEMPLO |
 | `titles.mainTitle` | Título principal | Catálogo de Productos |
-| `titles.subtitle` | Subtítulo | El Retorno |
-| `titles.logoAlt` | Texto alternativo del logo | El Retorno |
+| `titles.subtitle` | Subtítulo | El EJEMPLO |
+| `titles.logoAlt` | Texto alternativo del logo | El EJEMPLO |
 
 ## Ejemplo Completo: Cambiar Tema
 
@@ -182,10 +182,10 @@ export class SettingsComponent {
         primaryLightBorder: 'rgba(139, 92, 246, 0.2)',
       },
       titles: {
-        pageTitle: 'Catálogo de Productos El Retorno',
+        pageTitle: 'Catálogo de Productos El EJEMPLO',
         mainTitle: 'Catálogo de Productos',
-        subtitle: 'El Retorno',
-        logoAlt: 'El Retorno',
+        subtitle: 'El EJEMPLO',
+        logoAlt: 'El EJEMPLO',
       }
     });
   }
